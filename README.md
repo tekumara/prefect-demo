@@ -1,6 +1,6 @@
 # flows
 
-Prefect Orion examples
+Prefect Orion examples 
 
 ## Getting started
 
@@ -16,3 +16,8 @@ Prerequisites:
 To start:
 
 - Install the [development environment](CONTRIBUTING.md#Development-environment): `make install`
+
+## References
+
+- [Orion tutorials](https://orion-docs.prefect.io/tutorials/first-steps/)
+- 
