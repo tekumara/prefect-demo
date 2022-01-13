@@ -3,7 +3,7 @@ from setuptools import find_packages, setup
 setup(
     name="flows",
     version="0.0.0",
-    description="Prefect Orion examples",
+    description="Prefect Orion demo",
     python_requires=">=3.7",
     packages=find_packages(exclude=["tests"]),
     package_data={
