@@ -1,0 +1,26 @@
+[flake8]
+max-line-length=120
+exclude = .git,__pycache__,node_modules,typings,.tox,build,dist,.venv
+
+ignore =
+    # The following are ignored because they will be fixed by formatter/isort
+    E101,E111,E114,E115,E116,E117,E12,E13,E2,E3,E401,E5,E70,W1,W2,W3,W5
+    # allow untyped self and cls args, and no return type from dunder methods
+    ANN101, ANN102, ANN204
+    # allow == True because pandas dataframes overload equality
+    E712
+
+per-file-ignores =
+    # test functions don't need type annotations
+    tests/*:ANN001,ANN201
+    # imports in __init__.py don't need to be used in __init__.py
+    __init__.py:F401
+
+# flake8-colors
+format = ${cyan}%(path)s${reset}:${yellow_bold}%(row)d${reset}:${green_bold}%(col)d${reset}: ${red_bold}%(code)s${reset} %(text)s
+
+max-complexity = 10
+
+# print stats & count
+statistics = True
+count = True

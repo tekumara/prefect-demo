@@ -1,0 +1,16 @@
+.idea/
+.vscode/
+*.code-workspace
+*.iml
+.pytest_cache/
+__pycache__/
+.mypy_cache/
+*.egg-info
+build/
+dist/
+.DS_Store
+typings/
+.tox/
+pip-wheel-metadata/
+node_modules/
+.venv/

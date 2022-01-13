@@ -1,0 +1,14 @@
+# use PyCharm default line length of 120
+
+[build-system]
+requires = ["setuptools", "wheel"]
+
+[tool.black]
+line-length = 120
+
+[tool.isort]
+# use black compatible settings
+line_length = 120
+multi_line_output = 3
+include_trailing_comma = true
+skip = [ ".tox", "dist", "node_modules" , ".venv", "build", ".git", "typings"]
