@@ -19,6 +19,12 @@ logs:
 basic-flow: $(venv)
 	$(venv)/bin/python -m flows.basic_flow
 
+## run k8s_flow as deployment
+k8s-flow: export PREFECT_API_URL=http://localhost:4200/api
+k8s-flow: $(venv)
+	$(venv)/bin/prefect deployment create flows/k8s_flow.py
+	$(venv)/bin/prefect deployment run test-flow/test-deployment
+
 ## start prefect ui
 ui: $(venv)
 	PATH="$(venv)/bin:$$PATH" prefect orion start
