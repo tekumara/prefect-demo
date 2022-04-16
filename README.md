@@ -36,7 +36,7 @@ Deploy agent and api
 make install-kubes
 ```
 
-Navigate to [http://localhost:4200/](http://localhost:4200/)
+Navigate to [http://localhost:4200/](http://localhost:4200/) (NB: might take a minute or two to be ready)
 
 ## References
 
