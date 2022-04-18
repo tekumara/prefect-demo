@@ -30,13 +30,15 @@ Create k3d cluster
 make cluster
 ```
 
-Deploy agent and api
+Deploy minio (for remote storage when using Kubernetes), prefect agent and api
 
 ```
-make install-kubes
+make kubes-minio kubes-prefect
 ```
 
-Navigate to [http://localhost:4200/](http://localhost:4200/) (NB: might take a minute or two to be ready)
+Navigate to the Prefect UI at [http://localhost:4200/](http://localhost:4200/) (NB: might take a minute or two to be ready).
+
+The minio UI is accessible at [http://localhost:9001](http://localhost:9001). See `make minio-creds` for user/password.
 
 ## References
 

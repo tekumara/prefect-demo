@@ -1,0 +1,7 @@
+{
+    "s3": {
+        "client_kwargs": {
+            "endpoint_url": "http://localhost:9000"
+        }
+    }
+}

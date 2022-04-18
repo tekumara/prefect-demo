@@ -15,7 +15,7 @@ $(pip):
 	PATH=$${PATH#$${VIRTUAL_ENV}/bin:} python3 -m venv --clear $(venv)
 	$(venv)/bin/python --version
 	$(pip) install pip~=22.0 wheel~=0.37
-	
+
 $(venv): setup.py $(pip)
 	$(pip) install -e '.[dev]'
 	touch $(venv)
@@ -51,7 +51,7 @@ pyright: node_modules $(venv)
 
 ## run tests
 test: $(venv)
-	$(venv)/bin/pytest
+	set -e && . config/fsspec-env.sh && $(venv)/bin/pytest
 
 ## run pre-commit git hooks on all files
 hooks: $(venv)

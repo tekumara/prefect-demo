@@ -1,0 +1,6 @@
+services:
+  app:
+    image: localhost:5550/flow:latest
+    build:
+      context: .
+      dockerfile: Dockerfile

@@ -13,7 +13,7 @@ def test_flow() -> None:
 
 
 DeploymentSpec(
-    flow=test_flow,
     name="test-deployment",
-    flow_runner=KubernetesFlowRunner(stream_output=True),
+    flow=test_flow,
+    flow_runner=KubernetesFlowRunner(image="orion-registry:5000/flow:latest", stream_output=True),
 )

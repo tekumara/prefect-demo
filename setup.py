@@ -21,6 +21,7 @@ setup(
             "flake8-colors~=0.1",
             "pre-commit~=2.15",
             "pytest~=6.2",
+            "s3fs~=2022.3",
         ]
     },
 )
