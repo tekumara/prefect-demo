@@ -4,7 +4,7 @@ setup(
     name="flows",
     version="0.0.0",
     description="Prefect Orion demo",
-    python_requires=">=3.7",
+    python_requires=">=3.9",
     packages=find_packages(exclude=["tests"]),
     package_data={
         "": ["py.typed"],

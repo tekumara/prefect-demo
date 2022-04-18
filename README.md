@@ -8,7 +8,7 @@ Prerequisites:
 
 - make
 - node (required for pyright)
-- python >= 3.7
+- python >= 3.9
 - sqlite 3
 
 To start:
@@ -35,6 +35,16 @@ Deploy minio (for remote storage when using Kubernetes), prefect agent and api
 ```
 make kubes-minio kubes-prefect
 ```
+
+Create kubes deployment and run it
+
+```
+make k8s-flow
+```
+
+NB: The flow will fail with `botocore.exceptions.NoCredentialsError: Unable to locate credentials` because the AWS creds are not set. This requires a custom job template see [#5584](https://github.com/PrefectHQ/prefect/issues/5584).
+
+### UI
 
 Navigate to the Prefect UI at [http://localhost:4200/](http://localhost:4200/) (NB: might take a minute or two to be ready).
 
