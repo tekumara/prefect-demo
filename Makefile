@@ -36,6 +36,10 @@ logs:
 basic-flow: $(venv)
 	$(venv)/bin/python -m flows.basic_flow
 
+## run ray_flow
+ray-flow: $(venv)
+	$(venv)/bin/python -m flows.ray_flow
+
 ## run k8s_flow as deployment
 k8s-flow: export PREFECT_API_URL=http://localhost:4200/api
 k8s-flow: $(venv)
