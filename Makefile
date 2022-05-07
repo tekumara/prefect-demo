@@ -26,7 +26,7 @@ kubes-prefect: $(venv)
 
 ## minio credentials
 minio-creds:
-	@. config/fsspec-env.sh && echo -e "user: $$AWS_ACCESS_KEY_ID\npass: $$AWS_SECRET_ACCESS_KEY"
+	@set -e && . config/fsspec-env.sh && echo -e "user: $$AWS_ACCESS_KEY_ID\npass: $$AWS_SECRET_ACCESS_KEY"
 
 ## show logs
 logs:

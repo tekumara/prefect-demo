@@ -1,4 +1,5 @@
 from prefect import flow, get_run_logger
+from prefect.blocks.storage import FileStorageBlock
 from prefect.deployments import DeploymentSpec
 from prefect.flow_runners import KubernetesFlowRunner
 
@@ -16,4 +17,5 @@ DeploymentSpec(
     name="test-deployment",
     flow=test_flow,
     flow_runner=KubernetesFlowRunner(image="orion-registry:5000/flow:latest", stream_output=True),
+    flow_storage=FileStorageBlock(base_path="s3://minio-flows/", key_type="hash"),
 )
