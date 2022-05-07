@@ -15,7 +15,7 @@ cluster:
 ## install minio
 kubes-minio:
 	helm repo add bitnami https://charts.bitnami.com/bitnami
-	helm install minio bitnami/minio
+	helm upgrade --install minio bitnami/minio --set auth.rootUser=minioadmin --set auth.rootPassword=minioadmin
 	kubectl apply -f infra/lb-minio.yaml
 
 ## install prefect api and agent into kubes cluster
@@ -23,10 +23,6 @@ kubes-prefect: $(venv)
 	prefect orion kubernetes-manifest | kubectl apply -f -
 	kubectl apply -f infra/ingress-orion.yaml
 	PREFECT_API_URL=http://localhost:4200/api prefect work-queue create kubernetes
-
-## minio credentials
-minio-creds:
-	@set -e && . config/fsspec-env.sh && echo -e "user: $$AWS_ACCESS_KEY_ID\npass: $$AWS_SECRET_ACCESS_KEY"
 
 ## show logs
 logs:
