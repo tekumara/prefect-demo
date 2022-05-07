@@ -33,7 +33,7 @@ make kubes
 Create kubes deployment and run it
 
 ```
-make k8s-flow
+make kubes-flow
 ```
 
 ### UI

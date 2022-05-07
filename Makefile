@@ -45,12 +45,12 @@ basic-flow: $(venv)
 ray-flow: $(venv)
 	$(venv)/bin/python -m flows.ray_flow
 
-## run k8s_flow as deployment
-k8s-flow: $(venv)
+## deploy and run kubes_flow
+kubes-flow: $(venv)
 	docker compose build app && docker compose push app
-	set -e && . config/fsspec-env.sh && cd flows && ../$(venv)/bin/prefect deployment create k8s_flow.py
-	$(venv)/bin/prefect deployment inspect test-flow/test-deployment
-	$(venv)/bin/prefect deployment run test-flow/test-deployment
+	set -e && . config/fsspec-env.sh && cd flows && ../$(venv)/bin/prefect deployment create kubes_flow.py
+	$(venv)/bin/prefect deployment inspect kubes-flow/kubes-deployment
+	$(venv)/bin/prefect deployment run kubes-flow/kubes-deployment
 	$(venv)/bin/prefect flow-run ls
 	@echo Visit http://localhost:4200
 

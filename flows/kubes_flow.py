@@ -5,7 +5,7 @@ from prefect.flow_runners import KubernetesFlowRunner
 
 
 @flow
-def test_flow() -> None:
+def kubes_flow() -> None:
     # shown in kubectl logs but not prefect ui
     print("Hello from Kubernetes!")
     # show in prefect ui
@@ -14,8 +14,8 @@ def test_flow() -> None:
 
 
 DeploymentSpec(
-    name="test-deployment",
-    flow=test_flow,
+    name="kubes-deployment",
+    flow=kubes_flow,
     flow_runner=KubernetesFlowRunner(
         image="orion-registry:5000/flow:latest",
         stream_output=True,
