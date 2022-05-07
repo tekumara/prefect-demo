@@ -9,7 +9,7 @@ Prerequisites:
 - make
 - node (required for pyright)
 - python >= 3.9
-- sqlite 3
+- k3d
 
 To start:
 
@@ -41,8 +41,6 @@ Create kubes deployment and run it
 ```
 make k8s-flow
 ```
-
-NB: The flow will fail with `botocore.exceptions.NoCredentialsError: Unable to locate credentials` because the AWS creds are not set. This requires a custom job template see [#5584](https://github.com/PrefectHQ/prefect/issues/5584).
 
 ### UI
 

@@ -16,6 +16,10 @@ def test_flow() -> None:
 DeploymentSpec(
     name="test-deployment",
     flow=test_flow,
-    flow_runner=KubernetesFlowRunner(image="orion-registry:5000/flow:latest", stream_output=True),
+    flow_runner=KubernetesFlowRunner(
+        image="orion-registry:5000/flow:latest",
+        stream_output=True,
+        env={"AWS_ACCESS_KEY_ID": "minioadmin", "AWS_SECRET_ACCESS_KEY": "minioadmin"},
+    ),
     flow_storage=FileStorageBlock(base_path="s3://minio-flows/", key_type="hash"),
 )
