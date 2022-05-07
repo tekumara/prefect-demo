@@ -9,13 +9,15 @@ Prerequisites:
 - make
 - node (required for pyright)
 - python >= 3.9
-- k3d
+- [k3d](https://k3d.io/) (for creating a local kubernetes cluster)
 
 To start:
 
 - Install the [development environment](CONTRIBUTING.md#Development-environment): `make install`
 
 ## Usage
+
+### Local
 
 1. `make basic-flow`
 1. `make ui` then navigate to [http://localhost:4200/](http://localhost:4200/)
@@ -27,7 +29,7 @@ The orion sqlite database is stored in _~/.prefect/orion.db_
 Create k3d cluster with an image registry, minio (for remote storage), the prefect agent and api
 
 ```
-make kubes 
+make kubes
 ```
 
 Create kubes deployment and run it
@@ -38,9 +40,9 @@ make kubes-flow
 
 ### UI
 
-Navigate to the Prefect UI at [http://localhost:4200/](http://localhost:4200/) (NB: might take a minute or two to be ready).
+Prefect UI: [http://localhost:4200/](http://localhost:4200/)
 
-The minio UI is accessible at [http://localhost:9001](http://localhost:9001). See `make minio-creds` for user/password.
+Minio UI: [http://localhost:9001](http://localhost:9001). User: `minioadmin` pass: `minioadmin`.
 
 ## References
 
