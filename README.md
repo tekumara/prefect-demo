@@ -24,16 +24,10 @@ The orion sqlite database is stored in _~/.prefect/orion.db_
 
 ### Kubernetes
 
-Create k3d cluster
+Create k3d cluster with an image registry, minio (for remote storage), the prefect agent and api
 
 ```
-make cluster
-```
-
-Deploy minio (for remote storage when using Kubernetes), prefect agent and api
-
-```
-make kubes-minio kubes-prefect
+make kubes 
 ```
 
 Create kubes deployment and run it

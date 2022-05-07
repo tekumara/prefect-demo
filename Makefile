@@ -1,3 +1,9 @@
+export KUBECONFIG=$(HOME)/.k3d/kubeconfig-orion.yaml
+export PREFECT_API_URL=http://localhost:4200/api
+
+## create cluster and install minio and prefect
+kubes: cluster kubes-minio kubes-prefect
+
 ## create k3s cluster
 cluster:
 # enable ephmeral containers for profiling
@@ -7,7 +13,7 @@ cluster:
   		--k3s-arg '--kube-scheduler-arg=feature-gates=EphemeralContainers=true@server:*' \
   		--k3s-arg '--kubelet-arg=feature-gates=EphemeralContainers=true@agent:*' \
 		--wait
-	@echo "Waiting until traefik CRDs are created (~60 secs)..." && export KUBECONFIG=$$(k3d kubeconfig write orion) && \
+	@echo "Probing until traefik CRDs are created (~60 secs)..." && export KUBECONFIG=$$(k3d kubeconfig write orion) && \
 		while : ; do kubectl get crd ingressroutes.traefik.containo.us > /dev/null && break; sleep 10; done
 	@echo -e "\nTo use your cluster set:\n"
 	@echo "export KUBECONFIG=$$(k3d kubeconfig write orion)"
@@ -22,7 +28,10 @@ kubes-minio:
 kubes-prefect: $(venv)
 	prefect orion kubernetes-manifest | kubectl apply -f -
 	kubectl apply -f infra/ingress-orion.yaml
-	PREFECT_API_URL=http://localhost:4200/api prefect work-queue create kubernetes
+	kubectl wait pod --for=condition=ready --timeout=120s -lapp=orion
+	@echo "Probing for the prefect API to be available (~5 secs)..." && \
+		while : ; do curl -fsS http://localhost:4200/ > /dev/null && break; sleep 1; done
+	prefect work-queue create kubernetes
 
 ## show logs
 logs:
@@ -37,12 +46,13 @@ ray-flow: $(venv)
 	$(venv)/bin/python -m flows.ray_flow
 
 ## run k8s_flow as deployment
-k8s-flow: export PREFECT_API_URL=http://localhost:4200/api
 k8s-flow: $(venv)
 	docker compose build app && docker compose push app
 	set -e && . config/fsspec-env.sh && cd flows && ../$(venv)/bin/prefect deployment create k8s_flow.py
 	$(venv)/bin/prefect deployment inspect test-flow/test-deployment
 	$(venv)/bin/prefect deployment run test-flow/test-deployment
+	$(venv)/bin/prefect flow-run ls
+	@echo Visit http://localhost:4200
 
 ## start prefect ui
 ui: $(venv)
