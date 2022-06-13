@@ -9,7 +9,7 @@ setup(
     package_data={
         "": ["py.typed"],
     },
-    install_requires=["prefect>=2.0b3"],
+    install_requires=["prefect>=2.0b6"],
     extras_require={
         "dev": [
             "autoflake~=1.4",
