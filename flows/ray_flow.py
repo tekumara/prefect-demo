@@ -14,7 +14,13 @@ def say_goodbye(name: str) -> None:
     print(f"goodbye {name}")
 
 
-@flow(task_runner=RayTaskRunner())
+# run on an existing ray cluster
+@flow(
+    task_runner=RayTaskRunner(
+        address="ray://127.0.0.1:10001",
+        init_kwargs={"runtime_env": {"pip": ["prefect==2.0b3"]}},
+    )
+)
 def greetings(names: List[str]) -> None:
     for name in names:
         say_hello(name)

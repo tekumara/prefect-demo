@@ -1,9 +1,12 @@
-from prefect import State, flow
+from prefect import State, flow, get_run_logger
 from prefect.flows import Flow
 
 
 @flow
 def add_one(i: int) -> int:
+    # logger requires a flow or task run context
+    logger = get_run_logger()
+    logger.info(f"{i=}")
     return i + 1
 
 
