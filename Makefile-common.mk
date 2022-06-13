@@ -50,6 +50,7 @@ pyright: node_modules $(venv)
 	PATH="$(venv)/bin:$$PATH" node_modules/.bin/pyright
 
 ## run tests
+test: PREFECT_API_URL=	# unset so tests don't expect an existing API
 test: $(venv)
 	set -e && . config/fsspec-env.sh && $(venv)/bin/pytest
 
