@@ -1,5 +1,4 @@
 export KUBECONFIG=$(HOME)/.k3d/kubeconfig-orion.yaml
-export PREFECT_API_URL=http://localhost:4200/api
 
 ## create cluster and install minio and prefect
 kubes: cluster kubes-minio kubes-prefect
@@ -25,6 +24,7 @@ kubes-minio:
 	kubectl apply -f infra/lb-minio.yaml
 
 ## install prefect api and agent into kubes cluster
+kubes-prefect: export PREFECT_API_URL=http://localhost:4200/api
 kubes-prefect: $(venv)
 	prefect orion kubernetes-manifest | kubectl apply -f -
 	kubectl apply -f infra/ingress-orion.yaml
@@ -46,6 +46,7 @@ ray-flow: $(venv)
 	$(venv)/bin/python -m flows.ray_flow
 
 ## deploy and run kubes_flow
+kubes-flow: export PREFECT_API_URL=http://localhost:4200/api
 kubes-flow: $(venv)
 	docker compose build app && docker compose push app
 	set -e && . config/fsspec-env.sh && cd flows && ../$(venv)/bin/prefect deployment create kubes_flow.py
