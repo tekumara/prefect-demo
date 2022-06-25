@@ -26,7 +26,7 @@ kubes-minio:
 ## install prefect api and agent into kubes cluster
 kubes-prefect: export PREFECT_API_URL=http://localhost:4200/api
 kubes-prefect: $(venv)
-	prefect orion kubernetes-manifest | kubectl apply -f -
+	prefect kubernetes manifest orion | kubectl apply -f -
 	kubectl apply -f infra/ingress-orion.yaml
 	kubectl wait pod --for=condition=ready --timeout=120s -lapp=orion
 	@echo "Probing for the prefect API to be available (~5 secs)..." && \

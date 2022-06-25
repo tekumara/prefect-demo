@@ -1,7 +1,7 @@
 from typing import List
 
 from prefect import flow, task
-from prefect.task_runners import RayTaskRunner
+from prefect_ray.task_runners import RayTaskRunner
 
 
 @task
@@ -18,7 +18,7 @@ def say_goodbye(name: str) -> None:
 @flow(
     task_runner=RayTaskRunner(
         address="ray://127.0.0.1:10001",
-        init_kwargs={"runtime_env": {"pip": ["prefect==2.0b3"]}},
+        init_kwargs={"runtime_env": {"pip": ["prefect==2.0b7"]}},
     )
 )
 def greetings(names: List[str]) -> None:
