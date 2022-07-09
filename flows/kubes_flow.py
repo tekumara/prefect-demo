@@ -3,6 +3,8 @@ from prefect.deployments import Deployment
 from prefect.filesystems import RemoteFileSystem
 from prefect.flow_runners import KubernetesFlowRunner
 from prefect.packaging.file import FilePackager
+from prefect.packaging.orion import OrionPackager
+from prefect.packaging.serializers import ImportSerializer
 
 
 @flow
@@ -21,7 +23,6 @@ Deployment(
     flow=kubes_flow,
     flow_runner=KubernetesFlowRunner(
         image="orion-registry:5000/flow:latest",
-        stream_output=True,
     ),
 )
 
@@ -31,7 +32,6 @@ Deployment(
     flow=kubes_flow,
     flow_runner=KubernetesFlowRunner(
         image="orion-registry:5000/flow:latest",
-        stream_output=True,
         # use to read the stored flow from minio when the flow executes
         env={"AWS_ACCESS_KEY_ID": "minioadmin", "AWS_SECRET_ACCESS_KEY": "minioadmin"},
     ),

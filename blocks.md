@@ -2,15 +2,21 @@
 
 The deployment package manifest created by the default OrionPackager (also visible in the Deployment UI):
 
-```
+```sql
 select json_extract(flow_data,'$.blob') from deployment;
+```
+
+```json
 {"type": "orion", "flow_name": "kubes-flow", "flow_parameter_schema": {"title": "Parameters", "type": "object", "properties": {}, "required": null, "definitions": null}, "serializer": {"type": "source"}, "block_document_id": "b61967e0-f665-41a4-84d1-cf06f5514f2c"}
 ```
 
 Blocks are [stored encrypted](https://github.com/tekumara/prefect/blob/1d4dfa5055c46d7769c571b6a66aaec8e6cdfc13/src/prefect/orion/models/block_documents.py#L79) in the block_document table:
 
-```
+```sql
 select * from block_document;
+```
+
+```
 id|created|updated|name|data|block_schema_id|is_default_storage_block_document|block_type_id|is_anonymous
 b61967e0-f665-41a4-84d1-cf06f5514f2c|2022-07-09 06:41:41.242948|2022-07-09 06:41:41.243058|anonymous:6e5336ad1712905d5ca107b432a50e99|"gAAAAABiySMl_NR-DYaDKhF-5Xeqhp_-sawtFJwyB3NE4oHxGrNwRo1JpWWS4dHAUtUn-9sLzFQtgGESZI-YcTyT0pYwGT_kSBBgE7Q67GiupwRLmhpZRaqPFzfF0h0-ozwL0vZPqS3OMqpMoWqN9XxOgMsHfwiwRxMhBqtZsRovAVusn8IdxsMt-SzaBASlE2O1tbrZuKbLvHCDFTuhvIGEZ2hEO8Uar6hOPcsw7w7GaOsydft10GaXVDlmYMPk9LwgyijxxnsLhRRMyCV3z0oOoQ8rwmgR-jhDAn0A1eVezeLMDlkuBCOzM5Ky-ngjLa2iFCzgaR_rcaRi7Jg9umLg-L7ZA8oUlKu-9YG0AyWrFgHZm20jZjNYzXLdcn6hzVJQ1kLikt4TyXuvo1Pzff2YAFdaxZfWI1bWADGAmTrJYVbV1uhFpBBEPO0E-iSIruHWhaXf7w9rETdmf5dQ1Nz1YjdB-3GKdwKatCiCpP2gVbBst9hVoFAFeptSZuriItwqbhtAGPhwyawUNRL40LcxMmSRbcxYosFuYcuNIVtmNB_YC3wSTFa--uB6weTYtZ_fWSc3_7Ll22fCKlm_qcbZ-TfxkQOcoBdfTOa42ARBi64wVH9OH-MTMawU955t2CJnCpd_Ou3HDy-fYccr30qfTTfeVKC_d4ODh6itQ8M0DYogTJz6H2U09S2PjcvYVsA9jn1qXMXr70RnGYs0YtACR19Sst8n_ZzMGT8qnHlCpY4fYQkXWQLNANtlY-PoZSJjruin8Lc7J9rXSVhN9k6ty1DfsfGmq5JT3v5U9S7eTTKj1bfflc4_1tJj1wW6Cx5eIWdT_aKGQMjO8ucbzKeQIZ6EDxdGxVaD_7_IILG-S1lmjZuj1eH5ExbVVJtDIv2azIqF4QaSjJrBsN1SoPUvLdjXgrs3bG7hzRtqntlzHxID0sRw7vA7oHYts_Y5cuRCYA-hzXaKNrQzaO-b9J7b5jwGlKcYJnSmBEB5Q6Xv_-dQBJDra48j3G4w5ILhAnPlciOQFiBt_CrHaE02dhxsRXkGDgD-b4HsRSADxt3lPkNtr94-1nyFJsnb-DECnyPNqmNJAQDaW9Bt60w-n-QqOwTAF87ZtXOTwFCjBfIswR4D6FYbEo4RDPgA3_YmHjVHI1QTSzLa5EFSKyHNystLh_WuKHSvs5LQ9XDAbfal437QSFWaFF7uK3D1afkqGeZSV3ooM9zPx8yN5DpV3lLout8gUVFQAzn2fIOoDBbdclVvIo4lzSw="|02afbc00-fc1e-4dd5-8d42-57b165376620|0|4dfbd6a2-ba1b-4b44-bfb3-c2732f9fe5dd|1
 ```
@@ -19,9 +25,11 @@ The encryption key is read from the [`ORION_ENCRYPTION_KEY` environment variable
 
 The decrypted contents of the block document can be fetched from the API, together with's block_schema and block_type, eg:
 
-```json
+```bash
 curl "http://localhost:4200/api/block_documents/b61967e0-f665-41a4-84d1-cf06f5514f2c?include_secrets=true"
+```
 
+```json
 {
   "id": "b61967e0-f665-41a4-84d1-cf06f5514f2c",
   "created": "2022-07-09T06:41:41.242948+00:00",
@@ -48,9 +56,7 @@ curl "http://localhost:4200/api/block_documents/b61967e0-f665-41a4-84d1-cf06f551
           "description": "A JSON-compatible value"
         }
       },
-      "required": [
-        "value"
-      ],
+      "required": ["value"],
       "block_type_name": "JSON",
       "secret_fields": [],
       "block_schema_references": {}
@@ -88,8 +94,11 @@ curl "http://localhost:4200/api/block_documents/b61967e0-f665-41a4-84d1-cf06f551
 
 List block types:
 
-```
+```sql
 select * from block_type;
+```
+
+```
 id|created|updated|name|logo_url|documentation_url|description|code_example|is_protected
 4dfbd6a2-ba1b-4b44-bfb3-c2732f9fe5dd|2022-07-09 06:38:11.722069|2022-07-09 06:38:11.722297|JSON|||||0
 b9400574-f6db-405f-821a-31cbf3685dac|2022-07-09 06:38:11.951897|2022-07-09 06:38:11.951990|String|||||0
