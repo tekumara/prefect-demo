@@ -1,6 +1,6 @@
-# flows
+# Orion Demo
 
-Prefect Orion examples
+Prefect Orion examples running self-contained in a local kubernetes cluster. Batteries included.
 
 ## Getting started
 
@@ -9,6 +9,7 @@ Prerequisites:
 - make
 - node (required for pyright)
 - python >= 3.9
+- docker & docker compose
 - [k3d](https://k3d.io/) (for creating a local kubernetes cluster)
 
 To start:
