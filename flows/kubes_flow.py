@@ -1,6 +1,8 @@
 from prefect import flow, get_run_logger
 from prefect.deployments import Deployment
+from prefect.filesystems import RemoteFileSystem
 from prefect.flow_runners import KubernetesFlowRunner
+from prefect.packaging.file import FilePackager
 
 
 @flow
@@ -12,13 +14,26 @@ def kubes_flow() -> None:
     logger.info("Hello Prefect UI from Kubernetes!")
 
 
-# the default packager is an OrionPackager which creates a OrionPackageManifest pointing to the flow's source file
-# stored as an anonymous JSON block in the Orion database. The block is encrypted.
+# use the default packager (OrionPackager) to store the flow's source file
+# as an anonymous JSON block in the Orion database. The block is encrypted.
 Deployment(
-    name="kubes-deployment",
+    name="kubes-deployment-orion-packager",
     flow=kubes_flow,
     flow_runner=KubernetesFlowRunner(
         image="orion-registry:5000/flow:latest",
         stream_output=True,
     ),
+)
+
+# use the FilePackager to store the flow's source file in S3
+Deployment(
+    name="kubes-deployment-file-packager",
+    flow=kubes_flow,
+    flow_runner=KubernetesFlowRunner(
+        image="orion-registry:5000/flow:latest",
+        stream_output=True,
+        # use to read the stored flow from minio when the flow executes
+        env={"AWS_ACCESS_KEY_ID": "minioadmin", "AWS_SECRET_ACCESS_KEY": "minioadmin"},
+    ),
+    packager=FilePackager(filesystem=RemoteFileSystem(basepath="s3://minio-flows/")),
 )
