@@ -37,6 +37,10 @@ kubes-prefect: $(venv)
 logs:
 	kubectl logs -lapp=orion --all-containers
 
+## access orion.db in kubes
+kubes-db:
+	kubectl exec -i -t svc/orion -c=api -- /bin/bash -c 'hash sqlite3 || (apt-get update && apt-get install sqlite3) && sqlite3 ~/.prefect/orion.db'
+
 ## run basic_flow
 basic-flow: $(venv)
 	$(venv)/bin/python -m flows.basic_flow
@@ -49,7 +53,7 @@ ray-flow: $(venv)
 kubes-flow: export PREFECT_API_URL=http://localhost:4200/api
 kubes-flow: $(venv)
 	docker compose build app && docker compose push app
-	set -e && . config/fsspec-env.sh && cd flows && ../$(venv)/bin/prefect deployment create kubes_flow.py
+	$(venv)/bin/prefect deployment create flows/kubes_flow.py
 	$(venv)/bin/prefect deployment inspect kubes-flow/kubes-deployment
 	$(venv)/bin/prefect deployment run kubes-flow/kubes-deployment
 	$(venv)/bin/prefect flow-run ls
@@ -62,6 +66,6 @@ ui: $(venv)
 ## upgrade to latest vesion of orion
 upgrade: $(venv)
 	latest=$$($(venv)/bin/pip index versions prefect --pre | grep 'LATEST' | sed -E 's/[[:space:]]+LATEST:[[:space:]]+([^[:space:]]+).*/\1/') && \
-		rg -l -g "!orion*.yaml" 2.0b7 | xargs sed -i '' "s/2.0b7/$$latest/g"
+		rg -l -g "!orion*.yaml" 2.0b8 | xargs sed -i '' "s/2.0b8/$$latest/g"
 
 include *.mk

@@ -1,4 +1,4 @@
-FROM prefecthq/prefect:2.0b7-python3.9
+FROM prefecthq/prefect:2.0b8-python3.9
 
 RUN pip install s3fs
 

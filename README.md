@@ -45,6 +45,10 @@ Prefect UI: [http://localhost:4200/](http://localhost:4200/)
 
 Minio UI: [http://localhost:9001](http://localhost:9001). User: `minioadmin` pass: `minioadmin`.
 
+### API
+
+Prefect API: [http://localhost:4200/api/](http://localhost:4200/api/)
+
 ## References
 
 - [Orion tutorials](https://orion-docs.prefect.io/tutorials/first-steps/)

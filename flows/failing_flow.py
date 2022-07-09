@@ -1,7 +1,7 @@
 import prefect.context
 from prefect import flow, get_run_logger, task
 from prefect.blocks.storage import FileStorageBlock
-from prefect.deployments import DeploymentSpec
+from prefect.deployments import Deployment
 from prefect.flow_runners import KubernetesFlowRunner
 
 
@@ -33,7 +33,7 @@ def failing_flow() -> None:
     the_end(wait_for=[f])  # type: ignore see https://github.com/PrefectHQ/prefect/issues/5762
 
 
-DeploymentSpec(
+Deployment(
     name="failing-deployment",
     flow=failing_flow,
     flow_runner=KubernetesFlowRunner(
