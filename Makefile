@@ -59,6 +59,8 @@ kubes-flow: $(venv)
 	$(venv)/bin/prefect deployment run kubes-flow/kubes-deployment-orion-packager
 	$(venv)/bin/prefect deployment inspect kubes-flow/kubes-deployment-file-packager
 	$(venv)/bin/prefect deployment run kubes-flow/kubes-deployment-file-packager
+	$(venv)/bin/prefect deployment inspect kubes-flow/kubes-deployment-orion-packager-import
+	$(venv)/bin/prefect deployment run kubes-flow/kubes-deployment-orion-packager-import
 	$(venv)/bin/prefect flow-run ls
 	@echo Visit http://localhost:4200
 

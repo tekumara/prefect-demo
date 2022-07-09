@@ -37,3 +37,14 @@ Deployment(
     ),
     packager=FilePackager(filesystem=RemoteFileSystem(basepath="s3://minio-flows/")),
 )
+
+# use the default OrionPackager to store the flow's import path as a block in the database.
+# The flow is already stored inside the docker image and so can be imported.
+Deployment(
+    name="kubes-deployment-orion-packager-import",
+    flow=kubes_flow,
+    flow_runner=KubernetesFlowRunner(
+        image="orion-registry:5000/flow:latest",
+    ),
+    packager=OrionPackager(serializer=ImportSerializer()),
+)
