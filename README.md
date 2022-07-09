@@ -51,4 +51,5 @@ Prefect API: [http://localhost:4200/api/](http://localhost:4200/api/)
 
 ## References
 
+- [Blocks](blocks.md)
 - [Orion tutorials](https://orion-docs.prefect.io/tutorials/first-steps/)
