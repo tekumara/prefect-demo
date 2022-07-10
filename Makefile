@@ -33,11 +33,15 @@ kubes-prefect: $(venv)
 		while : ; do curl -fsS http://localhost:4200/ > /dev/null && break; sleep 1; done
 	$(venv)/bin/prefect work-queue create kubernetes
 
-## run basic_flow
+## run basic flow
 basic-flow: $(venv)
 	$(venv)/bin/python -m flows.basic_flow
 
-## run ray_flow
+## run ray flow
+dask-flow: $(venv)
+	$(venv)/bin/python -m flows.dask_flow
+
+## run dask flow
 ray-flow: $(venv)
 	$(venv)/bin/python -m flows.ray_flow
 

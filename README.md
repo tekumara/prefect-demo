@@ -21,7 +21,7 @@ To start:
 
 ### Local
 
-1. `make basic-flow` or `make ray-flow`
+1. `make basic-flow` or `make dask-flow` or `make ray-flow`
 1. `make ui` then navigate to [http://localhost:4200/](http://localhost:4200/)
 
 The orion sqlite database is stored in _~/.prefect/orion.db_

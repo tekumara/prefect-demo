@@ -3,13 +3,19 @@ from setuptools import find_packages, setup
 setup(
     name="flows",
     version="0.0.0",
-    description="Prefect Orion demo",
+    description="Prefect Orion examples running self-contained in a local kubernetes cluster",
     python_requires=">=3.9",
     packages=find_packages(exclude=["tests"]),
     package_data={
         "": ["py.typed"],
     },
-    install_requires=["prefect>=2.0b8", "prefect-ray"],
+    install_requires=[
+        "prefect>=2.0b8",
+        # bokeh is needed for the dask dashboard
+        "bokeh",
+        "prefect-dask",
+        "prefect-ray",
+    ],
     extras_require={
         "dev": [
             "autoflake~=1.4",
