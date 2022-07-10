@@ -1,13 +1,17 @@
 # Contributing 🌳
 
-## Development environment
+## Getting started
 
 `make install` creates the dev environment with:
 
-- git hooks for formatting & linting on git push
 - a virtualenv in _.venv/_
-- pyright (requires node)
+- pyright in _node_modules/_
+- git hooks for formatting & linting on git push
 
 `. .venv/bin/activate` activates the virtualenv.
 
-Run `make` to see the options for running checks, tests etc. make targets that use the virtualenv will it when _setup.py_ changes.
+The make targets will update the virtualenv when _setup.py_ changes.
+
+## Usage
+
+Run `make` to see the options for running tests, linting, formatting etc.

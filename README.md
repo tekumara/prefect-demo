@@ -1,6 +1,6 @@
 # Orion Demo
 
-Prefect Orion examples running self-contained in a local kubernetes cluster. Batteries included.
+Prefect Orion examples running self-contained in a local kubernetes cluster. Batteries included. 🔋
 
 ## Getting started
 
@@ -11,6 +11,7 @@ Prerequisites:
 - python >= 3.9
 - docker & docker compose
 - [k3d](https://k3d.io/) (for creating a local kubernetes cluster)
+- kubectl
 
 To start:
 
@@ -20,7 +21,7 @@ To start:
 
 ### Local
 
-1. `make basic-flow`
+1. `make basic-flow` or `make ray-flow`
 1. `make ui` then navigate to [http://localhost:4200/](http://localhost:4200/)
 
 The orion sqlite database is stored in _~/.prefect/orion.db_
