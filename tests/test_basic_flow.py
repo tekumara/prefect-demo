@@ -3,7 +3,7 @@ from prefect.futures import PrefectFuture
 from prefect.orion.schemas.states import StateType
 from prefect.utilities.asyncio import Sync
 
-from flows.basic_flow import add_one, add_one_with_logging
+from flows.basic_flow import add_flow, add_one
 
 
 # works as long as the task does not use anything from the prefect context (eg: loggers)
@@ -12,7 +12,7 @@ def test_underlying_fn():
 
 
 def test_flow():
-    state: State[PrefectFuture[int, Sync]] = add_one_with_logging(41)
+    state: State[PrefectFuture[int, Sync]] = add_flow(41)
     assert state.type == StateType.COMPLETED
 
     assert state.result().result() == 42
