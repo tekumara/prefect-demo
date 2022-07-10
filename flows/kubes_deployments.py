@@ -5,7 +5,8 @@ from prefect.packaging.file import FilePackager
 from prefect.packaging.orion import OrionPackager
 from prefect.packaging.serializers import ImportSerializer
 
-from flows.param_flow import increment
+import flows.dask_flow
+import flows.param_flow
 
 # use the default packager (OrionPackager) to store the flow's source file
 # as an anonymous JSON block in the Orion database. Uses the built docker
@@ -13,7 +14,7 @@ from flows.param_flow import increment
 # and stored by the OrionPackager.
 Deployment(
     name="orion-packager",
-    flow=increment,
+    flow=flows.param_flow.increment,
     flow_runner=KubernetesFlowRunner(
         image="orion-registry:5000/flow:latest",
     ),
@@ -25,7 +26,7 @@ Deployment(
 # baked into the the docker image.
 Deployment(
     name="orion-packager-import",
-    flow=increment,
+    flow=flows.param_flow.increment,
     flow_runner=KubernetesFlowRunner(
         image="orion-registry:5000/flow:latest",
     ),
@@ -37,7 +38,7 @@ Deployment(
 # Requires a docker image with s3fs.
 Deployment(
     name="file-packager",
-    flow=increment,
+    flow=flows.param_flow.increment,
     flow_runner=KubernetesFlowRunner(
         image="orion-registry:5000/flow:latest",
         # use to read the stored flow from minio when the flow executes
@@ -45,4 +46,14 @@ Deployment(
     ),
     packager=FilePackager(filesystem=RemoteFileSystem(basepath="s3://minio-flows/")),
     parameters={"i": 3},
+)
+
+# Requires a docker image with prefect-dask & dask_kubernetes.
+Deployment(
+    name="orion-packager",
+    flow=flows.dask_flow.greetings,
+    flow_runner=KubernetesFlowRunner(
+        image="orion-registry:5000/flow:latest",
+    ),
+    parameters={"names": ["kubes", "deployment!"]},
 )

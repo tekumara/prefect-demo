@@ -1,6 +1,6 @@
 # Orion Demo
 
-Prefect Orion examples running self-contained in a local kubernetes cluster. Batteries included. 🔋
+Prefect Orion examples running self-contained in a local kubernetes cluster. Batteries (mostly) included. 🔋
 
 ## Getting started
 
@@ -59,3 +59,5 @@ Prefect API: [http://localhost:4200/api/](http://localhost:4200/api/)
 
 - Packagers only package the flow's source file, and not any modules it may reference. Referenced modules will need to be baked into the docker image.
 - [Flow run parameters cannot be set in the UI #5617](https://github.com/PrefectHQ/prefect/issues/5617)
+- [Browser refresh after navigation causes not found error #5719](https://github.com/PrefectHQ/prefect/issues/5719)
+- [Logs configured in tasks with get_run_logger using DaskTaskRunner don't make it to the Prefect 2.0 backend #5850](https://github.com/PrefectHQ/prefect/issues/5850)

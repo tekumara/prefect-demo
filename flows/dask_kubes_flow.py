@@ -1,5 +1,8 @@
 from typing import List
 
+import dask_kubernetes
+from dask_kubernetes import make_pod_spec
+from kubernetes.client import V1Pod
 from prefect import flow, get_run_logger, task
 from prefect_dask.task_runners import DaskTaskRunner
 
@@ -17,7 +20,24 @@ def say_goodbye(name: str) -> None:
     logger.info(f"goodbye {name}")
 
 
-@flow(task_runner=DaskTaskRunner())
+# see https://kubernetes.dask.org/en/latest/
+def dask_pod_spec() -> V1Pod:
+    return make_pod_spec(
+        image="ghcr.io/dask/dask:latest",
+        memory_limit="1G",
+        memory_request="1G",
+        cpu_limit=1,
+        cpu_request=1,
+    )
+
+
+@flow(
+    task_runner=DaskTaskRunner(
+        cluster_class=dask_kubernetes.KubeCluster,
+        cluster_kwargs={"pod_template": dask_pod_spec()},
+        adapt_kwargs={"minimum": 1, "maximum": 2},
+    )
+)
 def greetings(names: List[str]) -> None:
     for name in names:
         say_hello(name)

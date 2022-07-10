@@ -51,8 +51,8 @@ kubes-deploy: $(venv)
 	docker compose build app && docker compose push app
 # use minio as the s3 remote file system
 	set -e && . config/fsspec-env.sh && $(venv)/bin/prefect deployment create flows/kubes_deployments.py
-	$(venv)/bin/prefect deployment ls --flow-name increment
-	for deployment in orion-packager orion-packager-import file-packager; do $(venv)/bin/prefect deployment run increment/$$deployment; done
+	$(venv)/bin/prefect deployment ls
+	for deployment in increment/orion-packager increment/orion-packager-import increment/file-packager greetings/orion-packager; do $(venv)/bin/prefect deployment run $$deployment; done
 	$(venv)/bin/prefect flow-run ls
 	@echo Visit http://localhost:4200
 
@@ -60,9 +60,13 @@ kubes-deploy: $(venv)
 ui: $(venv)
 	PATH="$(venv)/bin:$$PATH" prefect orion start
 
-## show logs
-logs:
+## show kube logs
+kube-logs:
 	kubectl logs -lapp=orion --all-containers
+
+## show flow run logs
+run-logs:
+	curl -H "Content-Type: application/json" -X POST --data '{"logs":{"flow_run_id":{"any_":["$(id)"]},"level":{"ge_":0}},"sort":"TIMESTAMP_ASC"}' -s "http://localhost:4200/api/logs/filter" | jq '.[].message | fromjson'
 
 ## access orion.db in kubes
 kubes-db:

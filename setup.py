@@ -10,9 +10,10 @@ setup(
         "": ["py.typed"],
     },
     install_requires=[
-        "prefect>=2.0b8",
         # bokeh is needed for the dask dashboard
         "bokeh",
+        "dask_kubernetes",
+        "prefect>=2.0b8",
         "prefect-dask",
         "prefect-ray",
     ],
