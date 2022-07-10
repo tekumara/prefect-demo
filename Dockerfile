@@ -8,6 +8,6 @@ RUN pip install s3fs
 COPY config/fsspec-minio.json config/fsspec.json
 ENV FSSPEC_CONFIG_DIR=/opt/prefect/config
 
-# add flows so they can be referenced by import path
+# add flows so they can be imported
 # by the orion-packager-import deployment
 COPY flows flows
