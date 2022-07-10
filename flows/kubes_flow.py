@@ -26,7 +26,7 @@ Deployment(
     ),
 )
 
-# use the FilePackager to store the flow's source file in S3
+# use the FilePackager to store the flow's source file in S3 using fsspec
 Deployment(
     name="kubes-deployment-file-packager",
     flow=kubes_flow,
@@ -38,8 +38,8 @@ Deployment(
     packager=FilePackager(filesystem=RemoteFileSystem(basepath="s3://minio-flows/")),
 )
 
-# use the default OrionPackager to store the flow's import path as a block in the database.
-# The flow is already stored inside the docker image and so can be imported.
+# use the OrionPackager with the ImportSerializer to store the flow's import path
+# as a JSON block in the database, for import at runtime from inside the docker image.
 Deployment(
     name="kubes-deployment-orion-packager-import",
     flow=kubes_flow,

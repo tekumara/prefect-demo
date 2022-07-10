@@ -33,14 +33,6 @@ kubes-prefect: $(venv)
 		while : ; do curl -fsS http://localhost:4200/ > /dev/null && break; sleep 1; done
 	$(venv)/bin/prefect work-queue create kubernetes
 
-## show logs
-logs:
-	kubectl logs -lapp=orion --all-containers
-
-## access orion.db in kubes
-kubes-db:
-	kubectl exec -i -t svc/orion -c=api -- /bin/bash -c 'hash sqlite3 || (apt-get update && apt-get install sqlite3) && sqlite3 ~/.prefect/orion.db'
-
 ## run basic_flow
 basic-flow: $(venv)
 	$(venv)/bin/python -m flows.basic_flow
@@ -67,6 +59,14 @@ kubes-flow: $(venv)
 ## start prefect ui
 ui: $(venv)
 	PATH="$(venv)/bin:$$PATH" prefect orion start
+
+## show logs
+logs:
+	kubectl logs -lapp=orion --all-containers
+
+## access orion.db in kubes
+kubes-db:
+	kubectl exec -i -t svc/orion -c=api -- /bin/bash -c 'hash sqlite3 || (apt-get update && apt-get install sqlite3) && sqlite3 ~/.prefect/orion.db'
 
 ## upgrade to latest vesion of orion
 upgrade: $(venv)
