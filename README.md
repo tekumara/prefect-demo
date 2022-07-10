@@ -54,3 +54,8 @@ Prefect API: [http://localhost:4200/api/](http://localhost:4200/api/)
 
 - [Blocks](blocks.md)
 - [Orion tutorials](https://orion-docs.prefect.io/tutorials/first-steps/)
+
+## Known limitations
+
+- Packagers only package the flow's source file, and not any modules it may reference. Referenced modules will need to be baked into the docker image.
+- [Flow run parameters cannot be set in the UI #5617](https://github.com/PrefectHQ/prefect/issues/5617)

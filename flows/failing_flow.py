@@ -35,9 +35,7 @@ def failing_flow() -> None:
 Deployment(
     name="orion-packager",
     flow=failing_flow,
-    flow_runner=KubernetesFlowRunner(
-        image="orion-registry:5000/flow:latest",
-    ),
+    flow_runner=KubernetesFlowRunner(),
 )
 
 if __name__ == "__main__":

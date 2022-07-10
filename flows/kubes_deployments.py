@@ -8,9 +8,17 @@ from prefect.packaging.serializers import ImportSerializer
 from flows.param_flow import increment
 
 # use the default packager (OrionPackager) to store the flow's source file
-# as an anonymous JSON block in the Orion database. Uses the default prefect
-# docker image.
-Deployment(name="orion-packager", flow=increment, flow_runner=KubernetesFlowRunner(), parameters={"i": 1})
+# as an anonymous JSON block in the Orion database. Uses the built docker
+# image because it contains flows.another_module which isn't serialised
+# and stored by the OrionPackager.
+Deployment(
+    name="orion-packager",
+    flow=increment,
+    flow_runner=KubernetesFlowRunner(
+        image="orion-registry:5000/flow:latest",
+    ),
+    parameters={"i": 1},
+)
 
 # use the OrionPackager with the ImportSerializer to store the flow's import path
 # as a JSON block in the database, for import at runtime. Requires the flow be

@@ -3,9 +3,13 @@ from prefect.flows import Flow
 from prefect.futures import PrefectFuture
 from prefect.utilities.asyncio import Sync
 
+import flows.another_module
+
 
 @flow
 def increment(i: int) -> PrefectFuture[int, Sync]:
+    """A parameterised flow that references other modules"""
+
     # logger requires a flow or task run context
     logger = get_run_logger()
 
@@ -14,6 +18,7 @@ def increment(i: int) -> PrefectFuture[int, Sync]:
 
     # show in prefect logs/UI
     logger.info("Hello Prefect logs!")
+    logger.info(flows.another_module.msg)
     logger.info(f"{i=}")
 
     # result is PrefectFuture[int, Sync]

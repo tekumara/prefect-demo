@@ -29,7 +29,7 @@ install: $(venv) node_modules $(if $(value CI),,install-hooks)
 
 ## format all code
 format: $(venv)
-	$(venv)/bin/autoflake --in-place --recursive --remove-all-unused-imports .
+	$(venv)/bin/autoflake --in-place --recursive --remove-all-unused-imports --exclude venv .
 	$(venv)/bin/black .
 	$(venv)/bin/isort .
 
