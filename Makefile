@@ -46,13 +46,9 @@ kubes-flow: export PREFECT_API_URL=http://localhost:4200/api
 kubes-flow: $(venv)
 	docker compose build app && docker compose push app
 # use minio as the s3 remote file system
-	set -e && . config/fsspec-env.sh && $(venv)/bin/prefect deployment create flows/kubes_flow.py
-	$(venv)/bin/prefect deployment inspect kubes-flow/kubes-deployment-orion-packager
-	$(venv)/bin/prefect deployment run kubes-flow/kubes-deployment-orion-packager
-	$(venv)/bin/prefect deployment inspect kubes-flow/kubes-deployment-file-packager
-	$(venv)/bin/prefect deployment run kubes-flow/kubes-deployment-file-packager
-	$(venv)/bin/prefect deployment inspect kubes-flow/kubes-deployment-orion-packager-import
-	$(venv)/bin/prefect deployment run kubes-flow/kubes-deployment-orion-packager-import
+	set -e && . config/fsspec-env.sh && $(venv)/bin/prefect deployment create flows/kubes_deployments.py
+	$(venv)/bin/prefect deployment ls --flow-name kubes-flow
+	for deployment in orion-packager orion-packager-import file-packager; do $(venv)/bin/prefect deployment run kubes-flow/$$deployment; done
 	$(venv)/bin/prefect flow-run ls
 	@echo Visit http://localhost:4200
 
