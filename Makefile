@@ -33,9 +33,9 @@ kubes-prefect: $(venv)
 		while : ; do curl -fsS http://localhost:4200/ > /dev/null && break; sleep 1; done
 	$(venv)/bin/prefect work-queue create kubernetes
 
-## run basic flow
-basic-flow: $(venv)
-	$(venv)/bin/python -m flows.basic_flow
+## run parameterised flow
+param-flow: $(venv)
+	$(venv)/bin/python -m flows.param_flow
 
 ## run ray flow
 dask-flow: $(venv)
@@ -45,14 +45,14 @@ dask-flow: $(venv)
 ray-flow: $(venv)
 	$(venv)/bin/python -m flows.ray_flow
 
-## deploy and run kubes_flow
-kubes-flow: export PREFECT_API_URL=http://localhost:4200/api
-kubes-flow: $(venv)
+## deploy basic_flow to kubernetes
+kubes-deploy: export PREFECT_API_URL=http://localhost:4200/api
+kubes-deploy: $(venv)
 	docker compose build app && docker compose push app
 # use minio as the s3 remote file system
 	set -e && . config/fsspec-env.sh && $(venv)/bin/prefect deployment create flows/kubes_deployments.py
-	$(venv)/bin/prefect deployment ls --flow-name kubes-flow
-	for deployment in orion-packager orion-packager-import file-packager; do $(venv)/bin/prefect deployment run kubes-flow/$$deployment; done
+	$(venv)/bin/prefect deployment ls --flow-name increment
+	for deployment in orion-packager orion-packager-import file-packager; do $(venv)/bin/prefect deployment run increment/$$deployment; done
 	$(venv)/bin/prefect flow-run ls
 	@echo Visit http://localhost:4200
 

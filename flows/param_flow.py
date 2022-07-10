@@ -5,7 +5,7 @@ from prefect.utilities.asyncio import Sync
 
 
 @flow
-def add_flow(i: int) -> PrefectFuture[int, Sync]:
+def increment(i: int) -> PrefectFuture[int, Sync]:
     # logger requires a flow or task run context
     logger = get_run_logger()
 
@@ -38,7 +38,7 @@ def print_result(i: int) -> None:
 
 if __name__ == "__main__":
     # to demonstrate that this is a Flow object
-    f: Flow = add_flow
+    f: Flow = increment
 
     # execute Flow
     r: State[PrefectFuture[int, Sync]] = f(1)

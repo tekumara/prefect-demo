@@ -21,7 +21,7 @@ To start:
 
 ### Local
 
-1. `make basic-flow` or `make dask-flow` or `make ray-flow`
+1. `make param-flow` or `make dask-flow` or `make ray-flow`
 1. `make ui` then navigate to [http://localhost:4200/](http://localhost:4200/)
 
 The orion sqlite database is stored in _~/.prefect/orion.db_
@@ -34,10 +34,10 @@ Create k3d cluster with an image registry, minio (for remote storage), the prefe
 make kubes
 ```
 
-Create kubes deployment and run it
+Create kubes deployments and run them
 
 ```
-make kubes-flow
+make kubes-deploy
 ```
 
 ### UI

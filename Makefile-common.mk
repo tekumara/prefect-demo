@@ -50,9 +50,8 @@ pyright: node_modules $(venv)
 	PATH="$(venv)/bin:$$PATH" node_modules/.bin/pyright
 
 ## run tests
-test:
 test: $(venv)
-	set -e && . config/fsspec-env.sh && $(venv)/bin/pytest
+	$(venv)/bin/pytest
 
 ## run pre-commit git hooks on all files
 hooks: $(venv)
