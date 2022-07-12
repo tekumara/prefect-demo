@@ -45,6 +45,10 @@ dask-flow: $(venv)
 ray-flow: $(venv)
 	$(venv)/bin/python -m flows.ray_flow
 
+## run sub flow
+sub-flow: $(venv)
+	$(venv)/bin/python -m flows.sub_flow
+
 ## deploy basic_flow to kubernetes
 kubes-deploy: export PREFECT_API_URL=http://localhost:4200/api
 kubes-deploy: $(venv)

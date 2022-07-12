@@ -28,6 +28,9 @@ def dask_pod_spec() -> V1Pod:
         memory_request="1G",
         cpu_limit=1,
         cpu_request=1,
+        # this is how to specify a service account for the dask pods
+        # if not specified Kube will use the service account called `default`
+        extra_pod_config={"serviceAccountName": "default"},
     )
 
 
