@@ -38,15 +38,15 @@ kubes-prefect: $(venv)
 param-flow: $(venv)
 	$(venv)/bin/python -m flows.param_flow
 
-## run ray flow
+## run dask flow
 dask-flow: $(venv)
 	$(venv)/bin/python -m flows.dask_flow
 
-## run ray flow
+## run dask-kubernetes flow
 dask-kubes-flow: $(venv)
 	$(venv)/bin/python -m flows.dask_kubes_flow
 
-## run dask flow
+## run ray flow
 ray-flow: $(venv)
 	$(venv)/bin/python -m flows.ray_flow
 
