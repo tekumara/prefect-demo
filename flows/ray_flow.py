@@ -18,7 +18,7 @@ def say_goodbye(name: str) -> None:
 @flow(
     task_runner=RayTaskRunner(
         address="ray://127.0.0.1:10001",
-        init_kwargs={"runtime_env": {"pip": ["prefect==2.0b8"]}},
+        init_kwargs={"runtime_env": {"pip": ["prefect==2.0b9"]}},
     )
 )
 def greetings(names: List[str]) -> None:

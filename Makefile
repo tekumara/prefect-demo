@@ -79,6 +79,6 @@ kubes-db:
 ## upgrade to latest vesion of orion
 upgrade: $(venv)
 	latest=$$($(venv)/bin/pip index versions prefect --pre | grep 'LATEST' | sed -E 's/[[:space:]]+LATEST:[[:space:]]+([^[:space:]]+).*/\1/') && \
-		rg -l -g "!orion*.yaml" 2.0b8 | xargs sed -i '' "s/2.0b8/$$latest/g"
+		rg -l -g "!orion*.yaml" 2.0b9 | xargs sed -i '' "s/2.0b9/$$latest/g"
 
 include *.mk

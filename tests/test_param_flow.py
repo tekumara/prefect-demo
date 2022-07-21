@@ -1,7 +1,4 @@
-from prefect import State
-from prefect.futures import PrefectFuture
 from prefect.orion.schemas.states import StateType
-from prefect.utilities.asyncio import Sync
 
 from flows.param_flow import add_one, increment
 
@@ -12,7 +9,10 @@ def test_underlying_fn():
 
 
 def test_flow():
-    state: State[PrefectFuture[int, Sync]] = increment(41)
+    meaning_of_life = increment(41)
+    assert meaning_of_life == 42
+
+    state = increment._run(42)
     assert state.type == StateType.COMPLETED
 
-    assert state.result().result() == 42
+    assert state.result() == 43

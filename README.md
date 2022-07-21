@@ -82,6 +82,11 @@ Prefect API: [http://localhost:4200/api/](http://localhost:4200/api/)
 - [Logs configured in tasks with get_run_logger using DaskTaskRunner don't make it to the Prefect 2.0 backend #5850](https://github.com/PrefectHQ/prefect/issues/5850)
 - Packagers only package the flow's source file, and not any modules it may reference. Referenced modules will need to be baked into the docker image.
 
+## Caveats
+
+The Deployment defines a flow name and the flow code. It's possible to have two Deployments with different flow code but the same flow name.
+
 ## Todo
 
 - [Deployment yaml](https://orion-docs.prefect.io/concepts/deployments/#deployment-object) example
+- Use service account in Kubes

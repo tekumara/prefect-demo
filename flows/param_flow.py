@@ -1,13 +1,11 @@
-from prefect import State, flow, get_run_logger, task
+from prefect import flow, get_run_logger, task
 from prefect.flows import Flow
-from prefect.futures import PrefectFuture
-from prefect.utilities.asyncio import Sync
 
 import flows.another_module
 
 
 @flow
-def increment(i: int) -> PrefectFuture[int, Sync]:
+def increment(i: int) -> int:
     """A parameterised flow that references other modules"""
 
     # logger requires a flow or task run context
@@ -21,7 +19,7 @@ def increment(i: int) -> PrefectFuture[int, Sync]:
     logger.info(flows.another_module.msg)
     logger.info(f"{i=}")
 
-    # result is PrefectFuture[int, Sync]
+    # result is int
     result = add_one(i)
     logger.info(f"{result=}")
 
@@ -45,5 +43,5 @@ if __name__ == "__main__":
     # to demonstrate that this is a Flow object
     f: Flow = increment
 
-    # execute Flow
-    r: State[PrefectFuture[int, Sync]] = f(1)
+    # execute Flow, returns int
+    r = f(1)
