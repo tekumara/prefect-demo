@@ -30,7 +30,7 @@ kubes-prefect: $(venv)
 	kubectl apply -f infra/ingress-orion.yaml
 	kubectl wait pod --for=condition=ready --timeout=120s -lapp=orion
 	@echo "Probing for the prefect API to be available (~5 secs)..." && \
-		while : ; do curl -fsS http://localhost:4200/ > /dev/null && break; sleep 1; done
+		while : ; do curl -fsS $$PREFECT_API_URL > /dev/null && break; sleep 1; done
 	$(venv)/bin/prefect work-queue create kubernetes
 
 ## run parameterised flow

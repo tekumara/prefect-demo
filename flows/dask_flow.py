@@ -21,8 +21,10 @@ def say_goodbye(name: str) -> None:
 @flow(task_runner=DaskTaskRunner())
 def greetings(names: List[str]) -> None:
     for name in names:
-        say_hello(name)
-        say_goodbye(name)
+        # tasks must be submitted to run on dask
+        # if called without .submit() they are still tracked but run locally
+        say_hello.submit(name)
+        say_goodbye.submit(name)
 
 
 if __name__ == "__main__":

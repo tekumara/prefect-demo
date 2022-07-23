@@ -43,8 +43,8 @@ def dask_pod_spec() -> V1Pod:
 )
 def greetings(names: List[str]) -> None:
     for name in names:
-        say_hello(name)
-        say_goodbye(name)
+        say_hello.submit(name)
+        say_goodbye.submit(name)
 
 
 if __name__ == "__main__":

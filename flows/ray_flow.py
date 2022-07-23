@@ -1,17 +1,20 @@
 from typing import List
 
-from prefect import flow, task
+from prefect import flow, get_run_logger, task
 from prefect_ray.task_runners import RayTaskRunner
 
 
 @task
 def say_hello(name: str) -> None:
-    print(f"hello {name}")
+    logger = get_run_logger()
+    logger.info(f"hello {name}")
 
 
 @task
 def say_goodbye(name: str) -> None:
-    print(f"goodbye {name}")
+    # logs not currently working see https://github.com/PrefectHQ/prefect/issues/5960
+    logger = get_run_logger()
+    logger.info(f"goodbye {name}")
 
 
 # run on an existing ray cluster
@@ -23,8 +26,10 @@ def say_goodbye(name: str) -> None:
 )
 def greetings(names: List[str]) -> None:
     for name in names:
-        say_hello(name)
-        say_goodbye(name)
+        # tasks must be submitted to run on ray
+        # if called without .submit() they are still tracked but run locally
+        say_hello.submit(name)
+        say_goodbye.submit(name)
 
 
 if __name__ == "__main__":

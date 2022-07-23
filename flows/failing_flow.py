@@ -28,8 +28,8 @@ def the_end() -> None:
 def failing_flow() -> None:
     logger = get_run_logger()
     logger.info("Starting failing flow")
-    f = unreliable_task()
-    the_end(wait_for=[f])  # type: ignore see https://github.com/PrefectHQ/prefect/issues/5762
+    f = unreliable_task.submit()
+    the_end.submit(wait_for=[f])  # type: ignore see https://github.com/PrefectHQ/prefect/issues/5762
 
 
 Deployment(
