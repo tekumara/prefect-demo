@@ -1,7 +1,7 @@
 import prefect.context
 from prefect import flow, get_run_logger, task
 from prefect.deployments import Deployment
-from prefect.flow_runners import KubernetesFlowRunner
+from prefect.infrastructure.kubernetes import KubernetesJob
 
 
 @task(retries=1)
@@ -35,7 +35,7 @@ def failing_flow() -> None:
 Deployment(
     name="orion-packager",
     flow=failing_flow,
-    flow_runner=KubernetesFlowRunner(),
+    infrastructure=KubernetesJob(),
 )
 
 if __name__ == "__main__":

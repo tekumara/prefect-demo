@@ -1,6 +1,6 @@
 from prefect.deployments import Deployment
 from prefect.filesystems import RemoteFileSystem
-from prefect.flow_runners import KubernetesFlowRunner
+from prefect.infrastructure.kubernetes import KubernetesJob
 from prefect.packaging.file import FilePackager
 from prefect.packaging.orion import OrionPackager
 from prefect.packaging.serializers import ImportSerializer
@@ -15,7 +15,7 @@ import flows.param_flow
 Deployment(
     name="orion-packager",
     flow=flows.param_flow.increment,
-    flow_runner=KubernetesFlowRunner(
+    infrastructure=KubernetesJob(
         image="orion-registry:5000/flow:latest",
     ),
     parameters={"i": 1},
@@ -27,7 +27,7 @@ Deployment(
 Deployment(
     name="orion-packager-import",
     flow=flows.param_flow.increment,
-    flow_runner=KubernetesFlowRunner(
+    infrastructure=KubernetesJob(
         image="orion-registry:5000/flow:latest",
     ),
     packager=OrionPackager(serializer=ImportSerializer()),
@@ -39,7 +39,7 @@ Deployment(
 Deployment(
     name="file-packager",
     flow=flows.param_flow.increment,
-    flow_runner=KubernetesFlowRunner(
+    infrastructure=KubernetesJob(
         image="orion-registry:5000/flow:latest",
         # use to read the stored flow from minio when the flow executes
         env={"AWS_ACCESS_KEY_ID": "minioadmin", "AWS_SECRET_ACCESS_KEY": "minioadmin"},
@@ -52,7 +52,7 @@ Deployment(
 Deployment(
     name="orion-packager",
     flow=flows.dask_flow.greetings,
-    flow_runner=KubernetesFlowRunner(
+    infrastructure=KubernetesJob(
         image="orion-registry:5000/flow:latest",
     ),
     parameters={"names": ["kubes", "deployment!"]},

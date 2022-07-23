@@ -14,7 +14,7 @@ setup(
         "bokeh",
         "boto3==1.21.21",
         "dask_kubernetes",
-        "prefect==2.0b11",
+        "prefect==2.0b12",
         "prefect-dask",
         "prefect-ray",
     ],
