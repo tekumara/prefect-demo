@@ -66,7 +66,12 @@ ui: $(venv)
 
 ## show kube logs
 kube-logs:
-	kubectl logs -lapp=orion --all-containers
+	kubectl logs -lapp=orion --all-containers -f
+
+## create kubernetes work queue
+kube-work-queue: export PREFECT_API_URL=http://localhost:4200/api
+kube-work-queue: $(venv)
+	$(venv)/bin/prefect work-queue create kubernetes
 
 ## show flow run logs
 run-logs:

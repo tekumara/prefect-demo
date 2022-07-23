@@ -86,6 +86,26 @@ Prefect API: [http://localhost:4200/api/](http://localhost:4200/api/)
 
 The Deployment defines a flow name and the flow code. It's possible to have two Deployments with different flow code but the same flow name.
 
+## Troubleshooting
+
+### Flows are late
+
+Check the logs of the agent:
+
+```
+make kube-logs
+```
+
+If you see `prefect.agent - No work queue found named 'kubernetes'` the work queue is missing. It can get lost when orion is restarted.
+
+Recreate the work queue:
+
+```
+make kube-work-queue
+```
+
+And then your flows should start.
+
 ## Todo
 
 - [Deployment yaml](https://orion-docs.prefect.io/concepts/deployments/#deployment-object) example
