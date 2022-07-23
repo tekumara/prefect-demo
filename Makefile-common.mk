@@ -50,6 +50,7 @@ pyright: node_modules $(venv)
 	PATH="$(venv)/bin:$$PATH" node_modules/.bin/pyright
 
 ## run tests
+test: export PREFECT_API_URL=		# use embedded prefect
 test: $(venv)
 	$(venv)/bin/pytest
 

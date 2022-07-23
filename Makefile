@@ -26,11 +26,11 @@ kubes-minio:
 ## install prefect api and agent into kubes cluster
 kubes-prefect: export PREFECT_API_URL=http://localhost:4200/api
 kubes-prefect: $(venv)
-	$(venv)/bin/prefect kubernetes manifest orion | kubectl apply -f -
-	kubectl apply -f infra/ingress-orion.yaml
+	$(venv)/bin/prefect kubernetes manifest orion | kubectl apply -f - --wait=true
+	kubectl apply -f infra/ingress-orion.yaml --wait=true
 	kubectl wait pod --for=condition=ready --timeout=120s -lapp=orion
-	@echo "Probing for the prefect API to be available (~5 secs)..." && \
-		while : ; do curl -fsS $$PREFECT_API_URL > /dev/null && break; sleep 1; done
+	@echo "Probing for the prefect API to be available (~20 secs)..." && \
+		while : ; do curl -fsS $$PREFECT_API_URL/admin/version && break; sleep 1; done && echo
 	$(venv)/bin/prefect work-queue create kubernetes
 
 ## run parameterised flow
@@ -84,6 +84,6 @@ kubes-db:
 ## upgrade to latest vesion of orion
 upgrade: $(venv)
 	latest=$$($(venv)/bin/pip index versions prefect --pre | grep 'LATEST' | sed -E 's/[[:space:]]+LATEST:[[:space:]]+([^[:space:]]+).*/\1/') && \
-		rg -l -g "!orion*.yaml" 2.0b9 | xargs sed -i '' "s/2.0b9/$$latest/g"
+		rg -l -g '!orion*.yaml' 2.0b11 | xargs sed -i '' "s/2.0b11/$$latest/g"
 
 include *.mk

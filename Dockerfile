@@ -1,9 +1,9 @@
-FROM prefecthq/prefect:2.0b9-python3.9
+FROM prefecthq/prefect:2.0b11-python3.9
 
 # s3fs is used by the file-packager deployment to fetch flows
 # from the remote file system
 # prefect-dask is needed by dask_kubes_flow
-# boto3 is pinned so the pip resolver doesn't need to a slow search
+# boto3 is pinned to avoid a slow search by the pip resolver
 RUN pip install s3fs prefect-dask boto3==1.21.21
 
 # point fsspec at minio inside the cluster
