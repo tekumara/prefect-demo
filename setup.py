@@ -12,8 +12,9 @@ setup(
     install_requires=[
         # bokeh is needed for the dask dashboard
         "bokeh",
+        "boto3==1.21.21",
         "dask_kubernetes",
-        "prefect>=2.0b9",
+        "prefect==2.0b9",
         "prefect-dask",
         "prefect-ray",
     ],
