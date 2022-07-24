@@ -26,6 +26,7 @@ Flows
 - [Parameterized flow](flows/param_flow.py) using a custom Docker image containing additional modules
 - [Ray flow](flows/ray_flow.py) that runs on an existing ray cluster (see [tekumara/ray-demo](https://github.com/tekumara/ray-demo))
 - [Sub flow](flows/sub_flow.py) that is trigger by a parent flow
+- [Submit flow](flows/submit.py) demonstrates the difference of running tasks with/without .submit
 
 [Deployments](flows/kubes_deployments.py) to Kubernetes using
 

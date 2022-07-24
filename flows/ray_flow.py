@@ -27,7 +27,8 @@ def say_goodbye(name: str) -> None:
 def greetings(names: List[str]) -> None:
     for name in names:
         # tasks must be submitted to run on ray
-        # if called without .submit() they are still tracked but run locally
+        # if called without .submit() they are still tracked but
+        # run immediately and locally rather than async on ray
         say_hello.submit(name)
         say_goodbye.submit(name)
 
