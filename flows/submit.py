@@ -25,8 +25,7 @@ shout.submit runs concurrently via the default task runner (ConcurrentTaskRunner
 11:07:02.475 | INFO    | Task run 'shout-58a68b34-2' - Finished in state Completed()
 11:07:02.524 | INFO    | Flow run 'slick-rhino' - Finished in state Completed('All states completed.')
 
-
-shout - ignores the task runner and runs immediately and locally
+shout - ignores the task runner and runs immediately and locally to the flow runner/infrastructure
 
 11:09:21.698 | INFO    | prefect.engine - Created flow run 'elegant-hound' for flow 'count-to'
 11:09:21.699 | INFO    | Flow run 'elegant-hound' - Starting 'ConcurrentTaskRunner'; submitted tasks will be run concurrently...

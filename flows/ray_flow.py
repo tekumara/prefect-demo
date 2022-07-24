@@ -12,12 +12,14 @@ def say_hello(name: str) -> None:
 
 @task
 def say_goodbye(name: str) -> None:
-    # logs not currently working see https://github.com/PrefectHQ/prefect/issues/5960
+    # logs not currently working see https://github.com/PrefectHQ/prefect-ray/issues/25
     logger = get_run_logger()
+    print("print goodbye")
     logger.info(f"goodbye {name}")
 
 
 # run on an existing ray cluster
+# errors with FileNotFoundError see https://github.com/PrefectHQ/prefect-ray/issues/26
 @flow(
     task_runner=RayTaskRunner(
         address="ray://127.0.0.1:10001",

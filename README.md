@@ -26,7 +26,7 @@ Flows
 - [Parameterized flow](flows/param_flow.py) using a custom Docker image containing additional modules
 - [Ray flow](flows/ray_flow.py) that runs on an existing ray cluster (see [tekumara/ray-demo](https://github.com/tekumara/ray-demo))
 - [Sub flow](flows/sub_flow.py) that is trigger by a parent flow
-- [Submit flow](flows/submit.py) demonstrates the difference of running tasks with/without .submit
+- [Submit flow](flows/submit.py) demonstrates the difference of running tasks with/without `.submit()`
 
 [Deployments](flows/kubes_deployments.py) to Kubernetes using
 
@@ -75,16 +75,38 @@ Prefect API: [http://localhost:4200/api/](http://localhost:4200/api/)
 
 - [Orion tutorials](https://orion-docs.prefect.io/tutorials/first-steps/) from which some of the examples are taken
 
-## Known limitations
+## Cloud
+
+To run flows with a cloud workspace set:
+
+```
+export PREFECT_API_URL=https://api-beta.prefect.io/api/accounts/$accountid/workspaces/$workspaceid
+export PREFECT_API_KEY=<your api key>
+```
+
+`$accountid` and `$workspaceid` are visible in the URL when you login to Prefect Cloud. The api key can be created from your user profile (bottom left).
+
+Setting the environment variables is recommended. An alternative method is to login using:
+
+```
+prefect cloud login --key <your api key>
+```
+
+However be aware that this stores your api url and key as plain text _~/.prefect/profiles.toml_.
+
+## Known issues
 
 - [Add mapping (.map() operator) #5582](https://githgsub.com/PrefectHQ/prefect/issues/5582)
 - [Flow run parameters cannot be set in the UI #5617](https://github.com/PrefectHQ/prefect/issues/5617)
 - [Logs configured in tasks with get_run_logger using DaskTaskRunner don't make it to the Prefect 2.0 backend #5850](https://github.com/PrefectHQ/prefect/issues/5850)
-- Packagers only package the flow's source file, and not any modules it may reference. Referenced modules will need to be baked into the docker image.
+- [Ray task runner logs missing #25](https://github.com/PrefectHQ/prefect-ray/issues/25)
+- [FileNotFoundError errors when running with a remote ray cluster #26](https://github.com/PrefectHQ/prefect-ray/issues/26)
 
 ## Caveats
 
 The Deployment defines a flow name and the flow code. It's possible to have two Deployments with different flow code but the same flow name.
+
+Packagers only package the flow's source file, and not any modules it may reference. Referenced modules will need to be baked into the docker image.
 
 ## Troubleshooting
 
