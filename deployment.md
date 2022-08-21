@@ -82,3 +82,4 @@ deployment = Deployment.build_from_flow(
 
 - Doesn't really support a workflow where the flow code is stored in a docker image because the file systems want to download/copy the contents.
 - The LocalFileSystem storage basepath is only valid on the same machine that built the deployment.
+- The Deployment defines a flow name and the flow code. Unlike Prefect 1 it's possible to have two Deployments with different flow code but the same flow name.

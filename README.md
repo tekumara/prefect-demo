@@ -28,11 +28,7 @@ Flows
 - [Sub flow](flows/sub_flow.py) that is trigger by a parent flow
 - [Submit flow](flows/submit.py) demonstrates the difference of running tasks with/without `.submit()`
 
-[Deployments](flows/kubes_deployments.py) to Kubernetes using
-
-- the default OrionPackager to store the flow source in Orion
-- the default OrionPackager to store the flow import path in Orion
-- the FilePackager to store the flow source in S3 (minio)
+[Deployment](flows/deploy.py) to Kubernetes using an S3 block to store the flow in minio.
 
 ## Usage
 
@@ -101,15 +97,10 @@ However be aware that this stores your api url and key as plain text _~/.prefect
 - [Logs configured in tasks with get_run_logger using DaskTaskRunner don't make it to the Prefect 2.0 backend #5850](https://github.com/PrefectHQ/prefect/issues/5850)
 - [Ray task runner logs missing #25](https://github.com/PrefectHQ/prefect-ray/issues/25)
 - [FileNotFoundError errors when running with a remote ray cluster #26](https://github.com/PrefectHQ/prefect-ray/issues/26)
-- [There is no visibility of agents in the UI](https://github.com/PrefectHQ/prefect/issues/6256)
+- [There is no visibility of agents in the UI #6256](https://github.com/PrefectHQ/prefect/issues/6256)
 - Deployments with a remote file system will upload the entire contents of the current directory (excluding .prefectignore and hidden files/directories) to storage (eg: S3). The destination will be overwritten and isn't prefixed per deployment. See [#6320](https://github.com/PrefectHQ/prefect/issues/6320)
-- `prefect deployment build` does not provide a mechanism for supplying parameters. See [#6304](https://github.com/PrefectHQ/prefect/issues/6304)).
-
-## Caveats
-
-The Deployment defines a flow name and the flow code. It's possible to have two Deployments with different flow code but the same flow name.
-
-Packagers only package the flow's source file, and not any modules it may reference. Referenced modules will need to be baked into the docker image.
+- `prefect deployment build` does not provide a mechanism for supplying parameters. See [#6304](https://github.com/PrefectHQ/prefect/issues/6304).
+- [Module import fails when deploying using Deployment.build_from_flow and remote storage #6469](https://github.com/PrefectHQ/prefect/issues/6469)
 
 ## Troubleshooting
 
@@ -120,8 +111,6 @@ Check the logs of the agent:
 ```
 make kubes-logs
 ```
-
-And then your flows should start.
 
 ## Todo
 

@@ -1,9 +1,9 @@
+from pathlib import Path
+
 from prefect.deployments import Deployment
 
 import flows.dask_flow
 import flows.param_flow
-
-from prefect.deployments import Deployment
 import flows.storage
 
 # `prefect deployment build` does not allow parameters to be specified
@@ -12,7 +12,7 @@ import flows.storage
 
 
 # upload flow to storage and create deployment yaml file
-deployment = Deployment.build_from_flow(
+deployment: Deployment = Deployment.build_from_flow(
     name="s3",
     flow=flows.param_flow.increment,
     output="deployment-increment-s3.yaml",
@@ -30,10 +30,20 @@ deployment = Deployment.build_from_flow(
         env={"AWS_ACCESS_KEY_ID": "minioadmin", "AWS_SECRET_ACCESS_KEY": "minioadmin"},
     ),
     parameters={"i": 1},
-)
+)  # type: ignore
+
+
+def fix_entrypoint(entrypoint: str) -> str:
+    # Workaround until https://github.com/PrefectHQ/prefect/issues/6469 is resolved
+    flow_path, flow = entrypoint.split(":")
+    flow_path = Path(flow_path).relative_to(Path(".").absolute())
+    return f"{flow_path}:{flow}"
+
 
 if __name__ == "__main__":
-    print(deployment.apply())
+    deployment.entrypoint = fix_entrypoint(deployment.entrypoint)
+    id = deployment.apply()
+    print(f"Deployment {id} created.")
 
 
 # Requires a docker image with prefect-dask & dask_kubernetes.

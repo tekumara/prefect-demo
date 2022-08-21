@@ -24,16 +24,14 @@ flow_name: increment
 manifest_path: null
 infrastructure:
   type: kubernetes-job
-  env:
-    AWS_ACCESS_KEY_ID: minioadmin
-    AWS_SECRET_ACCESS_KEY: minioadmin
+  env: {}
   labels: {}
   name: null
   command:
   - python
   - -m
   - prefect.engine
-  image: orion-registry:5000/flow:latest
+  image: prefecthq/prefect:2.1.1-python3.9
   namespace: default
   service_account_name: null
   image_pull_policy: null
@@ -56,8 +54,8 @@ infrastructure:
   job_watch_timeout_seconds: 5
   pod_watch_timeout_seconds: 60
   stream_output: true
-  _block_document_id: bbe23b10-a612-41d5-95c0-3401575bfb20
-  _block_document_name: anonymous-8ad66184-fbff-47d2-8f8d-3116772fe340
+  _block_document_id: 057335b4-5a36-484c-8989-e4f1a8c0833f
+  _block_document_name: anonymous-f0abf56b-f38b-4d0a-9c76-2825d1a96c88
   _is_anonymous: true
 storage:
   bucket_path: minio-flows/increment
