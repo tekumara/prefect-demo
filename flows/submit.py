@@ -47,6 +47,7 @@ shout - ignores the task runner and runs immediately and locally to the flow run
 11:09:28.004 | INFO    | Flow run 'elegant-hound' - Finished in state Completed('All states completed.')
 
 shout.submit with SequentialTaskRunner - runs immediately using the SequentialTaskRunner
+(useful when you want a PrefectFuture to get at the state from a task)
 
 11:11:52.124 | INFO    | prefect.engine - Created flow run 'steadfast-earwig' for flow 'count-to'
 11:11:52.125 | INFO    | Flow run 'steadfast-earwig' - Starting 'SequentialTaskRunner'; submitted tasks will be run sequentially...

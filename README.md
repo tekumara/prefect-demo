@@ -70,6 +70,7 @@ Prefect API: [http://localhost:4200/api/](http://localhost:4200/api/)
 ## Docs
 
 - [Blocks](blocks.md) - an overview and look into the database tables for Blocks.
+- [Deployment](deployment.md) - an overview of the deployment process.
 
 ## References
 
@@ -96,11 +97,13 @@ However be aware that this stores your api url and key as plain text _~/.prefect
 
 ## Known issues
 
-- [Add mapping (.map() operator) #5582](https://githgsub.com/PrefectHQ/prefect/issues/5582)
-- [Flow run parameters cannot be set in the UI #5617](https://github.com/PrefectHQ/prefect/issues/5617)
+- [Support flat mapping #6462](https://github.com/PrefectHQ/prefect/issues/6462)
 - [Logs configured in tasks with get_run_logger using DaskTaskRunner don't make it to the Prefect 2.0 backend #5850](https://github.com/PrefectHQ/prefect/issues/5850)
 - [Ray task runner logs missing #25](https://github.com/PrefectHQ/prefect-ray/issues/25)
 - [FileNotFoundError errors when running with a remote ray cluster #26](https://github.com/PrefectHQ/prefect-ray/issues/26)
+- [There is no visibility of agents in the UI](https://github.com/PrefectHQ/prefect/issues/6256)
+- Deployments with a remote file system will upload the entire contents of the current directory (excluding .prefectignore and hidden files/directories) to storage (eg: S3). The destination will be overwritten and isn't prefixed per deployment. See [#6320](https://github.com/PrefectHQ/prefect/issues/6320)
+- `prefect deployment build` does not provide a mechanism for supplying parameters. See [#6304](https://github.com/PrefectHQ/prefect/issues/6304)).
 
 ## Caveats
 
@@ -115,20 +118,12 @@ Packagers only package the flow's source file, and not any modules it may refere
 Check the logs of the agent:
 
 ```
-make kube-logs
-```
-
-If you see `prefect.agent - No work queue found named 'kubernetes'` the work queue is missing. It can get lost when orion is restarted.
-
-Recreate the work queue:
-
-```
-make kube-work-queue
+make kubes-logs
 ```
 
 And then your flows should start.
 
 ## Todo
 
-- [Deployment yaml](https://orion-docs.prefect.io/concepts/deployments/#deployment-object) example
 - Use service account in Kubes
+- [task.map example](https://github.com/PrefectHQ/prefect/pull/6112/files)

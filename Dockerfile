@@ -1,4 +1,4 @@
-FROM prefecthq/prefect:2.0b12-python3.9
+FROM prefecthq/prefect:2.1.1-python3.9
 
 # s3fs is used by the file-packager deployment to fetch flows
 # from the remote file system

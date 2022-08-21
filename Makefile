@@ -35,7 +35,6 @@ kubes-prefect: $(venv)
 		done && echo
 	@echo "Probing for the prefect API to be available (~30 secs)..." && \
 		while : ; do curl -fsS $$PREFECT_API_URL/admin/version && break; sleep 5; done && echo
-	$(venv)/bin/prefect work-queue create kubernetes
 
 ## run parameterised flow
 param-flow: $(venv)
@@ -58,9 +57,9 @@ kubes-deploy: export PREFECT_API_URL=http://localhost:4200/api
 kubes-deploy: $(venv)
 	docker compose build app && docker compose push app
 # use minio as the s3 remote file system
-	set -e && . config/fsspec-env.sh && $(venv)/bin/prefect deployment create flows/kubes_deployments.py
+	set -e && . config/fsspec-env.sh && $(venv)/bin/python -m flows.deploy
 	$(venv)/bin/prefect deployment ls
-	for deployment in increment/orion-packager increment/orion-packager-import increment/file-packager greetings/orion-packager; do $(venv)/bin/prefect deployment run $$deployment; done
+	for deployment in increment/s3; do $(venv)/bin/prefect deployment run $$deployment; done
 	$(venv)/bin/prefect flow-run ls
 	@echo Visit http://localhost:4200
 
@@ -69,13 +68,8 @@ ui: $(venv)
 	PATH="$(venv)/bin:$$PATH" prefect orion start
 
 ## show kube logs
-kube-logs:
+kubes-logs:
 	kubectl logs -lapp=orion --all-containers -f
-
-## create kubernetes work queue
-kube-work-queue: export PREFECT_API_URL=http://localhost:4200/api
-kube-work-queue: $(venv)
-	$(venv)/bin/prefect work-queue create kubernetes
 
 ## show flow run logs
 run-logs:
@@ -87,7 +81,17 @@ kubes-db:
 
 ## upgrade to latest vesion of orion
 upgrade: $(venv)
-	latest=$$($(venv)/bin/pip index versions prefect --pre | grep 'LATEST' | sed -E 's/[[:space:]]+LATEST:[[:space:]]+([^[:space:]]+).*/\1/') && \
-		rg -l -g '!orion*.yaml' 2.0b12 | xargs sed -i '' "s/2.0b12/$$latest/g"
+	latest=$$($(venv)/bin/pip index versions prefect | grep 'LATEST' | sed -E 's/[[:space:]]+LATEST:[[:space:]]+([^[:space:]]+).*/\1/') && \
+		rg -l -g '!orion*.yaml' 2.1.1 | xargs sed -i '' "s/2.1.1/$$latest/g"
+
+## inspect block document
+api-block-doc: assert-id
+	@curl -s "http://localhost:4200/api/block_documents/$(id)" | jq -r 'if .message then .message else {data, block_type:{ name: .block_type.name }} end'
+
+assert-id:
+ifndef id
+	@echo Missing id variable, eg: make $(MAKECMDGOALS) id=3af1d9d7-d52b-4251-87a0-dfe9c82daa3f
+	@exit 42
+endif
 
 include *.mk
