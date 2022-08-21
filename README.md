@@ -12,6 +12,7 @@ Prerequisites:
 - docker & docker compose
 - [k3d](https://k3d.io/) (for creating a local kubernetes cluster)
 - kubectl
+- helm
 
 To start:
 
