@@ -82,7 +82,7 @@ kubes-db:
 ## upgrade to latest vesion of orion
 upgrade: $(venv)
 	latest=$$($(venv)/bin/pip index versions prefect | grep 'LATEST' | sed -E 's/[[:space:]]+LATEST:[[:space:]]+([^[:space:]]+).*/\1/') && \
-		rg -l -g '!orion*.yaml' 2.1.1 | xargs sed -i '' "s/2.1.1/$$latest/g"
+		rg -l -g '!orion*.yaml' 2.3.2 | xargs sed -i '' "s/2.3.2/$$latest/g"
 
 ## inspect block document
 api-block-doc: assert-id

@@ -1,6 +1,5 @@
-from pathlib import Path
-
 from prefect.deployments import Deployment
+from prefect.infrastructure import KubernetesJob
 
 import flows.dask_flow
 import flows.param_flow
@@ -23,6 +22,7 @@ deployment: Deployment = Deployment.build_from_flow(
     # every deployment will overwrite the files in this location
     storage=flows.storage.minio_flows_increment(),
     # override the default KubernetesJob
+    infrastructure=KubernetesJob(),  # type: ignore
     infra_overrides=dict(
         image="orion-registry:5000/flow:latest",
         # use to read the stored flow from minio when the flow executes
@@ -33,15 +33,7 @@ deployment: Deployment = Deployment.build_from_flow(
 )  # type: ignore
 
 
-def fix_entrypoint(entrypoint: str) -> str:
-    # Workaround until https://github.com/PrefectHQ/prefect/issues/6469 is resolved
-    flow_path, flow = entrypoint.split(":")
-    flow_path = Path(flow_path).relative_to(Path(".").absolute())
-    return f"{flow_path}:{flow}"
-
-
 if __name__ == "__main__":
-    deployment.entrypoint = fix_entrypoint(deployment.entrypoint)
     id = deployment.apply()
     print(f"Deployment {id} created.")
 
