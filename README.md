@@ -29,7 +29,9 @@ Flows
 - [Sub flow](flows/sub_flow.py) that is trigger by a parent flow
 - [Submit flow](flows/submit.py) demonstrates the difference of running tasks with/without `.submit()`
 
-[Deployment](flows/deploy.py) to Kubernetes using an S3 block to store the flow in minio.
+[Deployment](flows/deploy.py) to Kubernetes:
+- using an S3 block to store the flow in minio.
+- using no storage and instead loading the flow from within the docker image.
 
 ## Usage
 
@@ -48,10 +50,10 @@ Create k3d cluster with an image registry, minio (for remote storage), the prefe
 make kubes
 ```
 
-Create kubes deployments and run them
+Create deployments that run on kubernetes
 
 ```
-make kubes-deploy
+make deploy
 ```
 
 ### UI
@@ -99,9 +101,12 @@ However be aware that this stores your api url and key as plain text _~/.prefect
 - [Ray task runner logs missing #25](https://github.com/PrefectHQ/prefect-ray/issues/25)
 - [FileNotFoundError errors when running with a remote ray cluster #26](https://github.com/PrefectHQ/prefect-ray/issues/26)
 - [There is no visibility of agents in the UI #6256](https://github.com/PrefectHQ/prefect/issues/6256)
-- Deployments with a remote file system will upload the entire contents of the current directory (excluding .prefectignore and hidden files/directories) to storage (eg: S3). The destination will be overwritten and isn't prefixed per deployment. See [#6320](https://github.com/PrefectHQ/prefect/issues/6320)
 - `prefect deployment build` does not provide a mechanism for supplying parameters. See [#6304](https://github.com/PrefectHQ/prefect/issues/6304).
-- [Module import fails when deploying using Deployment.build_from_flow and remote storage #6469](https://github.com/PrefectHQ/prefect/issues/6469)
+- [Navigate from the flow page to a flow's runs](https://github.com/PrefectHQ/prefect/issues/6502)
+- [Stream logs via CLI](https://github.com/PrefectHQ/prefect/issues/5987)
+- [run_count is not incremented on retry](https://github.com/PrefectHQ/prefect/issues/5763)
+- [report ErrImagePull in Prefect UI to improve observability](https://github.com/PrefectHQ/prefect/issues/5688)
+- [capture metadata about a flow](https://github.com/PrefectHQ/prefect/issues/5673)
 
 ## Troubleshooting
 

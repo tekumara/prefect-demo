@@ -52,14 +52,14 @@ ray-flow: $(venv)
 sub-flow: $(venv)
 	$(venv)/bin/python -m flows.sub_flow
 
-## deploy basic_flow to kubernetes
-kubes-deploy: export PREFECT_API_URL=http://localhost:4200/api
-kubes-deploy: $(venv)
+## deploy flows to run on kubernetes
+deploy: export PREFECT_API_URL=http://localhost:4200/api
+deploy: $(venv)
 	docker compose build app && docker compose push app
 # use minio as the s3 remote file system
 	set -e && . config/fsspec-env.sh && $(venv)/bin/python -m flows.deploy
 	$(venv)/bin/prefect deployment ls
-	for deployment in increment/s3; do $(venv)/bin/prefect deployment run $$deployment; done
+	for deployment in increment/s3 increment/local; do $(venv)/bin/prefect deployment run $$deployment; done
 	$(venv)/bin/prefect flow-run ls
 	@echo Visit http://localhost:4200
 
