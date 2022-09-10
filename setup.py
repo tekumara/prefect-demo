@@ -17,8 +17,6 @@ setup(
         "prefect==2.3.2",
         "prefect-dask",
         "prefect-ray",
-        # explicitly required because prefect-ray skips this on arm64
-        "ray;platform_machine == 'arm64'",
     ],
     extras_require={
         "dev": [

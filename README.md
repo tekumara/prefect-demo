@@ -98,7 +98,6 @@ However be aware that this stores your api url and key as plain text _~/.prefect
 
 - [Support flat mapping #6462](https://github.com/PrefectHQ/prefect/issues/6462)
 - [Logs configured in tasks with get_run_logger using DaskTaskRunner don't make it to the Prefect 2.0 backend #5850](https://github.com/PrefectHQ/prefect/issues/5850)
-- [Ray task runner logs missing #25](https://github.com/PrefectHQ/prefect-ray/issues/25)
 - [FileNotFoundError errors when running with a remote ray cluster #26](https://github.com/PrefectHQ/prefect-ray/issues/26)
 - [There is no visibility of agents in the UI #6256](https://github.com/PrefectHQ/prefect/issues/6256)
 - `prefect deployment build` does not provide a mechanism for supplying parameters. See [#6304](https://github.com/PrefectHQ/prefect/issues/6304).
