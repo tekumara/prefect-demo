@@ -8,6 +8,7 @@ cluster:
 # enable ephmeral containers for profiling
 	k3d cluster create orion --registry-create orion-registry:0.0.0.0:5550 \
 		-p 4200:80@loadbalancer -p 9000:9000@loadbalancer -p 9001:9001@loadbalancer \
+		-p 10001:10001@loadbalancer -p 8265:8265@loadbalancer \
 		--k3s-arg '--kube-apiserver-arg=feature-gates=EphemeralContainers=true@server:*' \
   		--k3s-arg '--kube-scheduler-arg=feature-gates=EphemeralContainers=true@server:*' \
   		--k3s-arg '--kubelet-arg=feature-gates=EphemeralContainers=true@agent:*' \
@@ -22,6 +23,14 @@ kubes-minio:
 	helm repo add bitnami https://charts.bitnami.com/bitnami
 	helm upgrade --install minio bitnami/minio --set auth.rootUser=minioadmin --set auth.rootPassword=minioadmin
 	kubectl apply -f infra/lb-minio.yaml
+
+## install kuberay operator using quickstart manifests
+export KUBERAY_VERSION=v0.3.0
+kubes-ray:
+	kubectl get customresourcedefinition.apiextensions.k8s.io/rayclusters.ray.io || kubectl create -k "github.com/ray-project/kuberay/manifests/cluster-scope-resources?ref=${KUBERAY_VERSION}&timeout=90s"
+	kubectl apply -k "github.com/ray-project/kuberay/manifests/base?ref=${KUBERAY_VERSION}&timeout=90s"
+	kubectl apply -f infra/ray-cluster.complete.yaml
+	kubectl apply -f infra/lb-ray.yaml
 
 ## install prefect api and agent into kubes cluster
 kubes-prefect: export PREFECT_API_URL=http://localhost:4200/api

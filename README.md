@@ -94,18 +94,33 @@ prefect cloud login --key <your api key>
 
 However be aware that this stores your api url and key as plain text _~/.prefect/profiles.toml_.
 
+## Ray
+
+Create a kubernetes ray cluster
+
+```
+make kubes-ray
+```
+
+Ray dashboard: [http://localhost:8265](http://localhost:8265)
+
 ## Known issues
 
+Major
 - [Support flat mapping #6462](https://github.com/PrefectHQ/prefect/issues/6462)
 - [Logs configured in tasks with get_run_logger using DaskTaskRunner don't make it to the Prefect 2.0 backend #5850](https://github.com/PrefectHQ/prefect/issues/5850)
 - [FileNotFoundError errors when running with a remote ray cluster #26](https://github.com/PrefectHQ/prefect-ray/issues/26)
 - [There is no visibility of agents in the UI #6256](https://github.com/PrefectHQ/prefect/issues/6256)
+- No results storage in S3
+- [capture metadata about a flow](https://github.com/PrefectHQ/prefect/issues/5673)
+
+Minor
 - `prefect deployment build` does not provide a mechanism for supplying parameters. See [#6304](https://github.com/PrefectHQ/prefect/issues/6304).
 - [Navigate from the flow page to a flow's runs](https://github.com/PrefectHQ/prefect/issues/6502)
 - [Stream logs via CLI](https://github.com/PrefectHQ/prefect/issues/5987)
 - [run_count is not incremented on retry](https://github.com/PrefectHQ/prefect/issues/5763)
 - [report ErrImagePull in Prefect UI to improve observability](https://github.com/PrefectHQ/prefect/issues/5688)
-- [capture metadata about a flow](https://github.com/PrefectHQ/prefect/issues/5673)
+- [Allow setting custom flow run name when creating a flow run from a deployment](https://github.com/PrefectHQ/prefect/issues/5968)
 
 ## Troubleshooting
 

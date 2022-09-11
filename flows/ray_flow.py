@@ -1,8 +1,9 @@
+import sys
 from typing import List
 
 from prefect import flow, get_run_logger, task
 from prefect_ray.task_runners import RayTaskRunner
-import sys
+
 
 @task
 def say_hello(name: str) -> None:
