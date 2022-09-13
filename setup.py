@@ -17,6 +17,7 @@ setup(
         "prefect==2.3.2",
         "prefect-dask",
         "prefect-ray",
+        "prefect-shell",
     ],
     extras_require={
         "dev": [

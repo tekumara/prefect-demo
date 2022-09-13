@@ -3,6 +3,7 @@ from typing import List
 
 from prefect import flow, get_run_logger, task
 from prefect_ray.task_runners import RayTaskRunner
+from prefect_shell import shell_run_command
 
 
 @task
@@ -20,7 +21,6 @@ def say_goodbye(name: str) -> None:
 
 
 # run on an existing ray cluster
-# errors with FileNotFoundError see https://github.com/PrefectHQ/prefect-ray/issues/26
 @flow(
     task_runner=RayTaskRunner(
         # 127.0.0.1:10001 is port-forwarded to the remote ray cluster
@@ -36,12 +36,17 @@ def say_goodbye(name: str) -> None:
     )
 )
 def greetings(names: List[str]) -> None:
+    # these tasks have no dependencies so will execute concurrently
+
     for name in names:
         # tasks must be submitted to run on ray
         # if called without .submit() they are still tracked but
         # run immediately and locally rather than async on ray
         say_hello.submit(name)
         say_goodbye.submit(name)
+
+    # inspect the local storage where ray stores task results
+    shell_run_command.submit(command="ls -al /tmp/prefect/storage", return_all=True)
 
 
 if __name__ == "__main__":

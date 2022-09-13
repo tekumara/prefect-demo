@@ -54,6 +54,10 @@ dask-flow: $(venv)
 	$(venv)/bin/python -m flows.dask_flow
 
 ## run ray flow
+# PREFECT_API_URL needs to be accessible from the process running the flow and within the ray cluster
+# to make this work locally, add 127.0.0.1 orion to /etc/hosts TODO: find a better fix 
+ray-flow: export PREFECT_API_URL=http://orion:4200/api
+ray-flow: export PREFECT_LOCAL_STORAGE_PATH=/tmp/prefect/storage # see https://github.com/PrefectHQ/prefect-ray/issues/26
 ray-flow: $(venv)
 	$(venv)/bin/python -m flows.ray_flow
 
