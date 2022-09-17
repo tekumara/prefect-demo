@@ -14,7 +14,7 @@ cluster:
   		--k3s-arg '--kubelet-arg=feature-gates=EphemeralContainers=true@agent:*' \
 		--wait
 	@echo "Probing until traefik CRDs are created (~60 secs)..." && export KUBECONFIG=$$(k3d kubeconfig write orion) && \
-		while : ; do kubectl get crd ingressroutes.traefik.containo.us > /dev/null && break; sleep 10; done
+		while ! kubectl get crd ingressroutes.traefik.containo.us 2> /dev/null ; do sleep 10 && echo $$((i=i+10)); done
 	@echo -e "\nTo use your cluster set:\n"
 	@echo "export KUBECONFIG=$$(k3d kubeconfig write orion)"
 
@@ -37,13 +37,12 @@ kubes-prefect: export PREFECT_API_URL=http://localhost:4200/api
 kubes-prefect: $(venv)
 	kubectl apply -f infra/ingress-orion.yaml
 	$(venv)/bin/prefect kubernetes manifest orion | kubectl apply -f -
-	@echo "Waiting for deployment to settle to single replica (~2 secs)..." && \
-		while : ; do \
-			replicas=$$(kubectl get deployment orion -o jsonpath="{.status.replicas}") && echo $$replicas && [[ $$replicas == 1 ]] && break; \
-			sleep 1; \
-		done && echo
-	@echo "Probing for the prefect API to be available (~30 secs)..." && \
-		while : ; do curl -fsS $$PREFECT_API_URL/admin/version && break; sleep 5; done && echo
+	@echo "Waiting for deployment to settle to single replica (~40 secs)..." && \
+		while replicas=$$(kubectl get deployment orion -o jsonpath="{.status.replicas}") && [[ $$replicas != 1 ]]; do \
+			echo replicas=$$replicas; sleep 2; \
+		done && echo replicas=$$replicas
+	@echo "Probing for the prefect API to be available (~90 secs)..." && \
+		while ! curl -fsS $$PREFECT_API_URL/admin/version ; do sleep 5; done && echo
 
 ## run parameterised flow
 param-flow: $(venv)
@@ -55,7 +54,7 @@ dask-flow: $(venv)
 
 ## run ray flow
 # PREFECT_API_URL needs to be accessible from the process running the flow and within the ray cluster
-# to make this work locally, add 127.0.0.1 orion to /etc/hosts TODO: find a better fix 
+# to make this work locally, add 127.0.0.1 orion to /etc/hosts TODO: find a better fix
 ray-flow: export PREFECT_API_URL=http://orion:4200/api
 ray-flow: export PREFECT_LOCAL_STORAGE_PATH=/tmp/prefect/storage # see https://github.com/PrefectHQ/prefect-ray/issues/26
 ray-flow: $(venv)
