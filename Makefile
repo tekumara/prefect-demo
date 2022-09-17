@@ -21,8 +21,10 @@ cluster:
 ## install minio
 kubes-minio:
 	helm repo add bitnami https://charts.bitnami.com/bitnami
-	helm upgrade --install minio bitnami/minio --set auth.rootUser=minioadmin --set auth.rootPassword=minioadmin
+	helm upgrade --install minio bitnami/minio --set auth.rootUser=minioadmin --set auth.rootPassword=minioadmin \
+		--wait --debug > /dev/null
 	kubectl apply -f infra/lb-minio.yaml
+	kubectl exec deploy/minio -- mc mb -p local/minio-flows
 
 ## install kuberay operator using quickstart manifests
 kubes-ray: export KUBERAY_VERSION=v0.3.0
