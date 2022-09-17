@@ -1,3 +1,5 @@
+include *.mk
+
 export KUBECONFIG=$(HOME)/.k3d/kubeconfig-orion.yaml
 
 ## create cluster and install minio and prefect
@@ -112,5 +114,3 @@ ifndef id
 	@echo Missing id variable, eg: make $(MAKECMDGOALS) id=3af1d9d7-d52b-4251-87a0-dfe9c82daa3f
 	@exit 42
 endif
-
-include *.mk
