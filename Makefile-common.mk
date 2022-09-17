@@ -14,7 +14,7 @@ $(pip):
 # create venv using system python even when another venv is active
 	PATH=$${PATH#$${VIRTUAL_ENV}/bin:} python3 -m venv --clear $(venv)
 	$(venv)/bin/python --version
-	$(pip) install pip~=22.0 wheel~=0.37
+	$(pip) install pip~=22.2 wheel~=0.37
 
 $(venv): setup.py $(pip)
 	$(pip) install -e '.[dev]'
@@ -50,7 +50,6 @@ pyright: node_modules $(venv)
 	PATH="$(venv)/bin:$$PATH" node_modules/.bin/pyright
 
 ## run tests
-test: export PREFECT_API_URL=		# workaround for https://github.com/PrefectHQ/prefect/issues/6055
 test: $(venv)
 	$(venv)/bin/pytest
 

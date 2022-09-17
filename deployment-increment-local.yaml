@@ -2,7 +2,7 @@
 ### A complete description of a Prefect Deployment for flow 'increment'
 ###
 name: local
-description: deployment using default local storage
+description: deployment using local storage
 version: snapshot
 # The work queue that will handle this deployment's runs
 work_queue_name: kubernetes
@@ -20,11 +20,8 @@ infrastructure:
   env: {}
   labels: {}
   name: null
-  command:
-  - python
-  - -m
-  - prefect.engine
-  image: prefecthq/prefect:2.3.2-python3.9
+  command: null
+  image: prefecthq/prefect:2.4.0-python3.9
   namespace: default
   service_account_name: null
   image_pull_policy: null
@@ -47,6 +44,7 @@ infrastructure:
   job_watch_timeout_seconds: 5
   pod_watch_timeout_seconds: 60
   stream_output: true
+  block_type_slug: kubernetes-job
   _block_type_slug: kubernetes-job
 
 ###

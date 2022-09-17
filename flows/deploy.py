@@ -5,11 +5,6 @@ import flows.dask_flow
 import flows.param_flow
 import flows.storage
 
-# `prefect deployment build` does not allow parameters to be specified
-# so we use build_from_flow instead
-# see https://github.com/PrefectHQ/prefect/issues/6304
-
-
 # upload flow to storage and create deployment yaml file
 deploy_s3: Deployment = Deployment.build_from_flow(
     name="s3",

@@ -1,18 +1,15 @@
 import prefect.context
 from prefect import flow, get_run_logger, task
+from prefect.context import get_run_context
 
 
-@task(retries=1)
+@task(retries=2)
 def unreliable_task() -> None:
     logger = get_run_logger()
-    task_run_context = prefect.context.TaskRunContext.get()
-    if not task_run_context:
-        raise TypeError("No task run context")
-    run_count = task_run_context.task_run.run_count
+    ctx: prefect.context.TaskRunContext = get_run_context()  # type: ignore
+    run_count = ctx.task_run.run_count
     logger.info(f"Starting unreliable task {run_count=}")
-    # TODO: find some other way to succeed on the retry,
-    # as run_count is always 0, see https://github.com/PrefectHQ/prefect/issues/5763
-    if run_count == 0:
+    if run_count == 1:
         raise Exception("halt and catch fire")
 
 

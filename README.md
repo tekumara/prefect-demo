@@ -28,6 +28,7 @@ Flows
 - [Ray flow](flows/ray_flow.py) that runs on an existing ray cluster (see [tekumara/ray-demo](https://github.com/tekumara/ray-demo))
 - [Sub flow](flows/sub_flow.py) that is trigger by a parent flow
 - [Submit flow](flows/submit.py) demonstrates the difference of running tasks with/without `.submit()`
+- [Failing flow](flows/failing_flow.py) demonstrates what happens when a task fails.
 
 [Deployment](flows/deploy.py) to Kubernetes:
 - using an S3 block to store the flow in minio.
@@ -116,11 +117,9 @@ Minor
 - [Deployment metadata](https://github.com/PrefectHQ/prefect/issues/5735)
 - [Navigate from the flow page to a flow's runs](https://github.com/PrefectHQ/prefect/issues/6502)
 - [Stream logs via CLI](https://github.com/PrefectHQ/prefect/issues/5987)
-- [run_count is not incremented on retry](https://github.com/PrefectHQ/prefect/issues/5763)
 - [report ErrImagePull in Prefect UI to improve observability](https://github.com/PrefectHQ/prefect/issues/5688)
 - [FileNotFoundError errors when running with a remote ray cluster #26](https://github.com/PrefectHQ/prefect-ray/issues/26)
 - [Allow setting custom flow run name when creating a flow run from a deployment](https://github.com/PrefectHQ/prefect/issues/5968)
-- `prefect deployment build` does not provide a mechanism for supplying parameters. See [#6304](https://github.com/PrefectHQ/prefect/issues/6304).
 - currently a failure in any one task means the downstream is never triggered, unless `raise_on_failure=True` is used
 
 ## Troubleshooting
@@ -135,5 +134,4 @@ make kubes-logs
 
 ## Todo
 
-- Use service account in Kubes
 - [task.map example](https://github.com/PrefectHQ/prefect/pull/6112/files)

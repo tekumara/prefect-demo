@@ -25,7 +25,7 @@ kubes-minio:
 	kubectl apply -f infra/lb-minio.yaml
 
 ## install kuberay operator using quickstart manifests
-export KUBERAY_VERSION=v0.3.0
+kubes-ray: export KUBERAY_VERSION=v0.3.0
 kubes-ray:
 	kubectl get customresourcedefinition.apiextensions.k8s.io/rayclusters.ray.io || kubectl create -k "github.com/ray-project/kuberay/manifests/cluster-scope-resources?ref=${KUBERAY_VERSION}&timeout=90s"
 	kubectl apply -k "github.com/ray-project/kuberay/manifests/base?ref=${KUBERAY_VERSION}&timeout=90s"
@@ -88,6 +88,11 @@ kubes-logs:
 run-logs:
 	curl -H "Content-Type: application/json" -X POST --data '{"logs":{"flow_run_id":{"any_":["$(id)"]},"level":{"ge_":0}},"sort":"TIMESTAMP_ASC"}' -s "http://localhost:4200/api/logs/filter" | jq '.[].message | fromjson'
 
+## show flow runs
+flow-runs: export PREFECT_API_URL=http://localhost:4200/api
+flow-runs:
+	$(venv)/bin/prefect flow-run ls
+
 ## access orion.db in kubes
 kubes-db:
 	kubectl exec -i -t svc/orion -c=api -- /bin/bash -c 'hash sqlite3 || (apt-get update && apt-get install sqlite3) && sqlite3 ~/.prefect/orion.db'
@@ -95,7 +100,7 @@ kubes-db:
 ## upgrade to latest vesion of orion
 upgrade: $(venv)
 	latest=$$($(venv)/bin/pip index versions prefect | grep 'LATEST' | sed -E 's/[[:space:]]+LATEST:[[:space:]]+([^[:space:]]+).*/\1/') && \
-		rg -l -g '!orion*.yaml' 2.3.2 | xargs sed -i '' "s/2.3.2/$$latest/g"
+		rg -l -g '!orion*.yaml' 2.4.0 | xargs sed -i '' "s/2.4.0/$$latest/g"
 
 ## inspect block document
 api-block-doc: assert-id

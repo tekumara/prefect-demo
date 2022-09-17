@@ -20,11 +20,8 @@ infrastructure:
   env: {}
   labels: {}
   name: null
-  command:
-  - python
-  - -m
-  - prefect.engine
-  image: prefecthq/prefect:2.3.2-python3.9
+  command: null
+  image: prefecthq/prefect:2.4.0-python3.9
   namespace: default
   service_account_name: null
   image_pull_policy: null
@@ -47,6 +44,7 @@ infrastructure:
   job_watch_timeout_seconds: 5
   pod_watch_timeout_seconds: 60
   stream_output: true
+  block_type_slug: kubernetes-job
   _block_type_slug: kubernetes-job
 
 ###
@@ -58,9 +56,10 @@ storage:
   bucket_path: minio-flows/increment
   aws_access_key_id: null
   aws_secret_access_key: null
-  _block_document_id: ad674e02-5155-4fe7-b816-8ab4faa2f83e
-  _block_document_name: minio-flows-increment
   _is_anonymous: false
+  _block_document_name: minio-flows-increment
+  _block_document_id: 5fc00f71-94c7-45d4-82f0-fb9f28472a33
+  block_type_slug: s3
   _block_type_slug: s3
 path: null
 entrypoint: flows/param_flow.py:increment
