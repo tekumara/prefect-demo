@@ -9,7 +9,7 @@ from prefect_dask.task_runners import DaskTaskRunner
 
 @task
 def say_hello(name: str) -> None:
-    # logs not currently working see https://github.com/PrefectHQ/prefect/issues/5850
+    # logs are sometimes dropped see https://github.com/PrefectHQ/prefect/issues/6872
     logger = get_run_logger()
     logger.info(f"hello {name}")
 
@@ -23,14 +23,17 @@ def say_goodbye(name: str) -> None:
 # see https://kubernetes.dask.org/en/latest/
 def dask_pod_spec() -> V1Pod:
     return make_pod_spec(
-        image="ghcr.io/dask/dask:latest",
+        # we need a image containing dask + prefect
+        image="orion-registry:5550/flow:latest",
+        # image="ghcr.io/dask/dask:latest",
+        # env={"EXTRA_PIP_PACKAGES": "prefect==2.4.0."},
         memory_limit="1G",
         memory_request="1G",
         cpu_limit=1,
         cpu_request=1,
         # this is how to specify a service account for the dask pods
         # if not specified Kube will use the service account called `default`
-        extra_pod_config={"serviceAccountName": "default"},
+        extra_pod_config={"serviceAccountName": "prefect-flows"},
     )
 
 

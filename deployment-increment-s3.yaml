@@ -15,6 +15,7 @@ infra_overrides:
   env:
     AWS_ACCESS_KEY_ID: minioadmin
     AWS_SECRET_ACCESS_KEY: minioadmin
+  service_account_name: prefect-flows
 infrastructure:
   type: kubernetes-job
   env: {}
@@ -53,15 +54,15 @@ infrastructure:
 flow_name: increment
 manifest_path: null
 storage:
-  bucket_path: minio-flows/increment
+  bucket_path: minio-flows
   aws_access_key_id: null
   aws_secret_access_key: null
+  _block_document_id: dfe0c7db-b188-42cf-8271-270640146381
+  _block_document_name: minio-flows
   _is_anonymous: false
-  _block_document_name: minio-flows-increment
-  _block_document_id: 5fc00f71-94c7-45d4-82f0-fb9f28472a33
   block_type_slug: s3
   _block_type_slug: s3
-path: null
+path: increment
 entrypoint: flows/param_flow.py:increment
 parameter_openapi_schema:
   title: Parameters

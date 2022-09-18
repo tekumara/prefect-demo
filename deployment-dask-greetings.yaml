@@ -1,14 +1,18 @@
 ###
-### A complete description of a Prefect Deployment for flow 'increment'
+### A complete description of a Prefect Deployment for flow 'greetings'
 ###
-name: local
-description: deployment using local storage
+name: dask
+description: dask kubes
 version: snapshot
 # The work queue that will handle this deployment's runs
 work_queue_name: kubernetes
 tags: []
 parameters:
-  i: 1
+  names:
+  - arthur
+  - trillian
+  - ford
+  - marvin
 schedule: null
 infra_overrides:
   image: orion-registry:5000/flow:latest
@@ -51,18 +55,20 @@ infrastructure:
 ###
 ### DO NOT EDIT BELOW THIS LINE
 ###
-flow_name: increment
+flow_name: greetings
 manifest_path: null
 storage: null
 path: /opt/prefect/flows
-entrypoint: flows/param_flow.py:increment
+entrypoint: flows/dask_kubes_flow.py:greetings
 parameter_openapi_schema:
   title: Parameters
   type: object
   properties:
-    i:
-      title: i
-      type: integer
+    names:
+      title: names
+      type: array
+      items:
+        type: string
   required:
-  - i
+  - names
   definitions: null

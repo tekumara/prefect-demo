@@ -45,6 +45,8 @@ prefect-helm-repo:
 kubes-prefect: tag=2.4.0-python3.9
 kubes-prefect: prefect-helm-repo
 	kubectl apply -f infra/ingress-orion.yaml
+	kubectl apply -f infra/rbac-dask.yaml
+	kubectl apply -f infra/sa-flows.yaml
 # disable postgres and use sqlite until https://github.com/PrefectHQ/prefect-helm/issues/42 is resolved
 	helm upgrade --install prefect-orion prefect/prefect-orion --version=0.6.0 \
 		--set api.image.tag=$(tag) --set postgresql.enabled=false --set postgresql.useSubChart=false \
@@ -55,12 +57,16 @@ kubes-prefect: prefect-helm-repo
 	@echo -e "\nProbing for the prefect API to be available (~30 secs)..." && \
 		while ! curl -fsS http://localhost:4200/api/admin/version ; do sleep 5; done && echo
 
+# show the prefect job manifest
+prefect-job-manifest:
+	prefect kubernetes manifest flow-run-job
 
 ## run parameterised flow
 param-flow: $(venv)
 	$(venv)/bin/python -m flows.param_flow
 
 ## run dask flow
+dask-flow: export PREFECT_API_URL=http://localhost:4200/api
 dask-flow: $(venv)
 	$(venv)/bin/python -m flows.dask_flow
 
@@ -83,7 +89,7 @@ deploy: $(venv)
 # use minio as the s3 remote file system
 	set -e && . config/fsspec-env.sh && $(venv)/bin/python -m flows.deploy
 	$(venv)/bin/prefect deployment ls
-	for deployment in increment/s3 increment/local; do $(venv)/bin/prefect deployment run $$deployment; done
+	for deployment in increment/s3 increment/local greetings/dask ; do $(venv)/bin/prefect deployment run $$deployment; done
 	$(venv)/bin/prefect flow-run ls
 	@echo Visit http://localhost:4200
 

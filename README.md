@@ -110,6 +110,7 @@ Ray dashboard: [http://localhost:8265](http://localhost:8265)
 Major
 - [Support flat mapping #6462](https://github.com/PrefectHQ/prefect/issues/6462)
 - [No logs when using DaskTaskRunner #5850](https://github.com/PrefectHQ/prefect/issues/5850)
+- [DaskTaskRunner on KubeCluster drops some logs](https://github.com/PrefectHQ/prefect/issues/6872)
 - [There is no visibility of agents in the UI #6256](https://github.com/PrefectHQ/prefect/issues/6256)
 - No results storage in S3
 
@@ -121,6 +122,7 @@ Minor
 - [FileNotFoundError errors when running with a remote ray cluster #26](https://github.com/PrefectHQ/prefect-ray/issues/26)
 - [Allow setting custom flow run name when creating a flow run from a deployment](https://github.com/PrefectHQ/prefect/issues/5968)
 - currently a failure in any one task means the downstream is never triggered, unless `raise_on_failure=True` is used
+- [Automatically delete Kubernetes jobs after a flow run](https://github.com/PrefectHQ/prefect/issues/5755)
 
 ## Troubleshooting
 
