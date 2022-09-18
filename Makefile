@@ -29,12 +29,14 @@ kubes-minio:
 	kubectl exec deploy/minio -- mc mb -p local/minio-flows
 
 ## install kuberay operator using quickstart manifests
-kubes-ray: export KUBERAY_VERSION=v0.3.0
+kubes-ray: KUBERAY_VERSION=v0.3.0
 kubes-ray:
-	kubectl get customresourcedefinition.apiextensions.k8s.io/rayclusters.ray.io || kubectl create -k "github.com/ray-project/kuberay/manifests/cluster-scope-resources?ref=${KUBERAY_VERSION}&timeout=90s"
-	kubectl apply -k "github.com/ray-project/kuberay/manifests/base?ref=${KUBERAY_VERSION}&timeout=90s"
+	kubectl get customresourcedefinition.apiextensions.k8s.io/rayclusters.ray.io || kubectl create -k "github.com/ray-project/kuberay/manifests/cluster-scope-resources?ref=$(KUBERAY_VERSION)"
+	kubectl apply -k "github.com/ray-project/kuberay/manifests/base?ref=$(KUBERAY_VERSION)"
 	kubectl apply -f infra/ray-cluster.complete.yaml
 	kubectl apply -f infra/lb-ray.yaml
+	@echo -e "\nProbing for the ray cluster to be available (~3 mins)..." && \
+		while ! $(venv)/bin/python -m flows.ping_ray; do sleep 10; done
 
 ## upgrade prefect helm chart repo
 prefect-helm-repo:
@@ -102,8 +104,9 @@ kubes-logs:
 	kubectl logs -l "app.kubernetes.io/name in (prefect-orion, prefect-agent)" -f --tail=-1
 
 ## show flow run logs
-run-logs:
-	curl -H "Content-Type: application/json" -X POST --data '{"logs":{"flow_run_id":{"any_":["$(id)"]},"level":{"ge_":0}},"sort":"TIMESTAMP_ASC"}' -s "http://localhost:4200/api/logs/filter" | jq '.[].message | fromjson'
+logs: export PREFECT_API_URL=http://localhost:4200/api
+logs: assert-id
+	curl -H "Content-Type: application/json" -X POST --data '{"logs":{"flow_run_id":{"any_":["$(id)"]},"level":{"ge_":0}},"sort":"TIMESTAMP_ASC"}' -s "http://localhost:4200/api/logs/filter" | jq -r '.[] | [.timestamp,.level,.message] |@tsv'
 
 ## show flow runs
 flow-runs: export PREFECT_API_URL=http://localhost:4200/api
