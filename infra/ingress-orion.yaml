@@ -10,6 +10,6 @@ spec:
       match: PathPrefix(`/`)
       services:
         - kind: Service
-          name: orion
+          name: prefect-orion
           namespace: default
           port: 4200

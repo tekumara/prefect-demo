@@ -36,17 +36,25 @@ kubes-ray:
 	kubectl apply -f infra/ray-cluster.complete.yaml
 	kubectl apply -f infra/lb-ray.yaml
 
+## upgrade prefect helm chart repo
+prefect-helm-repo:
+	helm repo add prefect https://prefecthq.github.io/prefect-helm
+	helm repo update prefect
+
 ## install prefect api and agent into kubes cluster
-kubes-prefect: export PREFECT_API_URL=http://localhost:4200/api
-kubes-prefect: $(venv)
+kubes-prefect: tag=2.4.0-python3.9
+kubes-prefect: prefect-helm-repo
 	kubectl apply -f infra/ingress-orion.yaml
-	$(venv)/bin/prefect kubernetes manifest orion | kubectl apply -f -
-	@echo "Waiting for deployment to settle to single replica (~40 secs)..." && \
-		while replicas=$$(kubectl get deployment orion -o jsonpath="{.status.replicas}") && [[ $$replicas != 1 ]]; do \
-			echo replicas=$$replicas; sleep 2; \
-		done && echo replicas=$$replicas
-	@echo "Probing for the prefect API to be available (~90 secs)..." && \
-		while ! curl -fsS $$PREFECT_API_URL/admin/version ; do sleep 5; done && echo
+# disable postgres and use sqlite until https://github.com/PrefectHQ/prefect-helm/issues/42 is resolved
+	helm upgrade --install prefect-orion prefect/prefect-orion --version=0.6.0 \
+		--set api.image.tag=$(tag) --set postgresql.enabled=false --set postgresql.useSubChart=false \
+		--wait --debug > /dev/null
+	helm upgrade --install prefect-agent prefect/prefect-agent \
+		--set image.tag=$(tag) --set config.apiUrl=http://prefect-orion:4200/api --set config.workQueueName=kubernetes --set config.debugEnabled=false \
+		--wait --debug > /dev/null
+	@echo -e "\nProbing for the prefect API to be available (~30 secs)..." && \
+		while ! curl -fsS http://localhost:4200/api/admin/version ; do sleep 5; done && echo
+
 
 ## run parameterised flow
 param-flow: $(venv)
@@ -57,10 +65,10 @@ dask-flow: $(venv)
 	$(venv)/bin/python -m flows.dask_flow
 
 ## run ray flow
-# PREFECT_API_URL needs to be accessible from the process running the flow and within the ray cluster
-# to make this work locally, add 127.0.0.1 orion to /etc/hosts TODO: find a better fix
-ray-flow: export PREFECT_API_URL=http://orion:4200/api
 ray-flow: export PREFECT_LOCAL_STORAGE_PATH=/tmp/prefect/storage # see https://github.com/PrefectHQ/prefect-ray/issues/26
+# PREFECT_API_URL needs to be accessible from the process running the flow and within the ray cluster
+# to make this work locally, add 127.0.0.1 prefect-orion to /etc/hosts TODO: find a better fix
+ray-flow: export PREFECT_API_URL=http://prefect-orion:4200/api
 ray-flow: $(venv)
 	$(venv)/bin/python -m flows.ray_flow
 
@@ -85,7 +93,7 @@ ui: $(venv)
 
 ## show kube logs
 kubes-logs:
-	kubectl logs -lapp=orion --all-containers -f
+	kubectl logs -l "app.kubernetes.io/name in (prefect-orion, prefect-agent)" -f --tail=-1
 
 ## show flow run logs
 run-logs:
@@ -98,12 +106,13 @@ flow-runs:
 
 ## access orion.db in kubes
 kubes-db:
-	kubectl exec -i -t svc/orion -c=api -- /bin/bash -c 'hash sqlite3 || (apt-get update && apt-get install sqlite3) && sqlite3 ~/.prefect/orion.db'
+	kubectl exec -i -t deploy/prefect-orion-api -- /bin/bash -c 'hash sqlite3 || (apt-get update && apt-get install sqlite3) && sqlite3 ~/.prefect/orion.db'
 
-## upgrade to latest vesion of orion
+## upgrade to latest version of orion
 upgrade: $(venv)
 	latest=$$($(venv)/bin/pip index versions prefect | grep 'LATEST' | sed -E 's/[[:space:]]+LATEST:[[:space:]]+([^[:space:]]+).*/\1/') && \
-		rg -l -g '!orion*.yaml' 2.4.0 | xargs sed -i '' "s/2.4.0/$$latest/g"
+		rg -l 2.4.0 | xargs sed -i '' "s/2.4.0/$$latest/g"
+	make install
 
 ## inspect block document
 api-block-doc: assert-id
