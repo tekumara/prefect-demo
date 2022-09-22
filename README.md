@@ -29,8 +29,10 @@ Flows
 - [Sub flow](flows/sub_flow.py) that is trigger by a parent flow
 - [Submit flow](flows/submit.py) demonstrates the difference of running tasks with/without `.submit()`
 - [Failing flow](flows/failing_flow.py) demonstrates what happens when a task fails.
+- [Map flow](flows/map_flow.py) uses [Task.map](https://docs.prefect.io/faq/?h=map#does-prefect-2-support-mapping).
 
 [Deployment](flows/deploy.py) to Kubernetes:
+
 - using an S3 block to store the flow in minio.
 - using no storage and instead loading the flow from within the docker image.
 
@@ -108,6 +110,7 @@ Ray dashboard: [http://localhost:8265](http://localhost:8265)
 ## Known issues
 
 Major
+
 - [Support flat mapping #6462](https://github.com/PrefectHQ/prefect/issues/6462)
 - [No logs when using DaskTaskRunner #5850](https://github.com/PrefectHQ/prefect/issues/5850)
 - [DaskTaskRunner on KubeCluster drops some logs](https://github.com/PrefectHQ/prefect/issues/6872)
@@ -115,6 +118,7 @@ Major
 - No results storage in S3
 
 Minor
+
 - [Deployment metadata](https://github.com/PrefectHQ/prefect/issues/5735)
 - [Navigate from the flow page to a flow's runs](https://github.com/PrefectHQ/prefect/issues/6502)
 - [Stream logs via CLI](https://github.com/PrefectHQ/prefect/issues/5987)
@@ -123,6 +127,11 @@ Minor
 - [Allow setting custom flow run name when creating a flow run from a deployment](https://github.com/PrefectHQ/prefect/issues/5968)
 - currently a failure in any one task means the downstream is never triggered, unless `raise_on_failure=True` is used
 - [Automatically delete Kubernetes jobs after a flow run](https://github.com/PrefectHQ/prefect/issues/5755)
+- [Add Flow.submit interface for subflows on external infrastructure](https://github.com/PrefectHQ/prefect/issues/6689)
+- [Expose a utility that creates a flow run from a deployment](https://github.com/PrefectHQ/prefect/issues/6850)
+- mapped tasks aren't collapsed in the UI like they were in Prefect 1
+
+See all [roadmap tagged issues](https://github.com/PrefectHQ/prefect/labels/status%3Aroadmap) for planned work.
 
 ## Troubleshooting
 
@@ -133,7 +142,3 @@ Check the logs of the agent:
 ```
 make kubes-logs
 ```
-
-## Todo
-
-- [task.map example](https://github.com/PrefectHQ/prefect/pull/6112/files)
