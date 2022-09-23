@@ -21,7 +21,7 @@ def test_underlying_fn():
 
 
 def test_increment(prefect_test_harness):
-    state: State = increment(42)  # type: ignore
+    state: State = increment(42)  # type: ignore see https://github.com/PrefectHQ/prefect/issues/6049
 
     assert state.type == StateType.COMPLETED
     assert state.result() == 43
