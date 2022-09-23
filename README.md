@@ -28,7 +28,8 @@ Flows
 - [Ray flow](flows/ray_flow.py) that runs on an existing ray cluster (see [tekumara/ray-demo](https://github.com/tekumara/ray-demo))
 - [Sub flow](flows/sub_flow.py) that is trigger by a parent flow
 - [Submit flow](flows/submit.py) demonstrates the difference of running tasks with/without `.submit()`
-- [Failing flow](flows/failing_flow.py) demonstrates what happens when a task fails.
+- [Retry flow](flows/retry_flow.py) demonstrates retries when a task fails.
+- [Handle failure](flows/handle_failure_flow.py) shows how to handle a failing task.
 - [Map flow](flows/map_flow.py) uses [Task.map](https://docs.prefect.io/faq/?h=map#does-prefect-2-support-mapping).
 
 [Deployment](flows/deploy.py) to Kubernetes:

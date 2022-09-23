@@ -8,6 +8,7 @@ from prefect import flow, get_run_logger, task
 def setup() -> str:
     logger = get_run_logger()
     logger.info("setup start")
+    # sleep to demonstrate this runs concurrently
     sleep(3)
     logger.info("setup end")
     return "setup"
