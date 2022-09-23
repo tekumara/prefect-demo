@@ -16,13 +16,14 @@ infra_overrides:
     AWS_ACCESS_KEY_ID: minioadmin
     AWS_SECRET_ACCESS_KEY: minioadmin
   service_account_name: prefect-flows
+  finished_job_ttl: 300
 infrastructure:
   type: kubernetes-job
   env: {}
   labels: {}
   name: null
   command: null
-  image: prefecthq/prefect:2.4.0-python3.9
+  image: prefecthq/prefect:2.4.1-python3.9
   namespace: default
   service_account_name: null
   image_pull_policy: null
@@ -45,6 +46,7 @@ infrastructure:
   job_watch_timeout_seconds: 5
   pod_watch_timeout_seconds: 60
   stream_output: true
+  finished_job_ttl: null
   block_type_slug: kubernetes-job
   _block_type_slug: kubernetes-job
 

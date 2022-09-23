@@ -26,6 +26,8 @@ increment_s3: Deployment = Deployment.build_from_flow(
         # TODO: move into kubes environment to avoid storing secrets in Prefect
         env={"AWS_ACCESS_KEY_ID": "minioadmin", "AWS_SECRET_ACCESS_KEY": "minioadmin"},
         service_account_name="prefect-flows",
+        # deleted completed jobs see https://kubernetes.io/docs/concepts/workloads/controllers/job/#ttl-mechanism-for-finished-jobs
+        finished_job_ttl=300,
     ),
     parameters={"i": 1},
 )
@@ -40,10 +42,9 @@ increment_local: Deployment = Deployment.build_from_flow(
     infrastructure=KubernetesJob(),  # type: ignore
     infra_overrides=dict(
         image="orion-registry:5000/flow:latest",
-        # use to read the stored flow from minio when the flow executes
-        # TODO: move into kubes environment to avoid storing secrets in Prefect
         env={"AWS_ACCESS_KEY_ID": "minioadmin", "AWS_SECRET_ACCESS_KEY": "minioadmin"},
         service_account_name="prefect-flows",
+        finished_job_ttl=300,
     ),
     parameters={"i": 1},
 )
@@ -58,10 +59,9 @@ greetings_dask: Deployment = Deployment.build_from_flow(
     infrastructure=KubernetesJob(),  # type: ignore
     infra_overrides=dict(
         image="orion-registry:5000/flow:latest",
-        # use to read the stored flow from minio when the flow executes
-        # TODO: move into kubes environment to avoid storing secrets in Prefect
         env={"AWS_ACCESS_KEY_ID": "minioadmin", "AWS_SECRET_ACCESS_KEY": "minioadmin"},
         service_account_name="prefect-flows",
+        finished_job_ttl=300,
     ),
     parameters={"names": ["arthur", "trillian", "ford", "marvin"]},
 )

@@ -121,7 +121,6 @@ Major
 Minor
 
 - [Deployment metadata](https://github.com/PrefectHQ/prefect/issues/5735)
-- [Navigate from the flow page to a flow's runs](https://github.com/PrefectHQ/prefect/issues/6502)
 - [Stream logs via CLI](https://github.com/PrefectHQ/prefect/issues/5987)
 - [report ErrImagePull in Prefect UI to improve observability](https://github.com/PrefectHQ/prefect/issues/5688)
 - [FileNotFoundError errors when running with a remote ray cluster #26](https://github.com/PrefectHQ/prefect-ray/issues/26)
