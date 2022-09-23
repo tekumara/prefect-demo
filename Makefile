@@ -53,7 +53,7 @@ kubes-prefect: prefect-helm-repo
 	helm upgrade --install prefect-orion prefect/prefect-orion --version=0.6.0 \
 		--set api.image.tag=$(tag) --set postgresql.enabled=false --set postgresql.useSubChart=false \
 		--wait --debug > /dev/null
-	helm upgrade --install prefect-agent prefect/prefect-agent \
+	helm upgrade --install prefect-agent prefect/prefect-agent --version=0.6.0 \
 		--set image.tag=$(tag) --set config.apiUrl=http://prefect-orion:4200/api --set config.workQueueName=kubernetes --set config.debugEnabled=false \
 		--wait --debug > /dev/null
 	@echo -e "\nProbing for the prefect API to be available (~30 secs)..." && \
