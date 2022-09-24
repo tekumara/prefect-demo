@@ -23,7 +23,7 @@ infrastructure:
   labels: {}
   name: null
   command: null
-  image: prefecthq/prefect:2.4.1-python3.9
+  image: prefecthq/prefect:2.4.2-python3.9
   namespace: default
   service_account_name: null
   image_pull_policy: null

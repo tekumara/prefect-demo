@@ -130,6 +130,7 @@ Minor
 - [Add Flow.submit interface for subflows on external infrastructure](https://github.com/PrefectHQ/prefect/issues/6689)
 - [Expose a utility that creates a flow run from a deployment](https://github.com/PrefectHQ/prefect/issues/6850)
 - mapped tasks aren't collapsed in the UI like they were in Prefect 1
+- [Switch to prevent writing the results cache](https://github.com/PrefectHQ/prefect/issues/6397)
 
 See all [roadmap tagged issues](https://github.com/PrefectHQ/prefect/labels/status%3Aroadmap) for planned work.
 
