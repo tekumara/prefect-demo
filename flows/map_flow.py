@@ -1,5 +1,4 @@
-from time import sleep
-from typing import List
+from typing import List, Tuple
 
 from prefect import flow, get_run_logger, task
 
@@ -7,11 +6,8 @@ from prefect import flow, get_run_logger, task
 @task
 def setup() -> str:
     logger = get_run_logger()
-    logger.info("setup start")
-    # sleep to demonstrate this runs concurrently
-    sleep(3)
-    logger.info("setup end")
-    return "setup"
+    logger.info("setup")
+    return "done"
 
 
 @task
@@ -27,20 +23,23 @@ def count_rows(batch: str) -> int:
 
 
 @task
-def summary(count: List[int]) -> None:
+def summary(count: List[int]) -> Tuple[int, int]:
     logger = get_run_logger()
-    total = sum(count)
-    logger.info(f"Num batches: {len(count)} Num rows: {total}")
-    return None
+    logger.info(f"Num batches: {len(count)} Num rows: {sum(count)}")
+    return len(count), sum(count)
 
 
 # map is a bit more performant than a for loop as it gathers all upstream dependencies concurrently
 # but if you’re calling map without any upstream tasks as inputs, it’s probably going to be the same as a for loop
 @flow
 def map_flow() -> None:
+    logger = get_run_logger()
     batches = fetch_batches.submit()
     counts = count_rows.map(batches, wait_for=[setup.submit()])  # type: ignore see https://github.com/PrefectHQ/prefect/issues/6922
-    summary(counts)
+    # TODO: make this a stand alone example
+    # use result() to unpack tuple see https://discourse.prefect.io/t/returning-iterables-from-task/586
+    b, r = summary.submit(counts).result()
+    logger.info(f"{b},{r}")
 
 
 if __name__ == "__main__":

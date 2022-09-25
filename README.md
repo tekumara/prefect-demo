@@ -31,6 +31,7 @@ Flows
 - [Retry flow](flows/retry_flow.py) demonstrates retries when a task fails.
 - [Handle failure](flows/handle_failure_flow.py) shows how to handle a failing task.
 - [Map flow](flows/map_flow.py) uses [Task.map](https://docs.prefect.io/faq/?h=map#does-prefect-2-support-mapping).
+- [Flatten flow](flows/flatten_flow.py) demonstrates how to parallelise over a list of lists.
 
 [Deployment](flows/deploy.py) to Kubernetes:
 
@@ -117,6 +118,7 @@ Major
 - [DaskTaskRunner on KubeCluster drops some logs](https://github.com/PrefectHQ/prefect/issues/6872)
 - [There is no visibility of agents in the UI #6256](https://github.com/PrefectHQ/prefect/issues/6256)
 - No results storage in S3
+- [Clean up up zombie task runs caused by an infrastructure crash](https://github.com/PrefectHQ/prefect/issues/5995)
 
 Minor
 
