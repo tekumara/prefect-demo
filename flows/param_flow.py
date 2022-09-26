@@ -21,20 +21,21 @@ def increment(i: int) -> PrefectFuture[int, Sync]:
     logger.info(flows.another_module.msg)
     logger.info(f"{i=}")
 
-    # result is int
-    result = add_one.submit(i)
-    logger.info(f"{result=}")
+    number = add_one.submit(i)
 
-    # passing the result future will resolve to its int value
-    print_result.submit(result)  # type: ignore see https://github.com/PrefectHQ/prefect/issues/5985
+    # print number which is a unresolved PrefectFuture
+    logger.info(f"unresolved {number=}")
+
+    # passing the number future will resolve to its int value when the task runs
+    print_number.submit(number)  # type: ignore see https://github.com/PrefectHQ/prefect/issues/5985
 
     # despite this failing task, this flow's final state will be "completed" (ie: success),
-    # because we return result from the flow
+    # because we return a future from the flow
     fail.submit()
 
-    # return the result future, which determines the final state of the flow
+    # return the number future, which determines the final state of the flow
     # see https://docs.prefect.io/concepts/states/#final-state-determination
-    return result
+    return number
 
 
 @task
@@ -50,15 +51,15 @@ def fail() -> int:
 
 
 @task
-def print_result(i: int) -> None:
+def print_number(i: int) -> None:
     logger = get_run_logger()
-    logger.info(f"print_result: {i=}")
+    logger.info(f"{i=}")
 
 
 if __name__ == "__main__":
     # to demonstrate that this is a Flow object
     f: Flow = increment
 
-    # execute Flow, the result future returned from the flow is resolved to a State
+    # execute Flow, the number future returned from the flow is resolved to a State
     r: State = f(1)  # type: ignore see https://github.com/PrefectHQ/prefect/issues/6049
     print(repr(r))
