@@ -1,12 +1,11 @@
-FROM prefecthq/prefect:2.4.2-python3.9
+FROM prefecthq/prefect:2.5.0-python3.9
 
-# s3fs is used by the file-packager deployment to fetch flows
-# from the remote file system
+# s3fs is used to fetch flows from minio
 # dask dependences are needed by dask_kubes_flow
-# boto3 is pinned to avoid a slow search by the pip resolver
-RUN pip install --no-cache-dir s3fs==2022.7.1 prefect-dask==0.2.0.post1 dask_kubernetes==2022.7.0 boto3==1.21.21
+# bokeh is needed for the dask dashboard
+RUN pip install --no-cache-dir bokeh==2.4.3 dask_kubernetes==2022.10.0 prefect-dask==0.2.1 s3fs==2022.8.2
 
-# explictly specific workdir used in the base image and expected by the deployment
+# explictly specify workdir expected by the deployment (even though its the same as the base image)
 WORKDIR /opt/prefect
 
 # point fsspec at minio inside the cluster

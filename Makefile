@@ -44,12 +44,12 @@ prefect-helm-repo:
 	helm repo update prefect
 
 ## install prefect api and agent into kubes cluster
-kubes-prefect: tag=2.4.2-python3.9
+kubes-prefect: tag=2.5.0-python3.9
 kubes-prefect: prefect-helm-repo
 	kubectl apply -f infra/ingress-orion.yaml
 	kubectl apply -f infra/rbac-dask.yaml
 	kubectl apply -f infra/sa-flows.yaml
-# disable postgres and use sqlite until https://github.com/PrefectHQ/prefect-helm/issues/42 is resolved
+# disable postgres to use sqlite instead
 	helm upgrade --install prefect-orion prefect/prefect-orion --version=0.6.0 \
 		--set api.image.tag=$(tag) --set postgresql.enabled=false --set postgresql.useSubChart=false \
 		--wait --debug > /dev/null
@@ -120,7 +120,7 @@ kubes-db:
 ## upgrade to latest version of orion
 upgrade: $(venv)
 	latest=$$($(venv)/bin/pip index versions prefect | grep 'LATEST' | sed -E 's/[[:space:]]+LATEST:[[:space:]]+([^[:space:]]+).*/\1/') && \
-		rg -l 2.4.2 | xargs sed -i '' "s/2.4.2/$$latest/g"
+		rg -l 2.5.0 | xargs sed -i '' "s/2.5.0/$$latest/g"
 	make install
 
 ## inspect block document

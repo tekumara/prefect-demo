@@ -130,7 +130,6 @@ Minor
 - currently a failure in any one task means the downstream is never triggered, unless `raise_on_failure=True` is used
 - [Automatically delete Kubernetes jobs after a flow run](https://github.com/PrefectHQ/prefect/issues/5755)
 - [Add Flow.submit interface for subflows on external infrastructure](https://github.com/PrefectHQ/prefect/issues/6689)
-- [Expose a utility that creates a flow run from a deployment](https://github.com/PrefectHQ/prefect/issues/6850)
 - mapped tasks aren't collapsed in the UI like they were in Prefect 1
 - [Switch to prevent writing the results cache](https://github.com/PrefectHQ/prefect/issues/6397)
 

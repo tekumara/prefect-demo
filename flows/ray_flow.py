@@ -27,7 +27,7 @@ def say_goodbye(name: str) -> None:
         address="ray://127.0.0.1:10001",
         init_kwargs={
             "runtime_env": {
-                "pip": ["prefect==2.4.2"],
+                "pip": ["prefect==2.5.0"],
                 # the PREFECT_API_* env vars in the current environment will be passed through by prefect
                 # make sure PREFECT_API_URL and PREFECT_API_KEY are set to a host that can be reached
                 # from the client running the flow and the ray worker node
