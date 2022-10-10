@@ -1,0 +1,13 @@
+from prefect import flow, get_run_logger
+from prefect.deployments import run_deployment
+
+
+@flow
+def parent() -> None:
+    logger = get_run_logger()
+    logger.info("Start parent")
+    _ = run_deployment(name="child/local")
+
+
+if __name__ == "__main__":
+    flow.run()

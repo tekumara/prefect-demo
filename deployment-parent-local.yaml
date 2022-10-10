@@ -1,0 +1,65 @@
+###
+### A complete description of a Prefect Deployment for flow 'parent'
+###
+name: local
+description: deployment using local storage
+version: snapshot
+# The work queue that will handle this deployment's runs
+work_queue_name: kubernetes
+tags: []
+parameters: {}
+schedule: null
+infra_overrides:
+  image: orion-registry:5000/flow:latest
+  env:
+    AWS_ACCESS_KEY_ID: minioadmin
+    AWS_SECRET_ACCESS_KEY: minioadmin
+  service_account_name: prefect-flows
+  finished_job_ttl: 300
+infrastructure:
+  type: kubernetes-job
+  env: {}
+  labels: {}
+  name: null
+  command: null
+  image: prefecthq/prefect:2.5.0-python3.9
+  namespace: default
+  service_account_name: null
+  image_pull_policy: null
+  cluster_config: null
+  job:
+    apiVersion: batch/v1
+    kind: Job
+    metadata:
+      labels: {}
+    spec:
+      template:
+        spec:
+          parallelism: 1
+          completions: 1
+          restartPolicy: Never
+          containers:
+          - name: prefect-job
+            env: []
+  customizations: []
+  job_watch_timeout_seconds: 5
+  pod_watch_timeout_seconds: 60
+  stream_output: true
+  finished_job_ttl: null
+  block_type_slug: kubernetes-job
+  _block_type_slug: kubernetes-job
+
+###
+### DO NOT EDIT BELOW THIS LINE
+###
+flow_name: parent
+manifest_path: null
+storage: null
+path: /opt/prefect/flows
+entrypoint: flows/parent_flow.py:parent
+parameter_openapi_schema:
+  title: Parameters
+  type: object
+  properties: {}
+  required: null
+  definitions: null

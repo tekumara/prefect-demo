@@ -84,10 +84,13 @@ ray-flow: $(venv)
 sub-flow: $(venv)
 	$(venv)/bin/python -m flows.sub_flow
 
+## build and push docker image
+publish:
+	docker compose build app && docker compose push app
+
 ## deploy flows to run on kubernetes
 deploy: export PREFECT_API_URL=http://localhost:4200/api
-deploy: $(venv)
-	docker compose build app && docker compose push app
+deploy: $(venv) publish
 # use minio as the s3 remote file system
 	set -e && . config/fsspec-env.sh && $(venv)/bin/python -m flows.deploy
 	$(venv)/bin/prefect deployment ls

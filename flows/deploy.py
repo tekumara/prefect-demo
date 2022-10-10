@@ -1,8 +1,10 @@
 from prefect.deployments import Deployment
 from prefect.infrastructure import KubernetesJob
 
+import flows.child_flow
 import flows.dask_kubes_flow
 import flows.param_flow
+import flows.parent_flow
 import flows.storage
 
 # upload flow to storage and create deployment yaml file
@@ -67,6 +69,39 @@ greetings_dask: Deployment = Deployment.build_from_flow(
 )
 
 
+parent_local: Deployment = Deployment.build_from_flow(
+    name="local",
+    flow=flows.parent_flow.parent,
+    output="deployment-parent-local.yaml",
+    description="deployment using local storage",
+    version="snapshot",
+    work_queue_name="kubernetes",
+    infrastructure=KubernetesJob(),  # type: ignore
+    infra_overrides=dict(
+        image="orion-registry:5000/flow:latest",
+        env={"AWS_ACCESS_KEY_ID": "minioadmin", "AWS_SECRET_ACCESS_KEY": "minioadmin"},
+        service_account_name="prefect-flows",
+        finished_job_ttl=300,
+    ),
+)
+
+child_local: Deployment = Deployment.build_from_flow(
+    name="local",
+    flow=flows.child_flow.child,
+    output="deployment-child-local.yaml",
+    description="deployment using local storage",
+    version="snapshot",
+    work_queue_name="kubernetes",
+    infrastructure=KubernetesJob(),  # type: ignore
+    infra_overrides=dict(
+        image="orion-registry:5000/flow:latest",
+        env={"AWS_ACCESS_KEY_ID": "minioadmin", "AWS_SECRET_ACCESS_KEY": "minioadmin"},
+        service_account_name="prefect-flows",
+        finished_job_ttl=300,
+    ),
+)
+
+
 def apply(deployment: Deployment) -> None:
     did = deployment.apply()
     print(f"Created deployment '{deployment.flow_name}/{deployment.name}' ({did})")
@@ -76,3 +111,5 @@ if __name__ == "__main__":
     apply(increment_s3)
     apply(increment_local)
     apply(greetings_dask)
+    apply(parent_local)
+    apply(child_local)
