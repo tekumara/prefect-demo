@@ -1,5 +1,6 @@
 .dockerignore
 Dockerfile
+docker-compose.yaml
 .git/
 .github/
 .gitignore

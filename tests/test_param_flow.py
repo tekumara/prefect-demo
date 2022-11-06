@@ -1,6 +1,6 @@
 import prefect.testing.utilities
 import pytest
-from prefect import State
+from prefect import State  # pyright: ignore[reportPrivateImportUsage]
 from prefect.orion.schemas.states import StateType
 
 from flows.param_flow import add_one, increment

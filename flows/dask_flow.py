@@ -18,6 +18,7 @@ def say_goodbye(name: str) -> None:
 
 
 # TODO: can the task runner be parameterised so we don't duplicate the flow with dask_kubes_flow?
+# see https://github.com/PrefectHQ/prefect/issues/5560
 @flow(task_runner=DaskTaskRunner())
 def greetings(names: List[str]) -> None:
     for name in names:
