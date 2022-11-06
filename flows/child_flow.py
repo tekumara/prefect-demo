@@ -8,7 +8,7 @@ def sleepy() -> None:
     logger = get_run_logger()
     logger.info("Hello child!")
     logger.info("Sleeping.....")
-    sleep(2 * 60)
+    sleep(60)
     logger.info("Awake!")
 
 

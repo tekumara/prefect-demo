@@ -71,8 +71,7 @@ deployment = Deployment.build_from_flow(
    # Create a new anonymous infra block with these params on apply
    infrastructure=KubernetesJob(
       image="orion-registry:5000/flow:latest",
-      # use to read the stored flow from minio when the flow executes
-      env={"AWS_ACCESS_KEY_ID": "minioadmin", "AWS_SECRET_ACCESS_KEY": "minioadmin"},
+      env={"APP_ENVIRONMENT": "prod"},
    ),
    parameters={"i": 1},
 )

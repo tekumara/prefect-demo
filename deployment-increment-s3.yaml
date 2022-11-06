@@ -12,9 +12,23 @@ parameters:
 schedule: null
 infra_overrides:
   image: orion-registry:5000/flow:latest
-  env:
-    AWS_ACCESS_KEY_ID: minioadmin
-    AWS_SECRET_ACCESS_KEY: minioadmin
+  customizations:
+  - op: add
+    path: /spec/template/spec/containers/0/env/-
+    value:
+      name: AWS_ACCESS_KEY_ID
+      valueFrom:
+        secretKeyRef:
+          name: minio
+          key: root-user
+  - op: add
+    path: /spec/template/spec/containers/0/env/-
+    value:
+      name: AWS_SECRET_ACCESS_KEY
+      valueFrom:
+        secretKeyRef:
+          name: minio
+          key: root-password
   service_account_name: prefect-flows
   finished_job_ttl: 300
 infrastructure:
@@ -59,9 +73,9 @@ storage:
   bucket_path: minio-flows
   aws_access_key_id: null
   aws_secret_access_key: null
-  _is_anonymous: false
-  _block_document_name: minio-flows
   _block_document_id: 8fdc3ed6-2765-404e-9bb2-b48d316df1c6
+  _block_document_name: minio-flows
+  _is_anonymous: false
   block_type_slug: s3
   _block_type_slug: s3
 path: increment

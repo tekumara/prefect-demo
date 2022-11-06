@@ -12,9 +12,6 @@ parameters:
 schedule: null
 infra_overrides:
   image: orion-registry:5000/flow:latest
-  env:
-    AWS_ACCESS_KEY_ID: minioadmin
-    AWS_SECRET_ACCESS_KEY: minioadmin
   service_account_name: prefect-flows
   finished_job_ttl: 300
 infrastructure:

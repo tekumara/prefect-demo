@@ -23,6 +23,7 @@ cluster:
 ## install minio
 kubes-minio:
 	helm repo add bitnami https://charts.bitnami.com/bitnami
+# root user and password is stored in the minio secret
 	helm upgrade --install minio bitnami/minio --set auth.rootUser=minioadmin --set auth.rootPassword=minioadmin \
 		--wait --debug > /dev/null
 	kubectl apply -f infra/lb-minio.yaml
@@ -94,7 +95,7 @@ deploy: $(venv) publish
 # use minio as the s3 remote file system
 	set -e && . config/fsspec-env.sh && $(venv)/bin/python -m flows.deploy
 	$(venv)/bin/prefect deployment ls
-	for deployment in increment/s3 increment/local greetings/dask ; do $(venv)/bin/prefect deployment run $$deployment; done
+	for deployment in increment/s3 increment/local greetings/dask parent/local; do $(venv)/bin/prefect deployment run $$deployment; done
 	$(venv)/bin/prefect flow-run ls
 	@echo Visit http://localhost:4200
 
