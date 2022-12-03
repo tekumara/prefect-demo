@@ -10,7 +10,7 @@ cluster:
 # enable ephmeral containers for profiling
 	k3d cluster create orion --registry-create orion-registry:0.0.0.0:5550 \
 		-p 4200:80@loadbalancer -p 9000:9000@loadbalancer -p 9001:9001@loadbalancer \
-		-p 10001:10001@loadbalancer -p 8265:8265@loadbalancer \
+		-p 10001:10001@loadbalancer -p 8265:8265@loadbalancer -p 6379:6379@loadbalancer \
 		--k3s-arg '--kube-apiserver-arg=feature-gates=EphemeralContainers=true@server:*' \
   		--k3s-arg '--kube-scheduler-arg=feature-gates=EphemeralContainers=true@server:*' \
   		--k3s-arg '--kubelet-arg=feature-gates=EphemeralContainers=true@agent:*' \
@@ -32,8 +32,10 @@ kubes-minio:
 ## install kuberay operator using quickstart manifests
 kubes-ray: KUBERAY_VERSION=v0.3.0
 kubes-ray:
-	kubectl get customresourcedefinition.apiextensions.k8s.io/rayclusters.ray.io || kubectl create -k "github.com/ray-project/kuberay/manifests/cluster-scope-resources?ref=$(KUBERAY_VERSION)"
-	kubectl apply -k "github.com/ray-project/kuberay/manifests/base?ref=$(KUBERAY_VERSION)"
+# install CRDs
+	kubectl apply --server-side -k "github.com/ray-project/kuberay/manifests/cluster-scope-resources?ref=${KUBERAY_VERSION}&timeout=90s"
+# install kuberay operator
+	kubectl apply -k "github.com/ray-project/kuberay/manifests/base?ref=${KUBERAY_VERSION}&timeout=90s"
 	kubectl apply -f infra/ray-cluster.complete.yaml
 	kubectl apply -f infra/lb-ray.yaml
 	@echo -e "\nProbing for the ray cluster to be available (~3 mins)..." && \
@@ -56,7 +58,7 @@ kubes-prefect: prefect-helm-repo
 	@echo -e "\nProbing for the prefect API to be available (~30 secs)..." && \
 		while ! curl -fsS http://localhost:4200/api/admin/version ; do sleep 5; done && echo
 
-# show the prefect job manifest
+## show the prefect job manifest
 prefect-job-manifest:
 	prefect kubernetes manifest flow-run-job
 

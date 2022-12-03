@@ -5,15 +5,18 @@ metadata:
 spec:
   type: LoadBalancer
   ports:
-  - name: ray-api
+  - name: client
     port: 10001
     protocol: TCP
     targetPort: 10001
-  - name: ray-dashboard
+  - name: dashboard
     port: 8265
     protocol: TCP
     targetPort: 8265
+  - name: gcs
+    port: 6379
+    protocol: TCP
+    targetPort: 6379
   selector:
     ray.io/cluster: raycluster-complete
-    ray.io/identifier: raycluster-complete-head
     ray.io/node-type: head
