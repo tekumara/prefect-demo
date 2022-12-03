@@ -37,7 +37,7 @@ infrastructure:
   labels: {}
   name: null
   command: null
-  image: prefecthq/prefect:2.6.6-python3.9
+  image: prefecthq/prefect:2.7.0-python3.9
   namespace: default
   service_account_name: null
   image_pull_policy: null
@@ -73,9 +73,9 @@ storage:
   bucket_path: minio-flows
   aws_access_key_id: null
   aws_secret_access_key: null
-  _block_document_id: 8fdc3ed6-2765-404e-9bb2-b48d316df1c6
-  _block_document_name: minio-flows
   _is_anonymous: false
+  _block_document_name: minio-flows
+  _block_document_id: 008a0c54-f400-4d3f-beab-ef457fa7859e
   block_type_slug: s3
   _block_type_slug: s3
 path: increment

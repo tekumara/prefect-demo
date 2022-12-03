@@ -45,7 +45,7 @@ prefect-helm-repo:
 	helm repo update prefect
 
 ## install prefect api and agent into kubes cluster
-kubes-prefect: tag=2.6.6-python3.9
+kubes-prefect: tag=2.7.0-python3.9
 kubes-prefect: prefect-helm-repo
 	kubectl apply -f infra/ingress-orion.yaml
 	kubectl apply -f infra/rbac-dask.yaml
@@ -124,7 +124,7 @@ kubes-db:
 ## upgrade to latest version of orion
 upgrade:
 	latest=$$(PIP_REQUIRE_VIRTUALENV=false pip index versions prefect | grep 'LATEST' | sed -E 's/[[:space:]]+LATEST:[[:space:]]+([^[:space:]]+).*/\1/') && \
-		rg -l 2.6.6 | xargs sed -i '' "s/2.6.6/$$latest/g"
+		rg -l 2.7.0 | xargs sed -i '' "s/2.7.0/$$latest/g"
 	make install
 
 ## inspect block document

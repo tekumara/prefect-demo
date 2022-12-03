@@ -115,8 +115,6 @@ Ray dashboard: [http://localhost:8265](http://localhost:8265)
 Major
 
 - [Support flat mapping #6462](https://github.com/PrefectHQ/prefect/issues/6462)
-- [No logs when using DaskTaskRunner #5850](https://github.com/PrefectHQ/prefect/issues/5850)
-- [DaskTaskRunner on KubeCluster drops some logs](https://github.com/PrefectHQ/prefect/issues/6872)
 - [There is no visibility of agents in the UI #6256](https://github.com/PrefectHQ/prefect/issues/6256)
 - [Notification for runs that do not complete after duration](https://github.com/PrefectHQ/prefect/issues/6939)
 - [Zombie tasks consume concurrency slots](https://github.com/PrefectHQ/prefect/issues/5995)
@@ -128,11 +126,9 @@ Minor
 - [Stream logs via CLI](https://github.com/PrefectHQ/prefect/issues/5987)
 - [report ErrImagePull in Prefect UI to improve observability](https://github.com/PrefectHQ/prefect/issues/5688)
 - [FileNotFoundError errors when running with a remote ray cluster #26](https://github.com/PrefectHQ/prefect-ray/issues/26)
-- currently a failure in any one task means the downstream is never triggered, unless `raise_on_failure=True` is used.. see [#7098](https://github.com/PrefectHQ/prefect/issues/7098)
 - [Automatically delete Kubernetes jobs after a flow run](https://github.com/PrefectHQ/prefect/issues/5755)
 - [Add Flow.submit interface for subflows on external infrastructure](https://github.com/PrefectHQ/prefect/issues/6689)
 - mapped tasks aren't collapsed in the UI like they were in Prefect 1
-- [fix: State & allow_failure is not exported](https://github.com/PrefectHQ/prefect/pull/7447)
 
 See all [roadmap tagged issues](https://github.com/PrefectHQ/prefect/labels/status%3Aroadmap) for planned work.
 
