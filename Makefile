@@ -45,18 +45,14 @@ prefect-helm-repo:
 	helm repo update prefect
 
 ## install prefect api and agent into kubes cluster
-kubes-prefect: tag=2.7.0-python3.9
 kubes-prefect: prefect-helm-repo
 	kubectl apply -f infra/ingress-orion.yaml
 	kubectl apply -f infra/rbac-dask.yaml
 	kubectl apply -f infra/sa-flows.yaml
-# disable postgres to use sqlite instead
-	helm upgrade --install prefect-orion prefect/prefect-orion --version=0.6.0 \
-		--set api.image.tag=$(tag) --set postgresql.enabled=false --set postgresql.useSubChart=false \
-		--wait --debug > /dev/null
-	helm upgrade --install prefect-agent prefect/prefect-agent --version=0.6.0 \
-		--set image.tag=$(tag) --set config.apiUrl=http://prefect-orion:4200/api --set config.workQueueName=kubernetes --set config.debugEnabled=false \
-		--wait --debug > /dev/null
+	helm upgrade --install prefect-orion prefect/prefect-orion --version=2022.11.11 \
+		--values infra/values-orion.yaml --wait --debug > /dev/null
+	helm upgrade --install prefect-agent prefect/prefect-agent --version=2022.11.11 \
+		--values infra/values-agent.yaml --wait --debug > /dev/null
 	@echo -e "\nProbing for the prefect API to be available (~30 secs)..." && \
 		while ! curl -fsS http://localhost:4200/api/admin/version ; do sleep 5; done && echo
 

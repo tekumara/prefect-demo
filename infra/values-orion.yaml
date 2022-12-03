@@ -1,0 +1,8 @@
+orion:
+  image:
+    prefectTag: 2.7.0-python3.9
+
+postgresql:
+  # use sqlite instead
+  enabled: false
+  useSubChart: false

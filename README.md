@@ -128,6 +128,7 @@ Minor
 - [FileNotFoundError errors when running with a remote ray cluster #26](https://github.com/PrefectHQ/prefect-ray/issues/26)
 - [Automatically delete Kubernetes jobs after a flow run](https://github.com/PrefectHQ/prefect/issues/5755)
 - [Add Flow.submit interface for subflows on external infrastructure](https://github.com/PrefectHQ/prefect/issues/6689)
+- [prefect-version does not match image when prefectTag set](https://github.com/PrefectHQ/prefect-helm/issues/81)
 - mapped tasks aren't collapsed in the UI like they were in Prefect 1
 
 See all [roadmap tagged issues](https://github.com/PrefectHQ/prefect/labels/status%3Aroadmap) for planned work.
