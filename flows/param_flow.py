@@ -1,7 +1,6 @@
-from prefect import flow, get_run_logger, task
-from prefect.flows import Flow
+from prefect import Flow, flow, get_run_logger, task
 from prefect.futures import PrefectFuture
-from prefect.states import State  # pyright: ignore[reportPrivateImportUsage]
+from prefect.states import State
 from prefect.utilities.asyncutils import Sync
 
 import flows.another_module
