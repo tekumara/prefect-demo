@@ -6,6 +6,7 @@ description: dask kubes
 version: snapshot
 # The work queue that will handle this deployment's runs
 work_queue_name: kubernetes
+work_pool_name: null
 tags: []
 parameters:
   names:
@@ -14,8 +15,9 @@ parameters:
   - ford
   - marvin
 schedule: null
+is_schedule_active: null
 infra_overrides:
-  image: orion-registry:5000/flow:latest
+  image: prefect-registry:5000/flow:latest
   service_account_name: prefect-flows
   finished_job_ttl: 300
 infrastructure:
@@ -24,7 +26,7 @@ infrastructure:
   labels: {}
   name: null
   command: null
-  image: prefecthq/prefect:2.7.0-python3.9
+  image: prefecthq/prefect:2.8.3-python3.9
   namespace: default
   service_account_name: null
   image_pull_policy: null
@@ -44,7 +46,7 @@ infrastructure:
           - name: prefect-job
             env: []
   customizations: []
-  job_watch_timeout_seconds: 5
+  job_watch_timeout_seconds: null
   pod_watch_timeout_seconds: 60
   stream_output: true
   finished_job_ttl: null
@@ -65,9 +67,11 @@ parameter_openapi_schema:
   properties:
     names:
       title: names
+      position: 0
       type: array
       items:
         type: string
   required:
   - names
   definitions: null
+timestamp: '2023-03-02T04:20:30.723218+00:00'

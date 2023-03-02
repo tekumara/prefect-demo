@@ -24,9 +24,9 @@ def say_goodbye(name: str) -> None:
 def dask_pod_spec() -> V1Pod:
     return make_pod_spec(
         # we need a image containing dask + prefect
-        image="orion-registry:5550/flow:latest",
+        image="prefect-registry:5550/flow:latest",
         # image="ghcr.io/dask/dask:latest",
-        # env={"EXTRA_PIP_PACKAGES": "prefect==2.7.0"},
+        # env={"EXTRA_PIP_PACKAGES": "prefect==2.8.3"},
         memory_limit="1G",
         memory_request="1G",
         cpu_limit=1,

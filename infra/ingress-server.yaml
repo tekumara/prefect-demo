@@ -1,9 +1,9 @@
-# TODO: use ingress see https://github.com/PrefectHQ/prefect-helm/blob/main/charts/prefect-orion/README.md
+# TODO: use ingress see https://github.com/PrefectHQ/prefect-helm/blob/main/charts/prefect-server/README.md
 
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: orion-api
+  name: prefect-server
 spec:
   entryPoints:
     - web
@@ -12,6 +12,6 @@ spec:
       match: PathPrefix(`/`)
       services:
         - kind: Service
-          name: prefect-orion
+          name: prefect-server
           namespace: default
           port: 4200

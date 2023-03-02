@@ -6,12 +6,14 @@ description: deployment using s3 storage
 version: snapshot
 # The work queue that will handle this deployment's runs
 work_queue_name: kubernetes
+work_pool_name: null
 tags: []
 parameters:
   i: 1
 schedule: null
+is_schedule_active: null
 infra_overrides:
-  image: orion-registry:5000/flow:latest
+  image: prefect-registry:5000/flow:latest
   customizations:
   - op: add
     path: /spec/template/spec/containers/0/env/-
@@ -37,7 +39,7 @@ infrastructure:
   labels: {}
   name: null
   command: null
-  image: prefecthq/prefect:2.7.0-python3.9
+  image: prefecthq/prefect:2.8.3-python3.9
   namespace: default
   service_account_name: null
   image_pull_policy: null
@@ -57,7 +59,7 @@ infrastructure:
           - name: prefect-job
             env: []
   customizations: []
-  job_watch_timeout_seconds: 5
+  job_watch_timeout_seconds: null
   pod_watch_timeout_seconds: 60
   stream_output: true
   finished_job_ttl: null
@@ -75,7 +77,7 @@ storage:
   aws_secret_access_key: null
   _is_anonymous: false
   _block_document_name: minio-flows
-  _block_document_id: 44e66b95-ca33-478c-9317-2c6ee0df3819
+  _block_document_id: 4e75ae5d-cf1d-4c4b-9f34-79ef987d5583
   block_type_slug: s3
   _block_type_slug: s3
 path: increment
@@ -86,7 +88,9 @@ parameter_openapi_schema:
   properties:
     i:
       title: i
+      position: 0
       type: integer
   required:
   - i
   definitions: null
+timestamp: '2023-03-02T04:20:12.936300+00:00'

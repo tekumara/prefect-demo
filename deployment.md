@@ -6,15 +6,15 @@
 
 1. import the flow module
 1. set infrastructure:
-   1. if `--infra-block` is provided, load the block from the Orion API
+   1. if `--infra-block` is provided, load the block from the server API
    1. otherwise use defaults from the type specified by `--infra` (defaulting to the process type if none specified)
-1. create a `Deployment` object and load existing deployment by name from the Orion API, if any. This populates server-side settings if any (eg: description, version, tags). If no description, use the flow docstring.
+1. create a `Deployment` object and load existing deployment by name from the server API, if any. This populates server-side settings if any (eg: description, version, tags). If no description, use the flow docstring.
 1. generate the flow parameter openapi schema
 1. update the `Deployment` object with runtime settings
 1. write a default _.prefectignore_ file if one doesn't already exist
 1. upload the flow to storage:
-   1. if `--storage-block` is provided, load the block from the Orion API, and use it to upload the current directory to the storage location
-   1. otherwise, use the default storage ie: `LocalFileSystem` with a `basepath` set to the current directory (eg: _/Users/tekumara/code/orion-demo_) and no upload.
+   1. if `--storage-block` is provided, load the block from the server API, and use it to upload the current directory to the storage location
+   1. otherwise, use the default storage ie: `LocalFileSystem` with a `basepath` set to the current directory (eg: _/Users/tekumara/code/prefect-demo_) and no upload.
 1. and write _$flowname-deployment.yaml_ file consisting of:
    1. editable fields, ie: deployment name, description, tags, parameters, schedule, infrastructure
    1. system-generated fields, everything else, eg: flow name, storage, parameter schema
@@ -24,11 +24,11 @@ eg:
 ```
 $ prefect deployment build flows/param_flow.py:increment -n my-deployment -i kubernetes-job
 Found flow 'increment'
-Default '.prefectignore' file written to /Users/tekumara/code/orion-demo/.prefectignore
-Deployment YAML created at '/Users/tekumara/code/orion-demo/increment-deployment.yaml'.
+Default '.prefectignore' file written to /Users/tekumara/code/prefect-demo/.prefectignore
+Deployment YAML created at '/Users/tekumara/code/prefect-demo/increment-deployment.yaml'.
 ```
 
-It's not obvious from these log lines but `build` is saving the flow to storage. In this case storage is a `LocalFileSystem` object with basepath = `/Users/tekumara/code/orion-demo/`
+It's not obvious from these log lines but `build` is saving the flow to storage. In this case storage is a `LocalFileSystem` object with basepath = `/Users/tekumara/code/prefect-demo/`
 
 ## Deployment apply
 
@@ -43,7 +43,7 @@ It's not obvious from these log lines but `build` is saving the flow to storage.
 
 To [load a flow from a deployment](https://github.com/PrefectHQ/prefect/blob/30ca715/src/prefect/deployments.py#L32), the prefect engine will:
 
-1. retrieve the storage block from the Orion API, or use LocalFileSystem storage if none specified.
+1. retrieve the storage block from the server API, or use LocalFileSystem storage if none specified.
 1. call `storage_block.get_directory(from_path=None, local_path=".")`:
    - LocalFileSystem copies basepath into the current directory
    - RemoteFileSystem downloads basepath into the current directory
@@ -70,7 +70,7 @@ deployment = Deployment.build_from_flow(
 
    # Create a new anonymous infra block with these params on apply
    infrastructure=KubernetesJob(
-      image="orion-registry:5000/flow:latest",
+      image="prefect-registry:5000/flow:latest",
       env={"APP_ENVIRONMENT": "prod"},
    ),
    parameters={"i": 1},

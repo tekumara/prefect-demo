@@ -1,6 +1,6 @@
 include *.mk
 
-export KUBECONFIG=$(HOME)/.k3d/kubeconfig-orion.yaml
+export KUBECONFIG=$(HOME)/.k3d/kubeconfig-prefect.yaml
 
 ## create cluster and install minio and prefect
 kubes: cluster kubes-minio kubes-prefect
@@ -8,17 +8,17 @@ kubes: cluster kubes-minio kubes-prefect
 ## create k3s cluster
 cluster:
 # enable ephmeral containers for profiling
-	k3d cluster create orion --registry-create orion-registry:0.0.0.0:5550 \
+	k3d cluster create prefect --registry-create prefect-registry:0.0.0.0:5550 \
 		-p 4200:80@loadbalancer -p 9000:9000@loadbalancer -p 9001:9001@loadbalancer \
 		-p 10001:10001@loadbalancer -p 8265:8265@loadbalancer -p 6379:6379@loadbalancer \
 		--k3s-arg '--kube-apiserver-arg=feature-gates=EphemeralContainers=true@server:*' \
   		--k3s-arg '--kube-scheduler-arg=feature-gates=EphemeralContainers=true@server:*' \
   		--k3s-arg '--kubelet-arg=feature-gates=EphemeralContainers=true@agent:*' \
 		--wait
-	@echo "Probing until traefik CRDs are created (~60 secs)..." && export KUBECONFIG=$$(k3d kubeconfig write orion) && \
+	@echo "Probing until traefik CRDs are created (~60 secs)..." && export KUBECONFIG=$$(k3d kubeconfig write prefect) && \
 		while ! kubectl get crd ingressroutes.traefik.containo.us 2> /dev/null ; do sleep 10 && echo $$((i=i+10)); done
 	@echo -e "\nTo use your cluster set:\n"
-	@echo "export KUBECONFIG=$$(k3d kubeconfig write orion)"
+	@echo "export KUBECONFIG=$$(k3d kubeconfig write prefect)"
 
 ## install minio
 kubes-minio:
@@ -48,12 +48,12 @@ prefect-helm-repo:
 
 ## install prefect api and agent into kubes cluster
 kubes-prefect: prefect-helm-repo
-	kubectl apply -f infra/ingress-orion.yaml
+	kubectl apply -f infra/ingress-server.yaml
 	kubectl apply -f infra/rbac-dask.yaml
 	kubectl apply -f infra/sa-flows.yaml
-	helm upgrade --install prefect-orion prefect/prefect-orion --version=2022.11.11 \
-		--values infra/values-orion.yaml --wait --debug > /dev/null
-	helm upgrade --install prefect-agent prefect/prefect-agent --version=2022.11.11 \
+	helm upgrade --install prefect-server prefect/prefect-server --version=2023.02.23 \
+		--values infra/values-server.yaml --wait --debug > /dev/null
+	helm upgrade --install prefect-agent prefect/prefect-agent --version=2023.02.23 \
 		--values infra/values-agent.yaml --wait --debug > /dev/null
 	@echo -e "\nProbing for the prefect API to be available (~30 secs)..." && \
 		while ! curl -fsS http://localhost:4200/api/admin/version ; do sleep 5; done && echo
@@ -74,8 +74,8 @@ dask-flow: $(venv)
 ## run ray flow
 ray-flow: export PREFECT_LOCAL_STORAGE_PATH=/tmp/prefect/storage # see https://github.com/PrefectHQ/prefect-ray/issues/26
 # PREFECT_API_URL needs to be accessible from the process running the flow and within the ray cluster
-# to make this work locally, add 127.0.0.1 prefect-orion to /etc/hosts TODO: find a better fix
-ray-flow: export PREFECT_API_URL=http://prefect-orion:4200/api
+# to make this work locally, add 127.0.0.1 prefect-server to /etc/hosts TODO: find a better fix
+ray-flow: export PREFECT_API_URL=http://prefect-server:4200/api
 ray-flow: $(venv)
 	$(venv)/bin/python -m flows.ray_flow
 
@@ -99,11 +99,11 @@ deploy: $(venv) publish
 
 ## start prefect ui
 ui: $(venv)
-	PATH="$(venv)/bin:$$PATH" prefect orion start
+	PATH="$(venv)/bin:$$PATH" prefect server start
 
 ## show kube logs
 kubes-logs:
-	kubectl logs -l "app.kubernetes.io/name in (prefect-orion, prefect-agent)" -f --tail=-1
+	kubectl logs -l "app.kubernetes.io/name in (prefect-server, prefect-agent)" -f --tail=-1
 
 ## show flow run logs
 logs: export PREFECT_API_URL=http://localhost:4200/api
@@ -115,14 +115,14 @@ flow-runs: export PREFECT_API_URL=http://localhost:4200/api
 flow-runs:
 	$(venv)/bin/prefect flow-run ls
 
-## access orion.db in kubes
+## access .db in kubes
 kubes-db:
-	kubectl exec -i -t deploy/prefect-orion-api -- /bin/bash -c 'hash sqlite3 || (apt-get update && apt-get install sqlite3) && sqlite3 ~/.prefect/orion.db'
+	kubectl exec -i -t deploy/prefect-server -- /bin/bash -c 'hash sqlite3 || (apt-get update && apt-get install sqlite3) && sqlite3 ~/.prefect/prefect.db'
 
-## upgrade to latest version of orion
+## upgrade to latest version of prefect
 upgrade:
-	latest=$$(PIP_REQUIRE_VIRTUALENV=false pip index versions prefect | grep 'LATEST' | sed -E 's/[[:space:]]+LATEST:[[:space:]]+([^[:space:]]+).*/\1/') && \
-		rg -l 2.7.0 | xargs sed -i '' "s/2.7.0/$$latest/g"
+	latest=$$(PIP_REQUIRE_VIRTUALENV=false pip index versions prefect | head -n1 | sed -E 's/.*\(([0-9.]+)\)/\1/') && \
+		rg -l 2.8.3 | xargs sed -i '' "s/2.8.3/$$latest/g"
 	make install
 
 ## inspect block document

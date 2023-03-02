@@ -54,7 +54,7 @@ increment_s3: Deployment = Deployment.build_from_flow(
     # rather than creating a new block
     infrastructure=KubernetesJob(),  # type: ignore
     infra_overrides=dict(
-        image="orion-registry:5000/flow:latest",
+        image="prefect-registry:5000/flow:latest",
         # used to download the stored flow from minio when the job starts
         customizations=aws_creds_customizations,
         service_account_name="prefect-flows",
@@ -73,7 +73,7 @@ increment_local: Deployment = Deployment.build_from_flow(
     work_queue_name="kubernetes",
     infrastructure=KubernetesJob(),  # type: ignore
     infra_overrides=dict(
-        image="orion-registry:5000/flow:latest",
+        image="prefect-registry:5000/flow:latest",
         service_account_name="prefect-flows",
         finished_job_ttl=300,
     ),
@@ -89,7 +89,7 @@ greetings_dask: Deployment = Deployment.build_from_flow(
     work_queue_name="kubernetes",
     infrastructure=KubernetesJob(),  # type: ignore
     infra_overrides=dict(
-        image="orion-registry:5000/flow:latest",
+        image="prefect-registry:5000/flow:latest",
         service_account_name="prefect-flows",
         finished_job_ttl=300,
     ),
@@ -106,7 +106,7 @@ parent_local: Deployment = Deployment.build_from_flow(
     work_queue_name="kubernetes",
     infrastructure=KubernetesJob(),  # type: ignore
     infra_overrides=dict(
-        image="orion-registry:5000/flow:latest",
+        image="prefect-registry:5000/flow:latest",
         service_account_name="prefect-flows",
         finished_job_ttl=300,
     ),
@@ -121,7 +121,7 @@ child_local: Deployment = Deployment.build_from_flow(
     work_queue_name="kubernetes",
     infrastructure=KubernetesJob(),  # type: ignore
     infra_overrides=dict(
-        image="orion-registry:5000/flow:latest",
+        image="prefect-registry:5000/flow:latest",
         service_account_name="prefect-flows",
         finished_job_ttl=300,
     ),

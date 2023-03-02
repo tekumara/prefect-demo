@@ -1,12 +1,12 @@
 agent:
   image:
-    prefectTag: 2.7.0-python3.9
+    prefectTag: 2.8.3-python3.9
 
   config:
     workQueues:
       - kubernetes
 
-  apiConfig: orion
+  apiConfig: server
 
-  orionApiConfig:
-    apiUrl: http://prefect-orion:4200/api
+  serverApiConfig:
+    apiUrl: http://prefect-server:4200/api

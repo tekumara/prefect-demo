@@ -1,6 +1,6 @@
-orion:
+server:
   image:
-    prefectTag: 2.7.0-python3.9
+    prefectTag: 2.8.3-python3.9
 
 postgresql:
   # use sqlite instead

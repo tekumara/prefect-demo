@@ -1,6 +1,6 @@
-# Orion Demo
+# Prefect Demo
 
-Prefect Orion examples running self-contained in a local kubernetes cluster. Batteries (mostly) included. 🔋
+Prefect 2 (aka Orion) examples running self-contained in a local kubernetes cluster. Batteries (mostly) included. 🔋
 
 ## Getting started
 
@@ -46,7 +46,7 @@ Flows
 1. `make param-flow` or `make dask-flow` or `make ray-flow` or `make sub-flow`
 1. `make ui` then navigate to [http://localhost:4200/](http://localhost:4200/)
 
-The orion sqlite database is stored in _~/.prefect/orion.db_
+The orion sqlite database is stored in _~/.prefect/prefect.db_
 
 ### Kubernetes
 
@@ -79,7 +79,7 @@ Prefect API: [http://localhost:4200/api/](http://localhost:4200/api/)
 
 ## References
 
-- [Orion tutorials](https://orion-docs.prefect.io/tutorials/first-steps/) from which some of the examples are taken
+- [Tutorials](https://docs.prefect.io/tutorials/first-steps/) from which some of the examples are taken
 
 ## Cloud
 
@@ -116,7 +116,6 @@ Major
 
 - [Support flat mapping #6462](https://github.com/PrefectHQ/prefect/issues/6462)
 - [There is no visibility of agents in the UI #6256](https://github.com/PrefectHQ/prefect/issues/6256)
-- [Notification for runs that do not complete after duration](https://github.com/PrefectHQ/prefect/issues/6939)
 - [Zombie tasks consume concurrency slots](https://github.com/PrefectHQ/prefect/issues/5995)
 - [Handle flow run restarts caused by infrastructure events](https://github.com/PrefectHQ/prefect/issues/7116)
 
@@ -126,9 +125,7 @@ Minor
 - [Stream logs via CLI](https://github.com/PrefectHQ/prefect/issues/5987)
 - [report ErrImagePull in Prefect UI to improve observability](https://github.com/PrefectHQ/prefect/issues/5688)
 - [FileNotFoundError errors when running with a remote ray cluster #26](https://github.com/PrefectHQ/prefect-ray/issues/26)
-- [Automatically delete Kubernetes jobs after a flow run](https://github.com/PrefectHQ/prefect/issues/5755)
 - [Add Flow.submit interface for subflows on external infrastructure](https://github.com/PrefectHQ/prefect/issues/6689)
-- [prefect-version does not match image when prefectTag set](https://github.com/PrefectHQ/prefect-helm/issues/81)
 - mapped tasks aren't collapsed in the UI like they were in Prefect 1
 
 See all [roadmap tagged issues](https://github.com/PrefectHQ/prefect/labels/status%3Aroadmap) for planned work.

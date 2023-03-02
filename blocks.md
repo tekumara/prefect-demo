@@ -1,13 +1,13 @@
 # Blocks
 
-[Blocks](https://orion-docs.prefect.io/concepts/blocks/) are the core abstraction for storing configuration data in the Orion database, and the common interface for interacting with external systems that require configuration.
+[Blocks](https://docs.prefect.io/concepts/blocks/) are the core abstraction for storing configuration data in the server database, and the common interface for interacting with external systems that require configuration.
 
-Blocks can be configured once and managed in a central location (Orion). Flows can then reference this central configuration by name, similar to AWS Parameter Store. Unlike AWS Parameter Store, Blocks also provide a client-side SDK for interacting with an external system via that configuration. Prefect plans to use the Blocks abstraction to build out an SDK for interacting with all the tools in the modern data stack.
+Blocks can be configured once and managed in a central location (the Prefect server). Flows can then reference this central configuration by name, similar to AWS Parameter Store. Unlike AWS Parameter Store, Blocks also provide a client-side SDK for interacting with an external system via that configuration. Prefect plans to use the Blocks abstraction to build out an SDK for interacting with all the tools in the modern data stack.
 
-Block classes are pydantic models with arbitrary fields/methods and a common API for saving/loading them from the Orion API/database:
+Block classes are pydantic models with arbitrary fields/methods and a common API for saving/loading them from the server API/database:
 
-- [load](https://orion-docs.prefect.io/api-ref/prefect/blocks/core/#prefect.blocks.core.Block.load) retrieves a named block from the Orion API/database.
-- [save](https://orion-docs.prefect.io/api-ref/prefect/blocks/core/#prefect.blocks.core.Block.save) saves a named block to the Orion API/database.
+- [load](https://docs.prefect.io/api-ref/prefect/blocks/core/#prefect.blocks.core.Block.load) retrieves a named block from the server API/database.
+- [save](https://docs.prefect.io/api-ref/prefect/blocks/core/#prefect.blocks.core.Block.save) saves a named block to the server API/database.
 
 An instance of a block is stored as a block document with a name or without (aka an anonymous block).
 
@@ -17,13 +17,12 @@ Block classes include:
 - EnvironmentVariable block that reads its value from an environment variable
 - KubernetesClusterConfig
 - Slack Webhook
-- [Storage](https://orion-docs.prefect.io/concepts/storage/)
-- [File systems](https://orion-docs.prefect.io/concepts/filesystems/)
-- The [OrionPackager](https://orion-docs.prefect.io/api-ref/prefect/packaging/#prefect.packaging.orion.OrionPackager) which stores Flows as anonyomous JSON blocks.
+- [Storage](https://docs.prefect.io/concepts/storage/)
+- [File systems](https://docs.prefect.io/concepts/filesystems/)
 
 ## Example
 
-RemoteFileSystem is a block, and so [configured RemoteFileSystem instances can be saved](https://orion-docs.prefect.io/concepts/filesystems/#saving-and-loading-file-systems), eg:
+RemoteFileSystem is a block, and so [configured RemoteFileSystem instances can be saved](https://docs.prefect.io/concepts/filesystems/#saving-and-loading-file-systems), eg:
 
 ```python
 fs = RemoteFileSystem(basepath="s3://my-bucket/folder/")
@@ -93,7 +92,7 @@ select id,name,slug from block_type;
 id|name|slug
 88d49efe-c6da-4dab-ab10-d1d1ad12a439|Slack Webhook|slack-webhook
 7d40d174-bade-4f19-9ae2-597a932b1d2d|JSON|json
-2b0bf181-4651-4c9f-bbd2-40e218c37cf6|String|string
+2b0bf181-4651-4c9f-bbd2-40e2.8.37cf6|String|string
 d214ce8c-9c28-438c-b19c-5c0c27ac4d60|Date Time|date-time
 9b8d7f99-1cc0-4827-9ea4-b246a82ebd25|Secret|secret
 3a30cb61-a343-4662-a032-3eefc2e3a65f|Local File System|local-file-system
@@ -122,7 +121,7 @@ curl "http://localhost:4200/api/block_documents/b61967e0-f665-41a4-84d1-cf06f551
   "name": "anonymous:6e5336ad1712905d5ca107b432a50e99",
   "data": {
     "value": {
-      "flow": "{\"source\": \"from prefect import flow, get_run_logger\\nfrom prefect.blocks.storage import FileStorageBlock\\nfrom prefect.deployments import Deployment\\nfrom prefect.flow_runners import KubernetesFlowRunner\\n\\n\\n@flow\\ndef kubes_flow() -> None:\\n    # shown in kubectl logs but not prefect ui\\n    print(\\\"Hello from Kubernetes!\\\")\\n    # show in prefect ui\\n    logger = get_run_logger()\\n    logger.info(\\\"Hello Prefect UI from Kubernetes!\\\")\\n\\n\\nDeployment(\\n    name=\\\"kubes-deployment\\\",\\n    flow=kubes_flow,\\n    flow_runner=KubernetesFlowRunner(\\n        image=\\\"orion-registry:5000/flow:latest\\\",\\n        stream_output=True,\\n        env={\\\"AWS_ACCESS_KEY_ID\\\": \\\"minioadmin\\\", \\\"AWS_SECRET_ACCESS_KEY\\\": \\\"minioadmin\\\"},\\n    )\\n)\\n\", \"file_name\": \"kubes_flow.py\", \"symbol_name\": \"kubes_flow\"}"
+      "flow": "{\"source\": \"from prefect import flow, get_run_logger\\nfrom prefect.blocks.storage import FileStorageBlock\\nfrom prefect.deployments import Deployment\\nfrom prefect.flow_runners import KubernetesFlowRunner\\n\\n\\n@flow\\ndef kubes_flow() -> None:\\n    # shown in kubectl logs but not prefect ui\\n    print(\\\"Hello from Kubernetes!\\\")\\n    # show in prefect ui\\n    logger = get_run_logger()\\n    logger.info(\\\"Hello Prefect UI from Kubernetes!\\\")\\n\\n\\nDeployment(\\n    name=\\\"kubes-deployment\\\",\\n    flow=kubes_flow,\\n    flow_runner=KubernetesFlowRunner(\\n        image=\\\"prefect-registry:5000/flow:latest\\\",\\n        stream_output=True,\\n        env={\\\"AWS_ACCESS_KEY_ID\\\": \\\"minioadmin\\\", \\\"AWS_SECRET_ACCESS_KEY\\\": \\\"minioadmin\\\"},\\n    )\\n)\\n\", \"file_name\": \"kubes_flow.py\", \"symbol_name\": \"kubes_flow\"}"
     }
   },
   "block_schema_id": "02afbc00-fc1e-4dd5-8d42-57b165376620",
@@ -150,7 +149,7 @@ curl "http://localhost:4200/api/block_documents/b61967e0-f665-41a4-84d1-cf06f551
     "block_type": {
       "id": "4dfbd6a2-ba1b-4b44-bfb3-c2732f9fe5dd",
       "created": "2022-07-09T06:38:11.722069+00:00",
-      "updated": "2022-07-09T06:38:11.722297+00:00",
+      "updated": "2022-07-09T06:38:11.7222.8.30:00",
       "name": "JSON",
       "logo_url": null,
       "documentation_url": null,
@@ -164,7 +163,7 @@ curl "http://localhost:4200/api/block_documents/b61967e0-f665-41a4-84d1-cf06f551
   "block_type": {
     "id": "4dfbd6a2-ba1b-4b44-bfb3-c2732f9fe5dd",
     "created": "2022-07-09T06:38:11.722069+00:00",
-    "updated": "2022-07-09T06:38:11.722297+00:00",
+    "updated": "2022-07-09T06:38:11.7222.8.30:00",
     "name": "JSON",
     "logo_url": null,
     "documentation_url": null,
@@ -179,4 +178,4 @@ curl "http://localhost:4200/api/block_documents/b61967e0-f665-41a4-84d1-cf06f551
 
 ## Reference
 
-- [Concepts - Blocks](https://orion-docs.prefect.io/concepts/blocks/)
+- [Concepts - Blocks](https://docs.prefect.io/concepts/blocks/)
