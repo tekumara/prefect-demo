@@ -86,7 +86,7 @@ Prefect API: [http://localhost:4200/api/](http://localhost:4200/api/)
 To run flows with a cloud workspace set:
 
 ```
-export PREFECT_API_URL=https://api-beta.prefect.io/api/accounts/$accountid/workspaces/$workspaceid
+export PREFECT_API_URL=https://api.prefect.cloud/api/accounts/$accountid/workspaces/$workspaceid
 export PREFECT_API_KEY=<your api key>
 ```
 
