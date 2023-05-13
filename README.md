@@ -16,7 +16,7 @@ Prerequisites:
 
 To start:
 
-- Install the [development environment](CONTRIBUTING.md#Development-environment): `make install`
+- Install the [development environment](CONTRIBUTING.md#getting-started): `make install`
 
 ## Examples
 
