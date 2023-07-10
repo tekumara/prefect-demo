@@ -51,9 +51,9 @@ kubes-prefect: prefect-helm-repo
 	kubectl apply -f infra/ingress-server.yaml
 	kubectl apply -f infra/rbac-dask.yaml
 	kubectl apply -f infra/sa-flows.yaml
-	helm upgrade --install prefect-server prefect/prefect-server --version=2023.02.23 \
+	helm upgrade --install prefect-server prefect/prefect-server --version=2023.07.07 \
 		--values infra/values-server.yaml --wait --debug > /dev/null
-	helm upgrade --install prefect-agent prefect/prefect-agent --version=2023.02.23 \
+	helm upgrade --install prefect-agent prefect/prefect-agent --version=2023.07.07 \
 		--values infra/values-agent.yaml --wait --debug > /dev/null
 	@echo -e "\nProbing for the prefect API to be available (~30 secs)..." && \
 		while ! curl -fsS http://localhost:4200/api/admin/version ; do sleep 5; done && echo
