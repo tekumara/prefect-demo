@@ -117,7 +117,6 @@ Major
 - [Support flat mapping #6462](https://github.com/PrefectHQ/prefect/issues/6462)
 - [There is no visibility of agents in the UI #6256](https://github.com/PrefectHQ/prefect/issues/6256)
 - [Zombie tasks consume concurrency slots](https://github.com/PrefectHQ/prefect/issues/5995)
-- [Handle flow run restarts caused by infrastructure events](https://github.com/PrefectHQ/prefect/issues/7116)
 
 Minor
 
@@ -126,6 +125,7 @@ Minor
 - [report ErrImagePull in Prefect UI to improve observability](https://github.com/PrefectHQ/prefect/issues/5688)
 - [FileNotFoundError errors when running with a remote ray cluster #26](https://github.com/PrefectHQ/prefect-ray/issues/26)
 - [Add Flow.submit interface for subflows on external infrastructure](https://github.com/PrefectHQ/prefect/issues/6689)
+- [not a known member of module "prefect.runtime"](https://github.com/PrefectHQ/prefect/issues/9027)
 - mapped tasks aren't collapsed in the UI like they were in Prefect 1
 
 See all [roadmap tagged issues](https://github.com/PrefectHQ/prefect/labels/status%3Aroadmap) for planned work.

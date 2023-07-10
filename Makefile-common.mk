@@ -14,7 +14,7 @@ $(pip):
 # create venv using system python even when another venv is active
 	PATH=$${PATH#$${VIRTUAL_ENV}/bin:} python3 -m venv --clear $(venv)
 	$(venv)/bin/python --version
-	$(pip) install pip~=22.2 wheel~=0.37
+	$(pip) install pip~=23.1 wheel~=0.40
 
 $(venv): setup.py $(pip)
 	$(pip) install -e '.[dev]'

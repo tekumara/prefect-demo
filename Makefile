@@ -85,7 +85,7 @@ sub-flow: $(venv)
 
 ## build and push docker image
 publish:
-	docker compose build app && docker compose push app
+	docker buildx bake --push
 
 ## deploy flows to run on kubernetes
 deploy: export PREFECT_API_URL=http://localhost:4200/api
@@ -122,7 +122,7 @@ kubes-db:
 ## upgrade to latest version of prefect
 upgrade:
 	latest=$$(PIP_REQUIRE_VIRTUALENV=false pip index versions prefect | tail -n +1 | head -n1 | sed -E 's/.*\(([0-9.]+)\)/\1/') && \
-		rg -l 2.8.3 | xargs sed -i '' "s/2.8.3/$$latest/g"
+		rg -l 2.10.20 | xargs sed -i '' "s/2.10.20/$$latest/g"
 	make install
 
 ## inspect block document

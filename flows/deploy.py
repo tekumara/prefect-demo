@@ -1,4 +1,4 @@
-from prefect.deployments import Deployment
+from prefect.deployments.deployments import Deployment
 from prefect.infrastructure import KubernetesJob
 
 import flows.child_flow

@@ -1,5 +1,5 @@
 from prefect import flow, get_run_logger
-from prefect.deployments import run_deployment
+from prefect.deployments.deployments import run_deployment
 
 
 @flow
