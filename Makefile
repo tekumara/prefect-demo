@@ -101,9 +101,17 @@ deploy: $(venv) publish
 ui: $(venv)
 	PATH="$(venv)/bin:$$PATH" prefect server start
 
-## show kube logs
+## show kube logs for the server and agent
 kubes-logs:
 	kubectl logs -l "app.kubernetes.io/name in (prefect-server, prefect-agent)" -f --tail=-1
+
+## show kube logs for flows
+kubes-logs-jobs:
+	kubectl logs -l "job-name" -f --tail=-1
+
+## show kube logs for dask scheduler and workers
+kubes-logs-dask:
+	kubectl logs -l "app=dask" -f --tail=-1
 
 ## show flow run logs
 logs: export PREFECT_API_URL=http://localhost:4200/api
