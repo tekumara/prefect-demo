@@ -4,7 +4,7 @@ setup(
     name="flows",
     version="0.0.0",
     description="Prefect examples running self-contained in a local kubernetes cluster",
-    python_requires=">=3.9",
+    python_requires=">=3.10",
     packages=find_packages(exclude=["tests"]),
     package_data={
         "": ["py.typed"],
