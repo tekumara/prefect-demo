@@ -12,13 +12,14 @@ setup(
     install_requires=[
         # bokeh is needed for the dask dashboard
         "bokeh==2.4.3",
-        "dask_kubernetes==2022.10.0",
+        "dask_kubernetes==2023.6.1",
         "prefect==2.10.20",
-        "prefect-dask==0.2.1",
-        "prefect-ray==0.2.0.post2",
-        "prefect-shell==0.1.2",
+        "prefect-dask==0.2.4",
+        "prefect-ray==0.2.5",
+        "prefect-shell==0.1.5",
+        "ray==2.5.1",
         # required to read and write flows stored in minio
-        "s3fs~=2022.3",
+        "s3fs~=2023.6.0",
     ],
     extras_require={
         "dev": [
