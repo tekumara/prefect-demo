@@ -5,13 +5,13 @@ name: local
 description: deployment using local storage
 version: snapshot
 # The work queue that will handle this deployment's runs
-work_queue_name: kubernetes
+work_queue_name: default
 work_pool_name: default-agent-pool
 tags: []
 parameters:
   i: 1
 schedule: null
-is_schedule_active: true
+is_schedule_active: null
 infra_overrides:
   image: prefect-registry:5000/flow:latest
   service_account_name: prefect-flows
@@ -68,5 +68,5 @@ parameter_openapi_schema:
   required:
   - i
   definitions: null
-timestamp: '2023-07-13T03:19:25.447158+00:00'
+timestamp: '2023-07-14T02:52:20.273247+00:00'
 triggers: []

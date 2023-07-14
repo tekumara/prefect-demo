@@ -1,10 +1,10 @@
+# see https://github.com/PrefectHQ/prefect-helm/tree/main/charts/prefect-agent
 agent:
   image:
     prefectTag: 2.10.20-python3.9
 
   config:
-    workQueues:
-      - kubernetes
+    workPool: default-agent-pool
 
   apiConfig: server
 

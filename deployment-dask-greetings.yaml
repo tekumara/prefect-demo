@@ -5,7 +5,7 @@ name: dask
 description: dask kubes
 version: snapshot
 # The work queue that will handle this deployment's runs
-work_queue_name: kubernetes
+work_queue_name: default
 work_pool_name: default-agent-pool
 tags: []
 parameters:
@@ -15,7 +15,7 @@ parameters:
   - ford
   - marvin
 schedule: null
-is_schedule_active: true
+is_schedule_active: null
 infra_overrides:
   image: prefect-registry:5000/flow:latest
   service_account_name: prefect-flows
@@ -74,5 +74,5 @@ parameter_openapi_schema:
   required:
   - names
   definitions: null
-timestamp: '2023-07-13T03:19:25.475949+00:00'
+timestamp: '2023-07-14T02:52:20.297755+00:00'
 triggers: []

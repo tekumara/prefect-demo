@@ -5,13 +5,13 @@ name: s3
 description: deployment using s3 storage
 version: snapshot
 # The work queue that will handle this deployment's runs
-work_queue_name: kubernetes
+work_queue_name: default
 work_pool_name: default-agent-pool
 tags: []
 parameters:
   i: 1
 schedule: null
-is_schedule_active: true
+is_schedule_active: null
 infra_overrides:
   image: prefect-registry:5000/flow:latest
   customizations:
@@ -75,9 +75,9 @@ storage:
   bucket_path: minio-flows
   aws_access_key_id: null
   aws_secret_access_key: null
-  _block_document_id: b59c9ea9-a129-40b0-801e-f90e5501aeb2
-  _block_document_name: minio-flows
   _is_anonymous: false
+  _block_document_name: minio-flows
+  _block_document_id: a7511b8b-1341-4abb-82b9-8a6cc61c59d2
   block_type_slug: s3
   _block_type_slug: s3
 path: increment
@@ -93,5 +93,5 @@ parameter_openapi_schema:
   required:
   - i
   definitions: null
-timestamp: '2023-07-13T03:19:07.733995+00:00'
+timestamp: '2023-07-14T02:52:03.747536+00:00'
 triggers: []

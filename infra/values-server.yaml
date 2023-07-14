@@ -1,3 +1,4 @@
+# see https://github.com/PrefectHQ/prefect-helm/tree/main/charts/prefect-server
 server:
   image:
     prefectTag: 2.10.20-python3.9
