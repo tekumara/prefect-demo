@@ -35,7 +35,7 @@ def the_end_handle_ex(scores: List[int | Exception]) -> None:
 
 
 @flow
-def handle_failure() -> None:
+def failure() -> None:
     logger = get_run_logger()
     logger.info("Starting handle failure flow")
 
@@ -44,9 +44,10 @@ def handle_failure() -> None:
     s = success.submit()
 
     # this will run regardless of upstream failure and receive an exception for failed tasks
+    # an edge will be recorded to the fail task
     the_end_handle_ex.submit([allow_failure(f), allow_failure(s)])  # type: ignore
 
-    # an alternative way
+    # an alternative way - this won't have an edge to the fail task
 
     # wait() will block and return the task state
     # we then filter to completed (ie: successful) states
@@ -55,9 +56,6 @@ def handle_failure() -> None:
     # this will run regardless of upstream failure and only receive the completed tasks
     the_end.submit(completed_states)  # type: ignore
 
-    # NB: unlike @task(trigger=any_successful) in Prefect 1 the dag is dynamically
-    # constructed at runtime and so the_end / the_end_handle_ex will not have an upstream edge to the failed task
-
 
 if __name__ == "__main__":
-    handle_failure()
+    failure()

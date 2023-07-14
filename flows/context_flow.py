@@ -19,14 +19,17 @@ def log_context() -> None:
     flow_ctx = prefect.context.FlowRunContext.get()
 
     logger.info(f"{flow_ctx.flow.name=}")  # pyright: ignore[reportOptionalMemberAccess]
+    logger.info(f"{flow_ctx.flow_run.parameters=}")  # pyright: ignore[reportOptionalMemberAccess]
 
 
-@flow
-def context() -> None:
+@flow(log_prints=True)
+def context(i: int) -> None:
     logger = get_run_logger()
-    logger.info("Starting hello flow")
+    logger.info("Starting context flow")
+    print("my name is", prefect.runtime.flow_run.name)  # type: ignore see https://github.com/PrefectHQ/prefect/issues/9027
+    print("i belong to deployment", prefect.runtime.deployment.name)  # type: ignore see https://github.com/PrefectHQ/prefect/issues/9027
     log_context()
 
 
 if __name__ == "__main__":
-    context()
+    context(42)
