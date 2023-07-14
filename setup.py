@@ -13,7 +13,7 @@ setup(
         # bokeh is needed for the dask dashboard
         "bokeh==2.4.3",
         "dask_kubernetes==2023.6.1",
-        "prefect==2.10.20",
+        "prefect==2.10.21",
         "prefect-dask==0.2.4",
         "prefect-ray==0.2.5",
         "prefect-shell==0.1.5",
