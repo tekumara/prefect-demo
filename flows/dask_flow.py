@@ -20,7 +20,7 @@ def say_goodbye(name: str) -> None:
 # TODO: can the task runner be parameterised so we don't duplicate the flow with dask_kubes_flow?
 # see https://github.com/PrefectHQ/prefect/issues/5560
 @flow(task_runner=DaskTaskRunner())
-def greetings(names: List[str]) -> None:
+def dask(names: List[str]) -> None:
     for name in names:
         # tasks must be submitted to run on dask
         # if called without .submit() they are still tracked but
@@ -30,4 +30,4 @@ def greetings(names: List[str]) -> None:
 
 
 if __name__ == "__main__":
-    greetings(["arthur", "trillian", "ford", "marvin"])
+    dask(["arthur", "trillian", "ford", "marvin"])

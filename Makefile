@@ -93,7 +93,7 @@ deploy: $(venv) publish
 # use minio as the s3 remote file system
 	set -e && . config/fsspec-env.sh && $(venv)/bin/python -m flows.deploy
 	$(venv)/bin/prefect deployment ls
-	for deployment in increment/s3 increment/local greetings/dask parent/local; do $(venv)/bin/prefect deployment run $$deployment; done
+	for deployment in param/s3 param/local dask-kubes/local parent/local; do $(venv)/bin/prefect deployment run $$deployment; done
 	$(venv)/bin/prefect flow-run ls
 	@echo Visit http://localhost:4200
 

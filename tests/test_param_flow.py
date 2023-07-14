@@ -3,7 +3,7 @@ import pytest
 from prefect import State  # pyright: ignore[reportPrivateImportUsage]
 from prefect.server.schemas.states import StateType
 
-from flows.param_flow import add_one, increment
+from flows.param_flow import add_one, param
 
 
 @pytest.fixture(scope="session")
@@ -21,7 +21,7 @@ def test_underlying_fn():
 
 
 def test_increment(prefect_test_harness):
-    state: State = increment(42)  # type: ignore see https://github.com/PrefectHQ/prefect/issues/6049
+    state: State = param(42)  # type: ignore see https://github.com/PrefectHQ/prefect/issues/6049
 
     assert state.type == StateType.COMPLETED
     assert state.result() == 43

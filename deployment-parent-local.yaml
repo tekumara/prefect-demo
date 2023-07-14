@@ -10,7 +10,7 @@ work_pool_name: default-agent-pool
 tags: []
 parameters: {}
 schedule: null
-is_schedule_active: true
+is_schedule_active: null
 infra_overrides:
   image: prefect-registry:5000/flow:latest
   service_account_name: prefect-flows
@@ -62,5 +62,5 @@ parameter_openapi_schema:
   properties: {}
   required: null
   definitions: null
-timestamp: '2023-07-14T04:35:21.019016+00:00'
+timestamp: '2023-07-14T08:25:32.299370+00:00'
 triggers: []

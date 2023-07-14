@@ -40,7 +40,7 @@ def summary(count: List[int]) -> Tuple[int, int]:
 
 
 @flow
-def map_flow() -> None:
+def flatten() -> None:
     logger = get_run_logger()
     # 10 batches
     batches = fetch_batches.submit()
@@ -57,4 +57,4 @@ def map_flow() -> None:
 
 
 if __name__ == "__main__":
-    map_flow()
+    flatten()

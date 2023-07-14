@@ -6,8 +6,26 @@ from prefect.utilities.asyncutils import Sync
 import flows.another_module
 
 
+@task
+def add_one(i: int) -> int:
+    return i + 1
+
+
+@task
+def fail() -> int:
+    logger = get_run_logger()
+    logger.info("Starting fail task")
+    raise Exception("halt and catch fire")
+
+
+@task
+def print_number(i: int) -> None:
+    logger = get_run_logger()
+    logger.info(f"{i=}")
+
+
 @flow
-def increment(i: int) -> PrefectFuture[int, Sync]:
+def param(i: int) -> PrefectFuture[int, Sync]:
     """A parameterised flow that references other modules"""
 
     # logger requires a flow or task run context
@@ -38,27 +56,9 @@ def increment(i: int) -> PrefectFuture[int, Sync]:
     return number
 
 
-@task
-def add_one(i: int) -> int:
-    return i + 1
-
-
-@task
-def fail() -> int:
-    logger = get_run_logger()
-    logger.info("Starting fail task")
-    raise Exception("halt and catch fire")
-
-
-@task
-def print_number(i: int) -> None:
-    logger = get_run_logger()
-    logger.info(f"{i=}")
-
-
 if __name__ == "__main__":
     # to demonstrate that this is a Flow object
-    f: Flow = increment
+    f: Flow = param
 
     # execute Flow, the number future returned from the flow is resolved to a State
     r: State = f(1)  # type: ignore see https://github.com/PrefectHQ/prefect/issues/6049

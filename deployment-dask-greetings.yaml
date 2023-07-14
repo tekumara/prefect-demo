@@ -1,7 +1,7 @@
 ###
-### A complete description of a Prefect Deployment for flow 'greetings'
+### A complete description of a Prefect Deployment for flow 'dask-kubes'
 ###
-name: dask
+name: local
 description: dask kubes
 version: snapshot
 # The work queue that will handle this deployment's runs
@@ -16,7 +16,7 @@ parameters:
   - ford
   - marvin
 schedule: null
-is_schedule_active: true
+is_schedule_active: null
 infra_overrides:
   image: prefect-registry:5000/flow:latest
   service_account_name: prefect-flows
@@ -57,11 +57,11 @@ infrastructure:
 ###
 ### DO NOT EDIT BELOW THIS LINE
 ###
-flow_name: greetings
+flow_name: dask-kubes
 manifest_path: null
 storage: null
 path: /opt/prefect/flows
-entrypoint: flows/dask_kubes_flow.py:greetings
+entrypoint: flows/dask_kubes_flow.py:dask_kubes
 parameter_openapi_schema:
   title: Parameters
   type: object
@@ -75,5 +75,5 @@ parameter_openapi_schema:
   required:
   - names
   definitions: null
-timestamp: '2023-07-14T04:35:20.988959+00:00'
+timestamp: '2023-07-14T08:14:55.787445+00:00'
 triggers: []

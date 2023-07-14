@@ -22,11 +22,11 @@ def log_context() -> None:
 
 
 @flow
-def hello() -> None:
+def context() -> None:
     logger = get_run_logger()
     logger.info("Starting hello flow")
     log_context()
 
 
 if __name__ == "__main__":
-    hello()
+    context()

@@ -2,7 +2,7 @@ from prefect import flow, get_run_logger
 
 
 @flow
-def common_flow(config: dict) -> int:
+def common(config: dict) -> int:
     # show in prefect ui
     logger = get_run_logger()
     logger.info("I am a subgraph that shows up in lots of places!")
@@ -11,15 +11,15 @@ def common_flow(config: dict) -> int:
 
 
 @flow
-def main_flow() -> None:
+def main() -> None:
     # do some things
     # then call another flow function
 
-    data = common_flow(config={})
+    data = common(config={})
     logger = get_run_logger()
     logger.info(f"data = {data}")
     # do more things
 
 
 if __name__ == "__main__":
-    main_flow()
+    main()

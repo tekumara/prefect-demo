@@ -44,7 +44,7 @@ def dask_pod_spec() -> V1Pod:
         adapt_kwargs={"minimum": 1, "maximum": 2},
     )
 )
-def greetings(names: List[str]) -> None:
+def dask_kubes(names: List[str]) -> None:
     for name in names:
         # tasks must be submitted to run on dask
         # if called without .submit() they are still tracked but
@@ -54,4 +54,4 @@ def greetings(names: List[str]) -> None:
 
 
 if __name__ == "__main__":
-    greetings(["arthur", "trillian", "ford", "marvin"])
+    dask_kubes(["arthur", "trillian", "ford", "marvin"])

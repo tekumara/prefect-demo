@@ -20,7 +20,7 @@ def the_end() -> None:
 
 
 @flow
-def failing_flow() -> None:
+def retry() -> None:
     logger = get_run_logger()
     logger.info("Starting failing flow")
     f = unreliable_task.submit()
@@ -30,4 +30,4 @@ def failing_flow() -> None:
 # TODO: deploy and test on Kubes
 
 if __name__ == "__main__":
-    failing_flow()
+    retry()

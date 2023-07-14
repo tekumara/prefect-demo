@@ -39,11 +39,11 @@ aws_creds_customizations = [
 
 
 # upload flow to storage and create deployment yaml file
-increment_s3: Deployment = Deployment.build_from_flow(
+param_s3: Deployment = Deployment.build_from_flow(
     name="s3",
-    flow=flows.param_flow.increment,
+    flow=flows.param_flow.param,
     # output to disk is optional, but we save the yaml representation so we can compare across versions
-    output="deployment-increment-s3.yaml",
+    output="deployment-param-s3.yaml",
     description="deployment using s3 storage",
     version="snapshot",
     work_pool_name="default-agent-pool",
@@ -64,10 +64,10 @@ increment_s3: Deployment = Deployment.build_from_flow(
     parameters={"i": 1},
 )
 
-increment_local: Deployment = Deployment.build_from_flow(
+param_local: Deployment = Deployment.build_from_flow(
     name="local",
-    flow=flows.param_flow.increment,
-    output="deployment-increment-local.yaml",
+    flow=flows.param_flow.param,
+    output="deployment-param-local.yaml",
     description="deployment using local storage",
     version="snapshot",
     work_pool_name="default-agent-pool",
@@ -80,10 +80,10 @@ increment_local: Deployment = Deployment.build_from_flow(
     parameters={"i": 1},
 )
 
-greetings_dask: Deployment = Deployment.build_from_flow(
-    name="dask",
-    flow=flows.dask_kubes_flow.greetings,
-    output="deployment-dask-greetings.yaml",
+dask_kubes_local: Deployment = Deployment.build_from_flow(
+    name="local",
+    flow=flows.dask_kubes_flow.dask_kubes,
+    output="deployment-dask-kubes.yaml",
     description="dask kubes",
     version="snapshot",
     work_pool_name="default-agent-pool",
@@ -136,8 +136,8 @@ def apply(deployment: Deployment) -> None:
 
 
 if __name__ == "__main__":
-    apply(increment_s3)
-    apply(increment_local)
-    apply(greetings_dask)
+    apply(param_s3)
+    apply(param_local)
+    apply(dask_kubes_local)
     apply(parent_local)
     apply(child_local)

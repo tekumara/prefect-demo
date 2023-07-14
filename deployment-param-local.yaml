@@ -1,8 +1,8 @@
 ###
 ### A complete description of a Prefect Deployment for flow 'param'
 ###
-name: s3
-description: deployment using s3 storage
+name: local
+description: deployment using local storage
 version: snapshot
 # The work queue that will handle this deployment's runs
 work_queue_name: default
@@ -14,23 +14,6 @@ schedule: null
 is_schedule_active: null
 infra_overrides:
   image: prefect-registry:5000/flow:latest
-  customizations:
-  - op: add
-    path: /spec/template/spec/containers/0/env/-
-    value:
-      name: AWS_ACCESS_KEY_ID
-      valueFrom:
-        secretKeyRef:
-          name: minio
-          key: root-user
-  - op: add
-    path: /spec/template/spec/containers/0/env/-
-    value:
-      name: AWS_SECRET_ACCESS_KEY
-      valueFrom:
-        secretKeyRef:
-          name: minio
-          key: root-password
   service_account_name: prefect-flows
   finished_job_ttl: 300
 infrastructure:
@@ -71,16 +54,8 @@ infrastructure:
 ###
 flow_name: param
 manifest_path: null
-storage:
-  bucket_path: minio-flows
-  aws_access_key_id: null
-  aws_secret_access_key: null
-  _block_document_id: 1a1170c1-3c5c-46cd-b9dc-cb13ce538c59
-  _block_document_name: minio-flows
-  _is_anonymous: false
-  block_type_slug: s3
-  _block_type_slug: s3
-path: increment
+storage: null
+path: /opt/prefect/flows
 entrypoint: flows/param_flow.py:param
 parameter_openapi_schema:
   title: Parameters
@@ -93,5 +68,5 @@ parameter_openapi_schema:
   required:
   - i
   definitions: null
-timestamp: '2023-07-14T08:14:32.998406+00:00'
+timestamp: '2023-07-14T08:25:32.246111+00:00'
 triggers: []

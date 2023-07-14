@@ -35,7 +35,7 @@ def say_goodbye(name: str) -> None:
         },
     )
 )
-def greetings(names: List[str]) -> None:
+def ray(names: List[str]) -> None:
     # these tasks have no dependencies so will execute concurrently
 
     for name in names:
@@ -50,4 +50,4 @@ def greetings(names: List[str]) -> None:
 
 
 if __name__ == "__main__":
-    greetings(["arthur", "trillian", "ford", "marvin"])
+    ray(["arthur", "trillian", "ford", "marvin"])
