@@ -11,7 +11,7 @@ tags: []
 parameters:
   i: 1
 schedule: null
-is_schedule_active: null
+is_schedule_active: true
 infra_overrides:
   image: prefect-registry:5000/flow:latest
   service_account_name: prefect-flows
@@ -68,5 +68,5 @@ parameter_openapi_schema:
   required:
   - i
   definitions: null
-timestamp: '2023-07-14T03:21:09.643044+00:00'
+timestamp: '2023-07-14T04:35:20.955261+00:00'
 triggers: []

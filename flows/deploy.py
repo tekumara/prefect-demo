@@ -87,6 +87,8 @@ greetings_dask: Deployment = Deployment.build_from_flow(
     description="dask kubes",
     version="snapshot",
     work_pool_name="default-agent-pool",
+    # example of adding tags
+    tags=["dask"],
     infrastructure=KubernetesJob(),  # type: ignore
     infra_overrides=dict(
         image="prefect-registry:5000/flow:latest",

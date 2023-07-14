@@ -7,7 +7,8 @@ version: snapshot
 # The work queue that will handle this deployment's runs
 work_queue_name: default
 work_pool_name: default-agent-pool
-tags: []
+tags:
+- dask
 parameters:
   names:
   - arthur
@@ -15,7 +16,7 @@ parameters:
   - ford
   - marvin
 schedule: null
-is_schedule_active: null
+is_schedule_active: true
 infra_overrides:
   image: prefect-registry:5000/flow:latest
   service_account_name: prefect-flows
@@ -74,5 +75,5 @@ parameter_openapi_schema:
   required:
   - names
   definitions: null
-timestamp: '2023-07-14T03:21:09.670449+00:00'
+timestamp: '2023-07-14T04:35:20.988959+00:00'
 triggers: []
