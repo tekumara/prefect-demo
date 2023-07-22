@@ -1,0 +1,12 @@
+# see https://github.com/PrefectHQ/prefect-helm/tree/main/charts/prefect-worker
+worker:
+  image:
+    prefectTag: 2.11.0-python3.10-kubernetes
+
+  config:
+    workPool: kubes-pool
+
+  apiConfig: server
+
+  serverApiConfig:
+    apiUrl: http://prefect-server:4200/api

@@ -1,0 +1,64 @@
+name: prefect-demo
+prefect-version: 2.11.0
+
+# build section allows you to manage and build docker images
+# build: null
+
+# the deployments section allows you to provide configuration for deploying flows
+deployments:
+  - name: yaml
+    version: snapshot
+    tags: ["s3"]
+    description: deployment pulling from s3
+    entrypoint: flows/param_flow.py:param
+    parameters:
+      i: 1
+    work_pool:
+      name: kubes-pool
+      # optional work queue
+      # work_queue_name: null
+      # see https://prefecthq.github.io/prefect-kubernetes/worker/#prefect_kubernetes.worker.KubernetesWorkerVariables
+      job_variables:
+        image: prefect-registry:5000/flow:latest
+        image_pull_policy: Always
+        service_account_name: prefect-flows
+        # deletes completed jobs see https://kubernetes.io/docs/concepts/workloads/controllers/job/#ttl-mechanism-for-finished-jobs
+        finished_job_ttl: 300
+        # used to download the stored flow from minio when the job starts
+        # TODO: fetch from secret see https://github.com/PrefectHQ/prefect-kubernetes/issues/83
+        env:
+          AWS_ACCESS_KEY_ID: minioadmin
+          AWS_SECRET_ACCESS_KEY: minioadmin
+    # schedule can be added here
+    # schedule: null
+
+    # example using s3 to store flow code
+    push:
+      - prefect_aws.deployments.steps.push_to_s3:
+          bucket: minio-flows
+          folder: param
+          client_parameters:
+            endpoint_url: http://localhost:9000
+    pull:
+      - prefect_aws.deployments.steps.pull_from_s3:
+          bucket: minio-flows
+          folder: param
+          client_parameters:
+            endpoint_url: http://minio:9000
+
+  - name: yaml
+    version: snapshot
+    description: deployment with flow inside docker container
+    entrypoint: flows/retry_flow.py:retry
+    work_pool:
+      name: kubes-pool
+      job_variables:
+        image: prefect-registry:5000/flow:latest
+        # TODO: demonstrate these as defaults on the workpool
+        image_pull_policy: Always
+        service_account_name: prefect-flows
+        finished_job_ttl: 300
+    pull:
+    # required see https://github.com/PrefectHQ/prefect/issues/10285
+    - prefect.deployments.steps.set_working_directory:
+        directory: /opt/prefect

@@ -36,6 +36,12 @@ dask-worker-space/
 .idea/
 .vscode/
 
+# VCS
+.git/
+.hg/
+
+.pytest_cache/
+.ruff_cache/
 config/
 infra/
 node_modules/

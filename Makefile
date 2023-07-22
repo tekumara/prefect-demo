@@ -46,17 +46,27 @@ prefect-helm-repo:
 	helm repo add prefect https://prefecthq.github.io/prefect-helm
 	helm repo update prefect
 
-## install prefect api and agent into kubes cluster
+## install prefect server, worker and agent into kubes cluster
 kubes-prefect: prefect-helm-repo
 	kubectl apply -f infra/ingress-server.yaml
 	kubectl apply -f infra/rbac-dask.yaml
 	kubectl apply -f infra/sa-flows.yaml
 	helm upgrade --install prefect-server prefect/prefect-server --version=2023.07.20 \
 		--values infra/values-server.yaml --wait --debug > /dev/null
+	helm upgrade --install prefect-worker prefect/prefect-worker --version=2023.07.20 \
+		--values infra/values-worker.yaml --wait --debug > /dev/null
 	helm upgrade --install prefect-agent prefect/prefect-agent --version=2023.07.20 \
 		--values infra/values-agent.yaml --wait --debug > /dev/null
 	@echo -e "\nProbing for the prefect API to be available (~30 secs)..." && \
 		while ! curl -fsS http://localhost:4200/api/admin/version ; do sleep 5; done && echo
+
+## restart prefect server (delete all flows)
+server-restart:
+	kubectl rollout restart deploy/prefect-server
+
+## delete objects in minio bucket
+minio-empty:
+	kubectl exec deploy/minio -- mc rm local/minio-flows/ --recursive --force
 
 ## show the prefect job manifest
 prefect-job-manifest:
@@ -89,11 +99,15 @@ publish:
 
 ## deploy flows to run on kubernetes
 deploy: export PREFECT_API_URL=http://localhost:4200/api
+deploy: export AWS_ACCESS_KEY_ID=minioadmin
+deploy: export AWS_SECRET_ACCESS_KEY=minioadmin
 deploy: $(venv) publish
-# use minio as the s3 remote file system
+# use minio as the s3 remote file system & deploy flows via python
 	set -e && . config/fsspec-env.sh && $(venv)/bin/python -m flows.deploy
+# deploy flows via prefect.yaml
+	$(venv)/bin/prefect --no-prompt deploy --all
 	$(venv)/bin/prefect deployment ls
-	for deployment in param/s3 param/local dask-kubes/local parent/local; do $(venv)/bin/prefect deployment run $$deployment; done
+	for deployment in param/yaml retry/yaml dask-kubes/python parent/python; do $(venv)/bin/prefect deployment run $$deployment; done
 	$(venv)/bin/prefect flow-run ls
 	@echo Visit http://localhost:4200
 
@@ -101,9 +115,9 @@ deploy: $(venv) publish
 ui: $(venv)
 	PATH="$(venv)/bin:$$PATH" prefect server start
 
-## show kube logs for the server and agent
+## show kube logs for the server and worker
 kubes-logs:
-	kubectl logs -l "app.kubernetes.io/name in (prefect-server, prefect-agent)" -f --tail=-1
+	kubectl logs -l "app.kubernetes.io/name in (prefect-server, prefect-worker, prefect-agent)" -f --tail=-1
 
 ## show kube logs for flows
 kubes-logs-jobs:

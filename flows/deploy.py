@@ -7,6 +7,24 @@ import flows.param_flow
 import flows.parent_flow
 import flows.storage
 
+dask_kubes: Deployment = Deployment.build_from_flow(
+    name="python",
+    flow=flows.dask_kubes_flow.dask_kubes,
+    output="deployment-dask-kubes.yaml",
+    description="dask kubes",
+    version="snapshot",
+    work_pool_name="kubes-pool",
+    infrastructure=KubernetesJob(),  # type: ignore
+    infra_overrides=dict(
+        image="prefect-registry:5000/flow:latest",
+        image_pull_policy="Always",
+        service_account_name="prefect-flows",
+        finished_job_ttl=300,
+    ),
+    parameters={"names": ["arthur", "trillian", "ford", "marvin"]},
+)
+
+
 # read aws creds from the minio secret
 aws_creds_customizations = [
     {
@@ -38,92 +56,42 @@ aws_creds_customizations = [
 ]
 
 
-# upload flow to storage and create deployment yaml file
-param_s3: Deployment = Deployment.build_from_flow(
-    name="s3",
-    flow=flows.param_flow.param,
-    # output to disk is optional, but we save the yaml representation so we can compare across versions
-    output="deployment-param-s3.yaml",
-    description="deployment using s3 storage",
+parent: Deployment = Deployment.build_from_flow(
+    name="python",
+    flow=flows.parent_flow.parent,
+    output="deployment-parent.yaml",
+    description="deployment using local storage",
     version="snapshot",
+    # example of adding tags
+    tags=["s3"],
+    # must run on an agent because workers only support local storage
+    # see https://github.com/PrefectHQ/prefect/discussions/10277
     work_pool_name="default-agent-pool",
     # every deployment will overwrite the files in this location
     storage=flows.storage.minio_flows(),
-    path="increment",
-    # use the default KubernetesJob block and override it,
-    # rather than creating a new block
+    path="parent",
     infrastructure=KubernetesJob(),  # type: ignore
     infra_overrides=dict(
         image="prefect-registry:5000/flow:latest",
+        image_pull_policy="Always",
         # used to download the stored flow from minio when the job starts
         customizations=aws_creds_customizations,
         service_account_name="prefect-flows",
-        # deletes completed jobs see https://kubernetes.io/docs/concepts/workloads/controllers/job/#ttl-mechanism-for-finished-jobs
-        finished_job_ttl=300,
-    ),
-    parameters={"i": 1},
-)
-
-param_local: Deployment = Deployment.build_from_flow(
-    name="local",
-    flow=flows.param_flow.param,
-    output="deployment-param-local.yaml",
-    description="deployment using local storage",
-    version="snapshot",
-    work_pool_name="default-agent-pool",
-    infrastructure=KubernetesJob(),  # type: ignore
-    infra_overrides=dict(
-        image="prefect-registry:5000/flow:latest",
-        service_account_name="prefect-flows",
-        finished_job_ttl=300,
-    ),
-    parameters={"i": 1},
-)
-
-dask_kubes_local: Deployment = Deployment.build_from_flow(
-    name="local",
-    flow=flows.dask_kubes_flow.dask_kubes,
-    output="deployment-dask-kubes.yaml",
-    description="dask kubes",
-    version="snapshot",
-    work_pool_name="default-agent-pool",
-    # example of adding tags
-    tags=["dask"],
-    infrastructure=KubernetesJob(),  # type: ignore
-    infra_overrides=dict(
-        image="prefect-registry:5000/flow:latest",
-        service_account_name="prefect-flows",
-        finished_job_ttl=300,
-    ),
-    parameters={"names": ["arthur", "trillian", "ford", "marvin"]},
-)
-
-
-parent_local: Deployment = Deployment.build_from_flow(
-    name="local",
-    flow=flows.parent_flow.parent,
-    output="deployment-parent-local.yaml",
-    description="deployment using local storage",
-    version="snapshot",
-    work_pool_name="default-agent-pool",
-    infrastructure=KubernetesJob(),  # type: ignore
-    infra_overrides=dict(
-        image="prefect-registry:5000/flow:latest",
-        service_account_name="prefect-flows",
         finished_job_ttl=300,
     ),
 )
 
-child_local: Deployment = Deployment.build_from_flow(
-    name="local",
+child: Deployment = Deployment.build_from_flow(
+    name="python",
     flow=flows.child_flow.child,
-    output="deployment-child-local.yaml",
-    description="deployment using local storage",
+    output="deployment-child.yaml",
+    description="deployment using s3 storage",
     version="snapshot",
-    work_pool_name="default-agent-pool",
+    work_pool_name="kubes-pool",
     infrastructure=KubernetesJob(),  # type: ignore
     infra_overrides=dict(
         image="prefect-registry:5000/flow:latest",
+        image_pull_policy="Always",
         service_account_name="prefect-flows",
         finished_job_ttl=300,
     ),
@@ -136,8 +104,6 @@ def apply(deployment: Deployment) -> None:
 
 
 if __name__ == "__main__":
-    apply(param_s3)
-    apply(param_local)
-    apply(dask_kubes_local)
-    apply(parent_local)
-    apply(child_local)
+    apply(dask_kubes)
+    apply(parent)
+    apply(child)

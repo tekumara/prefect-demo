@@ -1,14 +1,13 @@
 ###
 ### A complete description of a Prefect Deployment for flow 'dask-kubes'
 ###
-name: local
+name: python
 description: dask kubes
 version: snapshot
 # The work queue that will handle this deployment's runs
 work_queue_name: default
-work_pool_name: default-agent-pool
-tags:
-- dask
+work_pool_name: kubes-pool
+tags: []
 parameters:
   names:
   - arthur
@@ -19,6 +18,7 @@ schedule: null
 is_schedule_active: null
 infra_overrides:
   image: prefect-registry:5000/flow:latest
+  image_pull_policy: Always
   service_account_name: prefect-flows
   finished_job_ttl: 300
 infrastructure:
@@ -75,5 +75,5 @@ parameter_openapi_schema:
   required:
   - names
   definitions: null
-timestamp: '2023-07-14T08:25:32.274863+00:00'
+timestamp: '2023-07-22T11:38:23.278524+00:00'
 triggers: []

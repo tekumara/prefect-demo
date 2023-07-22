@@ -20,7 +20,7 @@ To start:
 
 ## Examples
 
-Flows
+Flows:
 
 - [Dask flow](flows/dask_flow.py) using a dask local cluster
 - [Dask kubes flow](flows/dask_kubes_flow.py) using an ephemeral dask cluster on Kubernetes
@@ -35,10 +35,10 @@ Flows
 - [Parent flow](flows/parent_flow.py) shows how to [trigger a flow run from a deployment](https://annageller.medium.com/44d65b625627) within a parent flow. The triggered flow is treated as a sub flow.
 - [Context flow](flows/context_flow.py) accessing [prefect context at runtime](https://docs.prefect.io/2.11.0/concepts/runtime-context/).
 
-[Deployment](flows/deploy.py) to Kubernetes:
+Deployments to Kubernetes created via:
 
-- using an S3 block to store the flow in minio.
-- using no storage and instead loading the flow from within the docker image.
+- [Deployment objects in python](flows/deploy.py) - both local and uploaded to remote s3 storage.
+- [prefect.yaml](prefect.yaml) - both local and pushed to s3.
 
 ## Usage
 
@@ -121,6 +121,10 @@ Major
 
 Minor
 
+- [Workers only support local storage](https://github.com/PrefectHQ/prefect/discussions/10277)
+- [Prefect.Deployment doesn't have a property pull_steps](https://github.com/PrefectHQ/prefect/issues/9220)
+- [Support environment variables read from kubernetes secrets](https://github.com/PrefectHQ/prefect-kubernetes/issues/83)
+- [Encountered error while running prefect.deployments.steps.set_working_directory - FileNotFoundError](https://github.com/PrefectHQ/prefect/issues/10285)
 - [Deployment metadata](https://github.com/PrefectHQ/prefect/issues/5735)
 - [Stream logs via CLI](https://github.com/PrefectHQ/prefect/issues/5987)
 - [report ErrImagePull in Prefect UI to improve observability](https://github.com/PrefectHQ/prefect/issues/5688)
@@ -128,6 +132,7 @@ Minor
 - [Add Flow.submit interface for subflows on external infrastructure](https://github.com/PrefectHQ/prefect/issues/6689)
 - [not a known member of module "prefect.runtime"](https://github.com/PrefectHQ/prefect/issues/9027)
 - mapped tasks aren't collapsed in the UI like they were in Prefect 1
+- pushing to s3 is sequential and slower than using sf3s to parallel upload to an s3 storage block
 
 See all [roadmap tagged issues](https://github.com/PrefectHQ/prefect/labels/status%3Aroadmap) for planned work.
 
@@ -135,7 +140,7 @@ See all [roadmap tagged issues](https://github.com/PrefectHQ/prefect/labels/stat
 
 ### Flows are late
 
-Check the logs of the agent:
+Check the logs of the agent/worker:
 
 ```
 make kubes-logs
