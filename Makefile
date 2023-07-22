@@ -51,9 +51,9 @@ kubes-prefect: prefect-helm-repo
 	kubectl apply -f infra/ingress-server.yaml
 	kubectl apply -f infra/rbac-dask.yaml
 	kubectl apply -f infra/sa-flows.yaml
-	helm upgrade --install prefect-server prefect/prefect-server --version=2023.07.07 \
+	helm upgrade --install prefect-server prefect/prefect-server --version=2023.07.20 \
 		--values infra/values-server.yaml --wait --debug > /dev/null
-	helm upgrade --install prefect-agent prefect/prefect-agent --version=2023.07.07 \
+	helm upgrade --install prefect-agent prefect/prefect-agent --version=2023.07.20 \
 		--values infra/values-agent.yaml --wait --debug > /dev/null
 	@echo -e "\nProbing for the prefect API to be available (~30 secs)..." && \
 		while ! curl -fsS http://localhost:4200/api/admin/version ; do sleep 5; done && echo
@@ -130,7 +130,7 @@ kubes-db:
 ## upgrade to latest version of prefect
 upgrade:
 	latest=$$(PIP_REQUIRE_VIRTUALENV=false pip index versions prefect | tail -n +1 | head -n1 | sed -E 's/.*\(([0-9.]+)\)/\1/') && \
-		rg -l 2.10.21 | xargs sed -i '' "s/2.10.21/$$latest/g"
+		rg -l 2.11.0 | xargs sed -i '' "s/2.11.0/$$latest/g"
 	make install
 
 ## inspect block document

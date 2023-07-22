@@ -1,4 +1,4 @@
-FROM prefecthq/prefect:2.10.21-python3.10
+FROM prefecthq/prefect:2.11.0-python3.10
 
 # s3fs is used to fetch flows from minio
 # dask dependences are needed by dask_kubes_flow
