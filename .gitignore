@@ -15,4 +15,3 @@ pip-wheel-metadata/
 node_modules/
 .venv/
 dask-worker-space/
-.envrc
