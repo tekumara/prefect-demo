@@ -1,19 +1,37 @@
 ###
-### A complete description of a Prefect Deployment for flow 'child'
+### A complete description of a Prefect Deployment for flow 'parent'
 ###
 name: python
-description: deployment using s3 storage
+description: deployment using local storage
 version: snapshot
 # The work queue that will handle this deployment's runs
 work_queue_name: default
-work_pool_name: kubes-pool
-tags: []
+work_pool_name: default-agent-pool
+tags:
+- s3
 parameters: {}
 schedule: null
-is_schedule_active: null
+is_schedule_active: true
 infra_overrides:
   image: prefect-registry:5000/flow:latest
   image_pull_policy: Always
+  customizations:
+  - op: add
+    path: /spec/template/spec/containers/0/env/-
+    value:
+      name: AWS_ACCESS_KEY_ID
+      valueFrom:
+        secretKeyRef:
+          name: minio
+          key: root-user
+  - op: add
+    path: /spec/template/spec/containers/0/env/-
+    value:
+      name: AWS_SECRET_ACCESS_KEY
+      valueFrom:
+        secretKeyRef:
+          name: minio
+          key: root-password
   service_account_name: prefect-flows
   finished_job_ttl: 300
 infrastructure:
@@ -52,16 +70,24 @@ infrastructure:
 ###
 ### DO NOT EDIT BELOW THIS LINE
 ###
-flow_name: child
+flow_name: parent
 manifest_path: null
-storage: null
-path: /opt/prefect/flows
-entrypoint: flows/child_flow.py:child
+storage:
+  bucket_path: minio-flows
+  aws_access_key_id: null
+  aws_secret_access_key: null
+  _block_document_id: 1379a3a7-e31c-4988-be12-e26e3f9dd34b
+  _block_document_name: minio-flows
+  _is_anonymous: false
+  block_type_slug: s3
+  _block_type_slug: s3
+path: parent
+entrypoint: flows/parent_flow.py:parent
 parameter_openapi_schema:
   title: Parameters
   type: object
   properties: {}
   required: null
   definitions: null
-timestamp: '2023-07-22T11:38:28.348794+00:00'
+timestamp: '2023-07-22T11:56:01.628924+00:00'
 triggers: []

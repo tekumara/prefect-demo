@@ -45,7 +45,7 @@ Named blocks can be [viewed and edited in the UI](http://localhost:4200/blocks).
 
 ## Database representation
 
-Inpsect deployment package manifests:
+Inspect deployment package manifests:
 
 ```sql
 select json_extract(flow_data,'$.blob') from deployment;

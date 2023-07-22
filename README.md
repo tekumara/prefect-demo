@@ -75,8 +75,8 @@ Prefect API: [http://localhost:4200/api/](http://localhost:4200/api/)
 
 ## Docs
 
-- [Blocks](blocks.md) - an overview and look into the database tables for Blocks.
-- [Deployment](deployment.md) - an overview of the deployment process.
+- [Blocks](docs/blocks.md) - an overview and look into the database tables for Blocks.
+- [Deployment](docs/deployment.md) - an overview of the deployment process.
 
 ## References
 

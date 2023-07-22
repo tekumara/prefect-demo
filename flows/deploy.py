@@ -10,7 +10,8 @@ import flows.storage
 dask_kubes: Deployment = Deployment.build_from_flow(
     name="python",
     flow=flows.dask_kubes_flow.dask_kubes,
-    output="deployment-dask-kubes.yaml",
+    # output to disk is optional, but we save the yaml representation so we can compare across versions
+    output="deployments/deployment-dask-kubes.yaml",
     description="dask kubes",
     version="snapshot",
     work_pool_name="kubes-pool",
@@ -59,7 +60,7 @@ aws_creds_customizations = [
 parent: Deployment = Deployment.build_from_flow(
     name="python",
     flow=flows.parent_flow.parent,
-    output="deployment-parent.yaml",
+    output="deployments/deployment-parent.yaml",
     description="deployment using local storage",
     version="snapshot",
     # example of adding tags
@@ -84,7 +85,7 @@ parent: Deployment = Deployment.build_from_flow(
 child: Deployment = Deployment.build_from_flow(
     name="python",
     flow=flows.child_flow.child,
-    output="deployment-child.yaml",
+    output="deployments/deployment-child.yaml",
     description="deployment using s3 storage",
     version="snapshot",
     work_pool_name="kubes-pool",

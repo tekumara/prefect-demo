@@ -1,21 +1,16 @@
 ###
-### A complete description of a Prefect Deployment for flow 'dask-kubes'
+### A complete description of a Prefect Deployment for flow 'child'
 ###
 name: python
-description: dask kubes
+description: deployment using s3 storage
 version: snapshot
 # The work queue that will handle this deployment's runs
 work_queue_name: default
 work_pool_name: kubes-pool
 tags: []
-parameters:
-  names:
-  - arthur
-  - trillian
-  - ford
-  - marvin
+parameters: {}
 schedule: null
-is_schedule_active: null
+is_schedule_active: true
 infra_overrides:
   image: prefect-registry:5000/flow:latest
   image_pull_policy: Always
@@ -57,23 +52,16 @@ infrastructure:
 ###
 ### DO NOT EDIT BELOW THIS LINE
 ###
-flow_name: dask-kubes
+flow_name: child
 manifest_path: null
 storage: null
 path: /opt/prefect/flows
-entrypoint: flows/dask_kubes_flow.py:dask_kubes
+entrypoint: flows/child_flow.py:child
 parameter_openapi_schema:
   title: Parameters
   type: object
-  properties:
-    names:
-      title: names
-      position: 0
-      type: array
-      items:
-        type: string
-  required:
-  - names
+  properties: {}
+  required: null
   definitions: null
-timestamp: '2023-07-22T11:38:23.278524+00:00'
+timestamp: '2023-07-22T11:56:08.579541+00:00'
 triggers: []

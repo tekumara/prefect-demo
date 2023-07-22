@@ -1,37 +1,24 @@
 ###
-### A complete description of a Prefect Deployment for flow 'parent'
+### A complete description of a Prefect Deployment for flow 'dask-kubes'
 ###
 name: python
-description: deployment using local storage
+description: dask kubes
 version: snapshot
 # The work queue that will handle this deployment's runs
 work_queue_name: default
-work_pool_name: default-agent-pool
-tags:
-- s3
-parameters: {}
+work_pool_name: kubes-pool
+tags: []
+parameters:
+  names:
+  - arthur
+  - trillian
+  - ford
+  - marvin
 schedule: null
-is_schedule_active: null
+is_schedule_active: true
 infra_overrides:
   image: prefect-registry:5000/flow:latest
   image_pull_policy: Always
-  customizations:
-  - op: add
-    path: /spec/template/spec/containers/0/env/-
-    value:
-      name: AWS_ACCESS_KEY_ID
-      valueFrom:
-        secretKeyRef:
-          name: minio
-          key: root-user
-  - op: add
-    path: /spec/template/spec/containers/0/env/-
-    value:
-      name: AWS_SECRET_ACCESS_KEY
-      valueFrom:
-        secretKeyRef:
-          name: minio
-          key: root-password
   service_account_name: prefect-flows
   finished_job_ttl: 300
 infrastructure:
@@ -70,24 +57,23 @@ infrastructure:
 ###
 ### DO NOT EDIT BELOW THIS LINE
 ###
-flow_name: parent
+flow_name: dask-kubes
 manifest_path: null
-storage:
-  bucket_path: minio-flows
-  aws_access_key_id: null
-  aws_secret_access_key: null
-  _is_anonymous: false
-  _block_document_name: minio-flows
-  _block_document_id: 1379a3a7-e31c-4988-be12-e26e3f9dd34b
-  block_type_slug: s3
-  _block_type_slug: s3
-path: parent
-entrypoint: flows/parent_flow.py:parent
+storage: null
+path: /opt/prefect/flows
+entrypoint: flows/dask_kubes_flow.py:dask_kubes
 parameter_openapi_schema:
   title: Parameters
   type: object
-  properties: {}
-  required: null
+  properties:
+    names:
+      title: names
+      position: 0
+      type: array
+      items:
+        type: string
+  required:
+  - names
   definitions: null
-timestamp: '2023-07-22T11:38:23.493438+00:00'
+timestamp: '2023-07-22T11:56:01.505424+00:00'
 triggers: []
