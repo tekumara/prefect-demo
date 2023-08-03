@@ -61,7 +61,7 @@ parent: Deployment = Deployment.build_from_flow(
     name="python",
     flow=flows.parent_flow.parent,
     output="deployments/deployment-parent.yaml",
-    description="deployment using local storage",
+    description="deployment using s3 storage",
     version="snapshot",
     # example of adding tags
     tags=["s3"],
@@ -86,7 +86,7 @@ child: Deployment = Deployment.build_from_flow(
     name="python",
     flow=flows.child_flow.child,
     output="deployments/deployment-child.yaml",
-    description="deployment using s3 storage",
+    description="deployment using local storage",
     version="snapshot",
     work_pool_name="kubes-pool",
     infrastructure=KubernetesJob(),  # type: ignore
