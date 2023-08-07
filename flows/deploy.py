@@ -1,3 +1,7 @@
+"""
+See https://docs.prefect.io/2.11.0/concepts/deployments/#create-a-deployment-from-a-python-object
+"""
+
 from prefect.deployments.deployments import Deployment
 from prefect.infrastructure import KubernetesJob
 
@@ -6,7 +10,6 @@ import flows.dask_kubes_flow
 import flows.param_flow
 import flows.parent_flow
 import flows.storage
-
 dask_kubes: Deployment = Deployment.build_from_flow(
     name="python",
     flow=flows.dask_kubes_flow.dask_kubes,
@@ -72,6 +75,7 @@ parent: Deployment = Deployment.build_from_flow(
     storage=flows.storage.minio_flows(),
     path="parent",
     infrastructure=KubernetesJob(),  # type: ignore
+    # TODO: example that uses job_variables
     infra_overrides=dict(
         image="prefect-registry:5000/flow:latest",
         image_pull_policy="Always",
