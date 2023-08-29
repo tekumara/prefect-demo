@@ -2,7 +2,7 @@
 ### A complete description of a Prefect Deployment for flow 'parent'
 ###
 name: python
-description: deployment using local storage
+description: null
 version: snapshot
 # The work queue that will handle this deployment's runs
 work_queue_name: default
@@ -11,7 +11,7 @@ tags:
 - s3
 parameters: {}
 schedule: null
-is_schedule_active: true
+is_schedule_active: null
 infra_overrides:
   image: prefect-registry:5000/flow:latest
   image_pull_policy: Always
@@ -40,7 +40,7 @@ infrastructure:
   labels: {}
   name: null
   command: null
-  image: prefecthq/prefect:2.11.0-python3.10
+  image: prefecthq/prefect:2.11.5-python3.10
   namespace: default
   service_account_name: null
   image_pull_policy: null
@@ -76,9 +76,9 @@ storage:
   bucket_path: minio-flows
   aws_access_key_id: null
   aws_secret_access_key: null
-  _block_document_id: 1379a3a7-e31c-4988-be12-e26e3f9dd34b
-  _block_document_name: minio-flows
   _is_anonymous: false
+  _block_document_name: minio-flows
+  _block_document_id: 232744e7-60dc-4a42-b8a1-14e64f1098c1
   block_type_slug: s3
   _block_type_slug: s3
 path: parent
@@ -89,5 +89,5 @@ parameter_openapi_schema:
   properties: {}
   required: null
   definitions: null
-timestamp: '2023-07-22T11:56:01.628924+00:00'
+timestamp: '2023-08-29T10:35:41.998423+00:00'
 triggers: []

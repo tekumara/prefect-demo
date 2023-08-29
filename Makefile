@@ -144,7 +144,7 @@ kubes-db:
 ## upgrade to latest version of prefect
 upgrade:
 	latest=$$(PIP_REQUIRE_VIRTUALENV=false pip index versions prefect | tail -n +1 | head -n1 | sed -E 's/.*\(([0-9.]+)\)/\1/') && \
-		rg -l 2.11.0 | xargs sed -i '' "s/2.11.0/$$latest/g"
+		rg -l 2.11.5 | xargs sed -i '' "s/2.11.5/$$latest/g"
 	make install
 
 ## inspect block document

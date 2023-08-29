@@ -33,7 +33,7 @@ Flows:
 - [Map flow](flows/map_flow.py) uses [Task.map](https://docs.prefect.io/faq/?h=map#does-prefect-2-support-mapping).
 - [Flatten flow](flows/flatten_flow.py) demonstrates how to parallelise over a list of lists.
 - [Parent flow](flows/parent_flow.py) shows how to [trigger a flow run from a deployment](https://annageller.medium.com/44d65b625627) within a parent flow. The triggered flow is treated as a sub flow.
-- [Context flow](flows/context_flow.py) accessing [prefect context at runtime](https://docs.prefect.io/2.11.0/concepts/runtime-context/).
+- [Context flow](flows/context_flow.py) accessing [prefect context at runtime](https://docs.prefect.io/2.11.5/concepts/runtime-context/).
 
 Deployments to Kubernetes created via:
 
@@ -121,13 +121,15 @@ Major
 
 Minor
 
+- [Replicate kube events to Prefect that occur before the pod starts](https://github.com/PrefectHQ/prefect-kubernetes/issues/86)
+- [Configuring different task runner for dev and prod deployments](https://github.com/PrefectHQ/prefect/issues/5560)
+- [report ErrImagePull in Prefect UI to improve observability](https://github.com/PrefectHQ/prefect/issues/5688)
 - [Workers only support local storage](https://github.com/PrefectHQ/prefect/discussions/10277)
 - [Prefect.Deployment doesn't have a property pull_steps](https://github.com/PrefectHQ/prefect/issues/9220)
 - [Support environment variables read from kubernetes secrets](https://github.com/PrefectHQ/prefect-kubernetes/issues/83)
 - [Encountered error while running prefect.deployments.steps.set_working_directory - FileNotFoundError](https://github.com/PrefectHQ/prefect/issues/10285)
 - [Deployment metadata](https://github.com/PrefectHQ/prefect/issues/5735)
 - [Stream logs via CLI](https://github.com/PrefectHQ/prefect/issues/5987)
-- [report ErrImagePull in Prefect UI to improve observability](https://github.com/PrefectHQ/prefect/issues/5688)
 - [FileNotFoundError errors when running with a remote ray cluster #26](https://github.com/PrefectHQ/prefect-ray/issues/26)
 - [Add Flow.submit interface for subflows on external infrastructure](https://github.com/PrefectHQ/prefect/issues/6689)
 - [not a known member of module "prefect.runtime"](https://github.com/PrefectHQ/prefect/issues/9027)

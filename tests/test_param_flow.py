@@ -1,6 +1,6 @@
 import prefect.testing.utilities
 import pytest
-from prefect import State  # pyright: ignore[reportPrivateImportUsage]
+from prefect import State
 from prefect.server.schemas.states import StateType
 
 from flows.param_flow import add_one, param
@@ -10,7 +10,7 @@ from flows.param_flow import add_one, param
 def prefect_test_harness():
     # run flows against a temporary SQLite database rather than ~/.prefect/prefect.db
     # adds an extra second to test time
-    # see https://docs.prefect.io/tutorials/testing/
+    # see https://docs.prefect.io/latest/guides/testing/
     with prefect.testing.utilities.prefect_test_harness():
         yield
 

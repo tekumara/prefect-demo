@@ -2,7 +2,7 @@
 ### A complete description of a Prefect Deployment for flow 'child'
 ###
 name: python
-description: deployment using s3 storage
+description: null
 version: snapshot
 # The work queue that will handle this deployment's runs
 work_queue_name: default
@@ -10,7 +10,7 @@ work_pool_name: kubes-pool
 tags: []
 parameters: {}
 schedule: null
-is_schedule_active: true
+is_schedule_active: null
 infra_overrides:
   image: prefect-registry:5000/flow:latest
   image_pull_policy: Always
@@ -22,7 +22,7 @@ infrastructure:
   labels: {}
   name: null
   command: null
-  image: prefecthq/prefect:2.11.0-python3.10
+  image: prefecthq/prefect:2.11.5-python3.10
   namespace: default
   service_account_name: null
   image_pull_policy: null
@@ -63,5 +63,5 @@ parameter_openapi_schema:
   properties: {}
   required: null
   definitions: null
-timestamp: '2023-07-22T11:56:08.579541+00:00'
+timestamp: '2023-08-29T10:35:47.132045+00:00'
 triggers: []
