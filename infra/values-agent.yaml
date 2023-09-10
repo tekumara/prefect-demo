@@ -1,7 +1,7 @@
 # see https://github.com/PrefectHQ/prefect-helm/tree/main/charts/prefect-agent
 agent:
   image:
-    prefectTag: 2.11.5-python3.10
+    prefectTag: 2.13.0-python3.10
 
   config:
     workPool: default-agent-pool

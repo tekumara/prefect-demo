@@ -2,7 +2,7 @@
 ### A complete description of a Prefect Deployment for flow 'child'
 ###
 name: python
-description: null
+description: deployment using local storage
 version: snapshot
 # The work queue that will handle this deployment's runs
 work_queue_name: default
@@ -22,7 +22,7 @@ infrastructure:
   labels: {}
   name: null
   command: null
-  image: prefecthq/prefect:2.11.5-python3.10
+  image: prefecthq/prefect:2.13.0-python3.10
   namespace: default
   service_account_name: null
   image_pull_policy: null
@@ -63,5 +63,5 @@ parameter_openapi_schema:
   properties: {}
   required: null
   definitions: null
-timestamp: '2023-08-29T10:35:47.132045+00:00'
+timestamp: '2023-09-10T03:10:42.007611+00:00'
 triggers: []

@@ -13,7 +13,7 @@ setup(
         # bokeh is needed for the dask dashboard
         "bokeh==2.4.3",
         "dask_kubernetes==2023.6.1",
-        "prefect==2.11.5",
+        "prefect==2.13.0",
         # to push flows to s3
         "prefect-aws==0.3.6",
         "prefect-dask==0.2.4",

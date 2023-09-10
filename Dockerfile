@@ -1,4 +1,4 @@
-FROM prefecthq/prefect:2.11.5-python3.10
+FROM prefecthq/prefect:2.13.0-python3.10
 
 # s3fs is used to fetch flows from s3 remote storage
 # prefect-aws is used to pull flows from s3
