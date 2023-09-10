@@ -8,6 +8,7 @@ kubes: cluster kubes-minio kubes-prefect
 ## create k3s cluster
 cluster:
 # enable ephmeral containers for profiling
+# port 4200 on the host is mapped to ingress on port 80
 	k3d cluster create prefect --registry-create prefect-registry:0.0.0.0:5550 \
 		-p 4200:80@loadbalancer -p 9000:9000@loadbalancer -p 9001:9001@loadbalancer \
 		-p 10001:10001@loadbalancer -p 8265:8265@loadbalancer -p 6379:6379@loadbalancer \
@@ -48,7 +49,6 @@ prefect-helm-repo:
 
 ## install prefect server, worker and agent into kubes cluster
 kubes-prefect: prefect-helm-repo
-	kubectl apply -f infra/ingress-server.yaml
 	kubectl apply -f infra/rbac-dask.yaml
 	kubectl apply -f infra/sa-flows.yaml
 	helm upgrade --install prefect-server prefect/prefect-server --version=2023.07.20 \
@@ -146,6 +146,12 @@ upgrade:
 	latest=$$(PIP_REQUIRE_VIRTUALENV=false pip index versions prefect | tail -n +1 | head -n1 | sed -E 's/.*\(([0-9.]+)\)/\1/') && \
 		rg -l 2.11.5 | xargs sed -i '' "s/2.11.5/$$latest/g"
 	make install
+
+## forward traefik dashboard
+tdashboard:
+	@echo Forwarding traefik dashboard to http://localhost:8999/dashboard/
+	tpod=$$(kubectl get pod -n kube-system -l app.kubernetes.io/name=traefik -o custom-columns=:metadata.name --no-headers=true) && \
+		kubectl -n kube-system port-forward $$tpod 8999:9000
 
 ## inspect block document
 api-block-doc: assert-id

@@ -3,6 +3,13 @@ server:
   image:
     prefectTag: 2.11.5-python3.10
 
+ingress:
+  enabled: true
+  extraHosts:
+    # an empty name will create a rule without a host, which routes all
+    # port 80 ingress traffic to the service
+    - name: ""
+
 postgresql:
   # use sqlite instead
   enabled: false
