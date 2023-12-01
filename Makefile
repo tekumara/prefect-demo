@@ -42,20 +42,18 @@ kubes-ray:
 	@echo -e "\nProbing for the ray cluster to be available (~3 mins)..." && \
 		while ! $(venv)/bin/python -m flows.ping_ray; do sleep 10; done
 
-## upgrade prefect helm chart repo
-prefect-helm-repo:
-	helm repo add prefect https://prefecthq.github.io/prefect-helm
-	helm repo update prefect
-
 ## install prefect server, worker and agent into kubes cluster
-kubes-prefect: prefect-helm-repo
+kubes-prefect:
 	kubectl apply -f infra/rbac-dask.yaml
 	kubectl apply -f infra/sa-flows.yaml
-	helm upgrade --install prefect-server prefect/prefect-server --version=2023.09.07 \
+	helm upgrade --install --repo https://prefecthq.github.io/prefect-helm \
+		prefect-server prefect-server --version=2023.11.30 \
 		--values infra/values-server.yaml --wait --debug > /dev/null
-	helm upgrade --install prefect-worker prefect/prefect-worker --version=2023.09.07 \
+	helm upgrade --install --repo https://prefecthq.github.io/prefect-helm \
+		prefect-worker prefect-worker --version=2023.11.30 \
 		--values infra/values-worker.yaml --wait --debug > /dev/null
-	helm upgrade --install prefect-agent prefect/prefect-agent --version=2023.09.07 \
+	helm upgrade --install --repo https://prefecthq.github.io/prefect-helm \
+		prefect-agent prefect-agent --version=2023.11.30 \
 		--values infra/values-agent.yaml --wait --debug > /dev/null
 	@echo -e "\nProbing for the prefect API to be available (~30 secs)..." && \
 		while ! curl -fsS http://localhost:4200/api/admin/version ; do sleep 5; done && echo

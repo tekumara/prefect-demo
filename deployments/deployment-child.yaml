@@ -10,7 +10,7 @@ work_pool_name: kubes-pool
 tags: []
 parameters: {}
 schedule: null
-is_schedule_active: true
+is_schedule_active: null
 infra_overrides:
   image: prefect-registry:5000/flow:latest
   image_pull_policy: Always
@@ -63,6 +63,6 @@ parameter_openapi_schema:
   properties: {}
   required: null
   definitions: null
-timestamp: '2023-12-01T07:30:06.606534+00:00'
+timestamp: '2023-12-01T07:36:16.401118+00:00'
 triggers: []
 enforce_parameter_schema: null
