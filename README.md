@@ -116,7 +116,6 @@ Ray dashboard: [http://localhost:8265](http://localhost:8265)
 Major
 
 - [Support flat mapping #6462](https://github.com/PrefectHQ/prefect/issues/6462)
-- [There is no visibility of agents in the UI #6256](https://github.com/PrefectHQ/prefect/issues/6256)
 - [Zombie tasks consume concurrency slots](https://github.com/PrefectHQ/prefect/issues/5995)
 
 Minor

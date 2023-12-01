@@ -16,7 +16,7 @@ cluster:
   		--k3s-arg '--kube-scheduler-arg=feature-gates=EphemeralContainers=true@server:*' \
   		--k3s-arg '--kubelet-arg=feature-gates=EphemeralContainers=true@agent:*' \
 		--wait
-	@echo "Probing until traefik CRDs are created (~60 secs)..." && export KUBECONFIG=$$(k3d kubeconfig write prefect) && \
+	@echo "Probing until cluster is ready (~60 secs)..." && export KUBECONFIG=$$(k3d kubeconfig write prefect) && \
 		while ! kubectl get crd ingressroutes.traefik.containo.us 2> /dev/null ; do sleep 10 && echo $$((i=i+10)); done
 	@echo -e "\nTo use your cluster set:\n"
 	@echo "export KUBECONFIG=$$(k3d kubeconfig write prefect)"
