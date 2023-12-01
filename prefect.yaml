@@ -1,7 +1,7 @@
-# see https://docs.prefect.io/2.13.0/concepts/deployments-ux/
+# see https://docs.prefect.io/2.14.9/concepts/deployments-ux/
 
 name: prefect-demo
-prefect-version: 2.13.0
+prefect-version: 2.14.9
 
 # build section allows you to manage and build docker images
 # build: null

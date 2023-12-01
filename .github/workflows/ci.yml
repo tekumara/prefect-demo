@@ -23,9 +23,10 @@ jobs:
         with:
           path: ~/.cache/pre-commit
           key: ${{ runner.os }}-py${{ steps.setup-python.outputs.python-version }}-pre-commit-${{ hashFiles('.pre-commit-config.yaml') }}
-      - name: make install
+      - name: Run make install
         if: steps.cache-venv.outputs.cache-hit != 'true'
         run: make install
       - name: install k3d
         run: curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
       - run: make kubes
+      - run: make deploy
