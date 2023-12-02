@@ -7,14 +7,10 @@ kubes: cluster kubes-minio kubes-prefect
 
 ## create k3s cluster
 cluster:
-# enable ephmeral containers for profiling
 # port 4200 on the host is mapped to ingress on port 80
 	k3d cluster create prefect --registry-create prefect-registry:0.0.0.0:5550 \
 		-p 4200:80@loadbalancer -p 9000:9000@loadbalancer -p 9001:9001@loadbalancer \
 		-p 10001:10001@loadbalancer -p 8265:8265@loadbalancer -p 6379:6379@loadbalancer \
-		--k3s-arg '--kube-apiserver-arg=feature-gates=EphemeralContainers=true@server:*' \
-  		--k3s-arg '--kube-scheduler-arg=feature-gates=EphemeralContainers=true@server:*' \
-  		--k3s-arg '--kubelet-arg=feature-gates=EphemeralContainers=true@agent:*' \
 		--wait
 	@echo "Probing until cluster is ready (~60 secs)..." && export KUBECONFIG=$$(k3d kubeconfig write prefect) && \
 		while ! kubectl get crd ingressroutes.traefik.containo.us 2> /dev/null ; do sleep 10 && echo $$((i=i+10)); done
