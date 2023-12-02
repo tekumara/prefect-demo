@@ -100,9 +100,12 @@ deploy: $(venv) publish
 # deploy flows via prefect.yaml
 	$(venv)/bin/prefect --no-prompt deploy --all
 	$(venv)/bin/prefect deployment ls
-	for deployment in param/yaml retry/yaml dask-kubes/python parent/python; do $(venv)/bin/prefect deployment run $$deployment; done
-	$(venv)/bin/prefect flow-run ls
 	@echo Visit http://localhost:4200
+
+## run deployments
+run: $(venv)
+	$(venv)/bin/python -m flows.run
+
 
 ## start prefect ui
 ui: $(venv)
