@@ -1,6 +1,5 @@
 include *.mk
-
-export KUBECONFIG=$(HOME)/.k3d/kubeconfig-prefect.yaml
+include .envrc
 
 ## create cluster and install minio and prefect
 kubes: cluster kubes-minio kubes-prefect
@@ -70,7 +69,6 @@ param-flow: $(venv)
 	$(venv)/bin/python -m flows.param_flow
 
 ## run dask flow
-dask-flow: export PREFECT_API_URL=http://localhost:4200/api
 dask-flow: $(venv)
 	$(venv)/bin/python -m flows.dask_flow
 
@@ -78,7 +76,6 @@ dask-flow: $(venv)
 ray-flow: export PREFECT_LOCAL_STORAGE_PATH=/tmp/prefect/storage # see https://github.com/PrefectHQ/prefect-ray/issues/26
 # PREFECT_API_URL needs to be accessible from the process running the flow and within the ray cluster
 # to make this work locally, add 127.0.0.1 prefect-server to /etc/hosts TODO: find a better fix
-ray-flow: export PREFECT_API_URL=http://prefect-server:4200/api
 ray-flow: $(venv)
 	$(venv)/bin/python -m flows.ray_flow
 
@@ -91,9 +88,6 @@ publish:
 	docker buildx bake --push
 
 ## deploy flows to run on kubernetes
-deploy: export PREFECT_API_URL=http://localhost:4200/api
-deploy: export AWS_ACCESS_KEY_ID=minioadmin
-deploy: export AWS_SECRET_ACCESS_KEY=minioadmin
 deploy: $(venv) publish
 # use minio as the s3 remote file system & deploy flows via python
 	set -e && . config/fsspec-env.sh && $(venv)/bin/python -m flows.deploy
@@ -103,7 +97,6 @@ deploy: $(venv) publish
 	@echo Visit http://localhost:4200
 
 ## run deployments
-run: export PREFECT_API_URL=http://localhost:4200/api
 run: $(venv)
 	$(venv)/bin/python -m flows.run
 
@@ -125,12 +118,10 @@ kubes-logs-dask:
 	kubectl logs -l "app=dask" -f --tail=-1
 
 ## show flow run logs
-logs: export PREFECT_API_URL=http://localhost:4200/api
 logs: assert-id
 	curl -H "Content-Type: application/json" -X POST --data '{"logs":{"flow_run_id":{"any_":["$(id)"]},"level":{"ge_":0}},"sort":"TIMESTAMP_ASC"}' -s "http://localhost:4200/api/logs/filter" | jq -r '.[] | [.timestamp,.level,.message] |@tsv'
 
 ## show flow runs
-flow-runs: export PREFECT_API_URL=http://localhost:4200/api
 flow-runs:
 	$(venv)/bin/prefect flow-run ls
 
