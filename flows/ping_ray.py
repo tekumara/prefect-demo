@@ -1,3 +1,6 @@
+# allow missing imports because we may not have ray installed
+# pyright: reportMissingImports=false
+
 import grpc
 import grpc._channel
 import ray.core.generated.ray_client_pb2 as ray_client_pb2

@@ -1,3 +1,6 @@
+# allow missing imports because we may not have ray installed
+# pyright: reportMissingImports=false
+
 import sys
 
 from prefect import flow, get_run_logger, task
