@@ -8,7 +8,7 @@ Prerequisites:
 
 - make
 - node (required for pyright)
-- python >= 3.9
+- python >= 3.10
 - docker & docker compose
 - [k3d](https://k3d.io/) (for creating a local kubernetes cluster)
 - kubectl

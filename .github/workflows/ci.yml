@@ -28,6 +28,7 @@ jobs:
         run: make install
       - name: install k3d
         run: curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
+      - uses: mxschmitt/action-tmate@v3
       - run: make cluster
       - run: make kubes-minio
       - run: make kubes-prefect
