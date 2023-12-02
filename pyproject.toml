@@ -10,7 +10,7 @@ dependencies = [
     "prefect-aws==0.4.5",
     "prefect-shell==0.2.2",
     # to read/write flows in s3 remote storage
-    "s3fs~=2023.6.0",
+    "s3fs~=2023.10.0",
 ]
 
 [project.optional-dependencies]
@@ -24,8 +24,8 @@ dev = [
 ]
 dask = [
     # bokeh is needed for the dask dashboard
-    "bokeh==2.4.3",
-    "dask_kubernetes==2023.6.1",
+    "bokeh",
+    "dask_kubernetes==2023.10.0",
     "prefect-dask==0.2.6",
 ]
 ray = ["prefect-ray==0.3.2", "ray==2.5.1"]
