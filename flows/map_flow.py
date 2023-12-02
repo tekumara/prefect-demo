@@ -1,5 +1,3 @@
-from typing import List, Tuple
-
 from prefect import flow, get_run_logger, task
 
 
@@ -11,7 +9,7 @@ def setup() -> str:
 
 
 @task
-def fetch_batches() -> List[str]:
+def fetch_batches() -> list[str]:
     return [f"batch {i}" for i in range(10)]
 
 
@@ -23,14 +21,14 @@ def count_rows(batch: str) -> int:
 
 
 @task
-def summary(count: List[int]) -> Tuple[int, int]:
+def summary(count: list[int]) -> tuple[int, int]:
     logger = get_run_logger()
     logger.info(f"Num batches: {len(count)} Num rows: {sum(count)}")
     return len(count), sum(count)
 
 
 # map is a bit more performant than a for loop as it gathers all upstream dependencies concurrently
-# but if you’re calling map without any upstream tasks as inputs, it’s probably going to be the same as a for loop
+# but if you're calling map without any upstream tasks as inputs, it's probably going to be the same as a for loop
 @flow
 def map_flow() -> None:
     logger = get_run_logger()

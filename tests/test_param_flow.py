@@ -7,7 +7,7 @@ from flows.param_flow import add_one, param
 
 
 @pytest.fixture(scope="session")
-def prefect_test_harness():
+def _prefect_test_harness():
     # run flows against a temporary SQLite database rather than ~/.prefect/prefect.db
     # adds an extra second to test time
     # see https://docs.prefect.io/latest/guides/testing/
@@ -20,7 +20,7 @@ def test_underlying_fn():
     assert add_one.fn(41) == 42
 
 
-def test_increment(prefect_test_harness):
+def test_increment(_prefect_test_harness: None):
     state: State = param(42)  # type: ignore see https://github.com/PrefectHQ/prefect/issues/6049
 
     assert state.type == StateType.COMPLETED

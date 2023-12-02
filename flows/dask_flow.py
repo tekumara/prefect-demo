@@ -1,5 +1,3 @@
-from typing import List
-
 from prefect import flow, get_run_logger, task
 from prefect_dask.task_runners import DaskTaskRunner
 
@@ -20,7 +18,7 @@ def say_goodbye(name: str) -> None:
 # TODO: can the task runner be parameterised so we don't duplicate the flow with dask_kubes_flow?
 # see https://github.com/PrefectHQ/prefect/issues/5560
 @flow(task_runner=DaskTaskRunner())
-def dask(names: List[str]) -> None:
+def dask(names: list[str]) -> None:
     for name in names:
         # tasks must be submitted to run on dask
         # if called without .submit() they are still tracked but

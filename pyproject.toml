@@ -1,14 +1,106 @@
-# use PyCharm default line length of 120
+[project]
+name = "prefect-demo"
+description = "Prefect examples running self-contained in a local kubernetes cluster"
+version = "0.0.0"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    # bokeh is needed for the dask dashboard
+    "bokeh==2.4.3",
+    "dask_kubernetes==2023.6.1",
+    "prefect==2.14.9",
+    # to push flows to s3
+    "prefect-aws==0.4.5",
+    "prefect-dask==0.2.6",
+    "prefect-ray==0.3.2",
+    "prefect-shell==0.2.2",
+    "ray==2.5.1",
+    # to write flows to s3
+    "s3fs~=2023.6.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "black~=23.9",
+    "build~=1.0",
+    "pre-commit~=3.4",
+    "pytest~=7.4",
+    "ruff~=0.1.6",
+    "twine~=4.0",
+]
 
 [build-system]
-requires = ["setuptools", "wheel"]
+requires = ["setuptools~=68.2", "wheel~=0.40"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+exclude = ["tests*"]
 
 [tool.black]
+# use PyCharm default line length of 120
 line-length = 120
 
-[tool.isort]
-# use black compatible settings
-line_length = 120
-multi_line_output = 3
-include_trailing_comma = true
-skip = [ ".tox", "dist", "node_modules" , ".venv", "build", ".git", "typings"]
+[tool.pyright]
+venvPath = "."
+venv = ".venv"
+exclude = ["**/node_modules", "**/__pycache__", "**/.*", "build"]
+strictListInference = true
+strictDictionaryInference = true
+strictParameterNoneValue = true
+reportTypedDictNotRequiredAccess = false
+
+[tool.ruff]
+# Compatibility between Ruff and Black
+# https://beta.ruff.rs/docs/faq/#is-ruff-compatible-with-black
+line-length = 120
+
+# rules to enable/ignore
+select = [
+    # pyflakes
+    "F",
+    # pycodestyle
+    "E",
+    "W",
+    # type annotations
+    "ANN",
+    # pep8-naming
+    "N",
+    # bugbear
+    "B",
+    # isort
+    "I",
+    # flake8-unused-arguments
+    "ARG",
+    # flake8-self
+    "SLF",
+    # pyupgrade
+    "UP",
+    # perflint
+    "PERF",
+    # ruff-specific
+    "RUF",
+]
+ignore = [
+    # allow untyped self and cls args, and no return type from dunder methods
+    "ANN101",
+    "ANN102",
+    "ANN204",
+    # allow == True because pandas dataframes overload equality
+    "E712",
+]
+# first-party imports for sorting
+src = ["."]
+fix = true
+show-fixes = true
+
+[tool.ruff.isort]
+combine-as-imports = true
+force-wrap-aliases = true
+
+[tool.ruff.per-file-ignores]
+# test functions don't need return types
+"tests/*" = ["ANN201", "ANN202"]
+
+[tool.ruff.flake8-annotations]
+# allow *args: Any, **kwargs: Any
+allow-star-arg-any = true

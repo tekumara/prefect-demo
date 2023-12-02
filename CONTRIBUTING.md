@@ -10,7 +10,7 @@
 
 `. .venv/bin/activate` activates the virtualenv.
 
-The make targets will update the virtualenv when _setup.py_ changes.
+The make targets will update the virtualenv when _pyproject.toml_ changes.
 
 ## Usage
 

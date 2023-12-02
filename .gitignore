@@ -1,3 +1,4 @@
+.eggs/
 .idea/
 .vscode/
 *.code-workspace
@@ -15,3 +16,4 @@ pip-wheel-metadata/
 node_modules/
 .venv/
 dask-worker-space/
+.env

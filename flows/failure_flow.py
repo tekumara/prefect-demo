@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from time import sleep
-from typing import List
 
 from prefect import allow_failure, flow, get_run_logger, task  # pyright: ignore[reportPrivateImportUsage]
 
@@ -23,13 +22,13 @@ def success() -> int:
 
 
 @task
-def the_end(scores: List[int]) -> None:
+def the_end(scores: list[int]) -> None:
     logger = get_run_logger()
     logger.info(f"Final score is {sum(scores)} 🏆")
 
 
 @task
-def the_end_handle_ex(scores: List[int | Exception]) -> None:
+def the_end_handle_ex(scores: list[int | Exception]) -> None:
     logger = get_run_logger()
     logger.info(f"Final score is {sum(s for s in scores if isinstance(s, int))} 🏆")
 

@@ -1,40 +1,34 @@
 # unless otherwise specified, hooks run on push only
 default_stages: [push]
 repos:
+  - repo: https://github.com/crate-ci/typos
+    rev: v1.16.23
+    hooks:
+      - id: typos
   # formatters and linters are available in the virtualenv so they can be run from the makefile & vscode
   - repo: local
     hooks:
+      - id: ruff
+        name: ruff
+        entry: .venv/bin/ruff
+        language: system
+        types: [python]
       - id: black
         name: black
         entry: .venv/bin/black
         language: system
         types: [python]
         require_serial: true
-      - id: isort
-        name: isort
-        entry: .venv/bin/isort
-        language: system
-        types: [python]
-  - repo: local
-    hooks:
-      - id: flake8
-        name: flake8
-        entry: .venv/bin/flake8
-        language: system
-        types: [python]
-  # these hooks require the project's virtualenv
-  - repo: local
-    hooks:
       - id: pyright
         name: pyright
-        entry: make pyright
-        # run on all files
+        entry: node_modules/.bin/pyright
+        # run on all files to catch type errors that affect unchanged files
         pass_filenames: false
         language: system
         types: [python]
       - id: test
         name: test
-        entry: make test
+        entry: .venv/bin/pytest
         # run on all files
         pass_filenames: false
         language: system

@@ -23,7 +23,7 @@ def log_context() -> None:
 
 
 @flow(log_prints=True)
-def context(i: int) -> None:
+def context() -> None:
     logger = get_run_logger()
     logger.info("Starting context flow")
     print("my name is", prefect.runtime.flow_run.name)  # type: ignore see https://github.com/PrefectHQ/prefect/issues/9027
@@ -32,4 +32,4 @@ def context(i: int) -> None:
 
 
 if __name__ == "__main__":
-    context(42)
+    context()

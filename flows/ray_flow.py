@@ -1,5 +1,4 @@
 import sys
-from typing import List
 
 from prefect import flow, get_run_logger, task
 from prefect_ray.task_runners import RayTaskRunner
@@ -35,7 +34,7 @@ def say_goodbye(name: str) -> None:
         },
     )
 )
-def ray(names: List[str]) -> None:
+def ray(names: list[str]) -> None:
     # these tasks have no dependencies so will execute concurrently
 
     for name in names:

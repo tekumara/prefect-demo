@@ -5,7 +5,7 @@ def minio_flows() -> S3:
     name = "minio-flows"
     try:
         fs: S3 = S3.load(name)  # type: ignore
-        print(f"Loaded S3 block '{fs.get_block_type_slug()}/{name}' (id {fs._block_document_id})")
+        print(f"Loaded S3 block '{fs.get_block_type_slug()}/{name}' (id {fs._block_document_id})")  # noqa: SLF001
         return fs
     except ValueError as e:
         if "Unable to find block document" in str(e):

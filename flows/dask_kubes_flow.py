@@ -1,5 +1,3 @@
-from typing import List
-
 import dask_kubernetes
 from dask_kubernetes import make_pod_spec
 from kubernetes.client import V1Pod
@@ -44,7 +42,7 @@ def dask_pod_spec() -> V1Pod:
         adapt_kwargs={"minimum": 1, "maximum": 2},
     )
 )
-def dask_kubes(names: List[str]) -> None:
+def dask_kubes(names: list[str]) -> None:
     for name in names:
         # tasks must be submitted to run on dask
         # if called without .submit() they are still tracked but

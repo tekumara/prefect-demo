@@ -70,7 +70,7 @@ shout.submit with SequentialTaskRunner - runs immediately using the SequentialTa
 
 You can also mix within a flow ie: have some tasks without submit() to execute immediately and locally, and
 others that run via the task runner.
-"""
+"""  # noqa: E501
 
 
 @task

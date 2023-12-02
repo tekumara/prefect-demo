@@ -1,12 +1,12 @@
 {
   "template": "git@github.com:tekumara/python-typed-template.git",
-  "commit": "a48f55eaa18d2a470900a2daeab491d5419e8728",
+  "commit": "6232f2136b1f1319a4cb57291e2d1d84a6cca04d",
   "checkout": null,
   "context": {
     "cookiecutter": {
       "repo_name": "prefect-demo",
       "package_name": "flows",
-      "distribution_name": "flows",
+      "project_name": "flows",
       "description": "Prefect demo",
       "_template": "git@github.com:tekumara/python-typed-template.git"
     }

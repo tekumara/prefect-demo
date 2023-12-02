@@ -1,5 +1,3 @@
-from typing import List, Tuple
-
 from prefect import flow, get_run_logger, task
 
 
@@ -11,12 +9,12 @@ def setup() -> str:
 
 
 @task
-def fetch_batches() -> List[str]:
+def fetch_batches() -> list[str]:
     return [f"batch {i}" for i in range(10)]
 
 
 @task
-def repartition_batches(batch: str) -> List[List[str]]:
+def repartition_batches(batch: str) -> list[list[str]]:
     logger = get_run_logger()
     batch_size = 4
     materialised = [f"{batch}-{i}" for i in range(8)]
@@ -26,14 +24,14 @@ def repartition_batches(batch: str) -> List[List[str]]:
 
 
 @task
-def count_rows(batch: List[str]) -> int:
+def count_rows(batch: list[str]) -> int:
     logger = get_run_logger()
     logger.info(batch)
     return len(batch)
 
 
 @task
-def summary(count: List[int]) -> Tuple[int, int]:
+def summary(count: list[int]) -> tuple[int, int]:
     logger = get_run_logger()
     logger.info(f"{count} Num batches: {len(count)} Num rows: {sum(count)}")
     return len(count), sum(count)
