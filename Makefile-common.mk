@@ -17,7 +17,7 @@ $(pip): $(if $(value CI),|,) .python-version
 	$(pip) install pip~=23.3 wheel~=0.40
 
 $(venv): $(if $(value CI),|,) pyproject.toml $(pip)
-	$(pip) install -e '.[dev]'
+	$(pip) install -e '.[dev,dask]'
 	touch $(venv)
 
 node_modules: package.json

@@ -5,17 +5,11 @@ version = "0.0.0"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-    # bokeh is needed for the dask dashboard
-    "bokeh==2.4.3",
-    "dask_kubernetes==2023.6.1",
     "prefect==2.14.9",
-    # to push flows to s3
+    # to pull/push flows in s3
     "prefect-aws==0.4.5",
-    "prefect-dask==0.2.6",
-    "prefect-ray==0.3.2",
     "prefect-shell==0.2.2",
-    "ray==2.5.1",
-    # to write flows to s3
+    # to read/write flows in s3 remote storage
     "s3fs~=2023.6.0",
 ]
 
@@ -28,6 +22,13 @@ dev = [
     "ruff~=0.1.6",
     "twine~=4.0",
 ]
+dask = [
+    # bokeh is needed for the dask dashboard
+    "bokeh==2.4.3",
+    "dask_kubernetes==2023.6.1",
+    "prefect-dask==0.2.6",
+]
+ray = ["prefect-ray==0.3.2", "ray==2.5.1"]
 
 [build-system]
 requires = ["setuptools~=68.2", "wheel~=0.40"]
