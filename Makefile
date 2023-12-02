@@ -19,9 +19,8 @@ cluster:
 
 ## install minio
 kubes-minio:
-	helm repo add bitnami https://charts.bitnami.com/bitnami
 # root user and password is stored in the minio secret
-	helm upgrade --install minio bitnami/minio --set auth.rootUser=minioadmin --set auth.rootPassword=minioadmin \
+	helm upgrade --install --repo https://charts.bitnami.com/bitnami minio minio --set auth.rootUser=minioadmin --set auth.rootPassword=minioadmin \
 		--wait --debug > /dev/null
 	kubectl apply -f infra/lb-minio.yaml
 	kubectl exec deploy/minio -- mc mb -p local/minio-flows

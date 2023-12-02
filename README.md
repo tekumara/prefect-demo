@@ -1,5 +1,7 @@
 # Prefect Demo
 
+[![ci](https://github.com/tekumara/prefect-demo/actions/workflows/ci.yml/badge.svg)](https://github.com/tekumara/prefect-demo/actions/workflows/ci.yml)
+
 Prefect 2 (aka Orion) examples running self-contained in a local kubernetes cluster. Batteries (mostly) included. 🔋
 
 ## Getting started
