@@ -103,6 +103,7 @@ deploy: $(venv) publish
 	@echo Visit http://localhost:4200
 
 ## run deployments
+run: export PREFECT_API_URL=http://localhost:4200/api
 run: $(venv)
 	$(venv)/bin/python -m flows.run
 
