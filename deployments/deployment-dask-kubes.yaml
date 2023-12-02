@@ -15,7 +15,7 @@ parameters:
   - ford
   - marvin
 schedule: null
-is_schedule_active: null
+is_schedule_active: true
 infra_overrides:
   image: prefect-registry:5000/flow:latest
   image_pull_policy: Always
@@ -75,6 +75,6 @@ parameter_openapi_schema:
   required:
   - names
   definitions: null
-timestamp: '2023-12-02T07:12:16.401936+00:00'
+timestamp: '2023-12-02T10:07:39.315378+00:00'
 triggers: []
 enforce_parameter_schema: null

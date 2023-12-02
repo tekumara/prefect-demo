@@ -11,7 +11,7 @@ tags:
 - s3
 parameters: {}
 schedule: null
-is_schedule_active: null
+is_schedule_active: true
 infra_overrides:
   image: prefect-registry:5000/flow:latest
   image_pull_policy: Always
@@ -76,9 +76,9 @@ storage:
   bucket_path: minio-flows
   aws_access_key_id: null
   aws_secret_access_key: null
-  _is_anonymous: false
-  _block_document_name: minio-flows
   _block_document_id: 2cbe5e7d-f5a3-425d-99a2-b0425c4c7e15
+  _block_document_name: minio-flows
+  _is_anonymous: false
   block_type_slug: s3
   _block_type_slug: s3
 path: parent
@@ -89,6 +89,6 @@ parameter_openapi_schema:
   properties: {}
   required: null
   definitions: null
-timestamp: '2023-12-02T07:12:16.622999+00:00'
+timestamp: '2023-12-02T10:07:39.428634+00:00'
 triggers: []
 enforce_parameter_schema: null

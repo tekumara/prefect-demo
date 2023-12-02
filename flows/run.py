@@ -16,12 +16,13 @@ async def main() -> None:
         for fut in asyncio.as_completed([run_deployment(name=d, client=client) for d in deployments], timeout=120):
             run = await fut
             flow = await client.read_flow(run.flow_id)
-            print(f"\n ---- {flow.name}/{run.name} {run.state_type} {run.estimated_run_time.seconds}s ----\n")
+            print(f"---- {flow.name}/{run.name} {run.state_type} {run.estimated_run_time.seconds}s ----")
 
             if run.state_type != StateType.COMPLETED:
                 first_page = await client.read_logs(
                     log_filter=LogFilter(flow_run_id={"any_": [run.id]}),
                 )
+                print()
                 for log in first_page:  # type: ignore see https://github.com/PrefectHQ/prefect/issues/11302
                     print(
                         # Print following the flow run format (declared in logging.yml)
@@ -29,6 +30,7 @@ async def main() -> None:
                         f" {logging.getLevelName(log.level):7s} | Flow run"
                         f" {run.name!r} - {log.message}"
                     )
+                print()
                 failure = True
         if failure:
             raise SystemExit("\nFlow failure")
