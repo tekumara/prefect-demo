@@ -35,6 +35,6 @@ jobs:
       - run: make kubes-prefect
       - run: make deploy
       - run: make run
-      - name: Start tmate session if failure
+      - name: Start tmate session on failed manual attempt
         if: ${{ failure() && (github.event_name == 'workflow_dispatch' || github.run_attempt > 1) }}
-        uses: mxschmitt/action-tmate@v3
+        run: curl -sSf https://sshx.io/get | sh && sshx
