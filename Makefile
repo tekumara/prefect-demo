@@ -95,7 +95,7 @@ deploy: $(venv) publish
 
 ## run deployments
 run: $(venv)
-	$(venv)/bin/python -m flows.run || { $(venv)/bin/prefect flow-runs ls && exit 42 ;}
+	$(venv)/bin/python -m flows.run || { COLUMNS=120 $(venv)/bin/prefect flow-runs ls && exit 42 ;}
 
 ## start prefect ui
 ui: $(venv)
