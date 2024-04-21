@@ -69,9 +69,7 @@ parent: Deployment = Deployment.build_from_flow(
     version="snapshot",
     # example of adding tags
     tags=["s3"],
-    # must run on an agent because workers only support local storage
-    # see https://github.com/PrefectHQ/prefect/discussions/10277
-    work_pool_name="default-agent-pool",
+    work_pool_name="kubes-pool",
     # every deployment will overwrite the files in this location
     storage=flows.storage.minio_flows(),
     path="parent",
