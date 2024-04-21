@@ -1,4 +1,4 @@
-FROM prefecthq/prefect:2.14.9-python3.10
+FROM prefecthq/prefect:2.18.0-python3.10
 
 # explicitly specify workdir expected by the deployment (even though its the same as the base image)
 WORKDIR /opt/prefect

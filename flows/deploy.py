@@ -1,5 +1,5 @@
 """
-See https://docs.prefect.io/2.14.9/concepts/deployments/#create-a-deployment-from-a-python-object
+See https://docs.prefect.io/2.18.0/concepts/deployments/#create-a-deployment-from-a-python-object
 """
 
 from prefect.deployments.deployments import Deployment

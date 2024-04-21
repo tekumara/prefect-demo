@@ -24,7 +24,7 @@ def dask_pod_spec() -> V1Pod:
         # we need a image containing dask + prefect
         image="prefect-registry:5550/flow:latest",
         # image="ghcr.io/dask/dask:latest",
-        # env={"EXTRA_PIP_PACKAGES": "prefect==2.14.9"},
+        # env={"EXTRA_PIP_PACKAGES": "prefect==2.18.0"},
         memory_limit="1G",
         memory_request="1G",
         cpu_limit=1,

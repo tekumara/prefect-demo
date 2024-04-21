@@ -5,7 +5,7 @@ version = "0.0.0"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-    "prefect==2.14.9",
+    "prefect==2.18.0",
     # to pull/push flows in s3
     "prefect-aws==0.4.5",
     "prefect-shell==0.2.2",
