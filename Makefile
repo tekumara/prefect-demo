@@ -36,7 +36,7 @@ kubes-ray:
 	@echo -e "\nProbing for the ray cluster to be available (~3 mins)..." && \
 		while ! $(venv)/bin/python -m flows.ping_ray; do sleep 10; done
 
-## install prefect server, worker and agent into kubes cluster
+## install prefect server and worker into kubes cluster
 kubes-prefect:
 	kubectl apply -f infra/rbac-dask.yaml
 	kubectl apply -f infra/sa-flows.yaml
@@ -46,9 +46,6 @@ kubes-prefect:
 	helm upgrade --install --repo https://prefecthq.github.io/prefect-helm \
 		prefect-worker prefect-worker --version=2024.4.18205353 \
 		--values infra/values-worker.yaml --wait --debug > /dev/null
-	helm upgrade --install --repo https://prefecthq.github.io/prefect-helm \
-		prefect-agent prefect-agent --version=2024.4.18205353 \
-		--values infra/values-agent.yaml --wait --debug > /dev/null
 	@echo -e "\nProbing for the prefect API to be available (~30 secs)..." && \
 		while ! curl -fsS http://localhost:4200/api/admin/version ; do sleep 5; done && echo
 
@@ -98,8 +95,7 @@ deploy: $(venv) publish
 
 ## run deployments
 run: $(venv)
-	$(venv)/bin/python -m flows.run
-
+	$(venv)/bin/python -m flows.run || $(venv)/bin/prefect flow-runs ls
 
 ## start prefect ui
 ui: $(venv)
@@ -107,7 +103,7 @@ ui: $(venv)
 
 ## show kube logs for the server and worker
 kubes-logs:
-	kubectl logs -l "app.kubernetes.io/name in (prefect-server, prefect-worker, prefect-agent)" -f --tail=-1
+	kubectl logs -l "app.kubernetes.io/name in (prefect-server, prefect-worker)" -f --tail=-1
 
 ## show kube logs for flows
 kubes-logs-jobs:

@@ -53,7 +53,7 @@ The orion sqlite database is stored in _~/.prefect/prefect.db_
 
 ### Kubernetes
 
-Create k3d cluster with an image registry, minio (for remote storage), the prefect agent and api
+Create k3d cluster with an image registry, minio (for remote storage), the prefect worker and api
 
 ```
 make kubes
@@ -142,7 +142,7 @@ See all [roadmap tagged issues](https://github.com/PrefectHQ/prefect/labels/stat
 
 ### Flows are late
 
-Check the logs of the agent/worker:
+Check the logs of the worker:
 
 ```
 make kubes-logs

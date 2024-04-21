@@ -6,7 +6,7 @@ description: deployment using s3 storage
 version: snapshot
 # The work queue that will handle this deployment's runs
 work_queue_name: default
-work_pool_name: default-agent-pool
+work_pool_name: kubes-pool
 tags:
 - s3
 parameters: {}
