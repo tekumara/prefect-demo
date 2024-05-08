@@ -17,7 +17,10 @@ def say_goodbye(name: str) -> None:
 
 # TODO: can the task runner be parameterised so we don't duplicate the flow with dask_kubes_flow?
 # see https://github.com/PrefectHQ/prefect/issues/5560
-@flow(task_runner=DaskTaskRunner())
+
+
+# creates a LocalCluster https://docs.dask.org/en/stable/deploying-python.html#localcluster
+@flow(task_runner=DaskTaskRunner(cluster_kwargs={"n_workers": 2}))
 def dask(names: list[str]) -> None:
     for name in names:
         # tasks must be submitted to run on dask
